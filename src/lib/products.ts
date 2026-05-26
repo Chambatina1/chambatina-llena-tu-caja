@@ -649,7 +649,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '18 meses',
     walmartUrl: 'https://www.walmart.com/ip/cafe-la-llave-dark-roast-espresso-coffee-10-oz/10533647',
     description: 'Cafe La Llave espresso tueste oscuro, presentacion ladrillo de 10 oz. El sabor autentico cubano.',
-    imageUrl: 'https://i5.walmartimages.com/seo/Cafe-La-Llave-Dark-Roast-Ground-Espresso-Coffee-10-oz-Brick-Rich-Bold-Cuban-Style-Blend-Moka-Pot-Espresso-Machine-Drip-Coffee-Maker-Strong-Aromatic-F_6f024d43-7d1f-4c77-b7b2-e6cd6360dcba.23552da46807a41498d7e6008f9a32b7.jpeg',
+    imageUrl: 'https://i5.walmartimages.com/asr/d39e94ef-954e-4d17-ad94-18ce5b491de2.9b08ceb907df050b707ab0dc3db3ad83.jpeg?odnHeight=450&odnWidth=450&odnBg=FFFFFF',
     packagingType: 'bag',
   },
   {
@@ -668,7 +668,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/cafe-la-llave-dark-roast-espresso-coffee-10-oz-can/43177576',
     description: 'Cafe La Llave estilo cubano en lata metalica de 10 oz. Sabor intenso y cremoso.',
-    imageUrl: 'https://i5.walmartimages.com/seo/Cafe-La-Llave-Dark-Roast-Ground-Espresso-Coffee-10-oz-Can-Rich-and-Bold-Cuban-Style-Blend-Strong-Aromatic-Flavor_35a3d9f5-ad7a-40d1-b4ed-2093c2a515db.1a91d41baef8e498ab2a4dfc8a1d6d19.jpeg',
+    imageUrl: 'https://i5.walmartimages.com/asr/07ced98f-0b98-46a9-9757-008a86e20726.911cd0751fff529c567793df367f41ae.jpeg?odnHeight=450&odnWidth=450&odnBg=FFFFFF',
     packagingType: 'can',
   },
   {
@@ -687,7 +687,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/cafe-la-llave-dark-roast-espresso-coffee-10-oz-can/43177576',
     description: 'Pack de 3 latas de Cafe La Llave espresso tueste oscuro. Ideal para familias que aman el cafe cubano.',
-    imageUrl: 'https://i5.walmartimages.com/seo/Cafe-La-Llave-Dark-Roast-Ground-Espresso-Coffee-10-oz-Can-Rich-and-Bold-Cuban-Style-Blend-Strong-Aromatic-Flavor_35a3d9f5-ad7a-40d1-b4ed-2093c2a515db.1a91d41baef8e498ab2a4dfc8a1d6d19.jpeg',
+    imageUrl: 'https://i5.walmartimages.com/asr/07ced98f-0b98-46a9-9757-008a86e20726.911cd0751fff529c567793df367f41ae.jpeg?odnHeight=450&odnWidth=450&odnBg=FFFFFF',
     packagingType: 'can',
   },
   // ── Café Bustelo ──
@@ -707,7 +707,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '18 meses',
     walmartUrl: 'https://www.walmart.com/ip/cafe-bustelo-espresso-style-dark-roast-ground-coffee-10-oz-brick/10543909',
     description: 'Cafe Bustelo estilo espresso tueste oscuro, ladrillo de 10 oz. Cafe latino autentico.',
-    imageUrl: 'https://i5.walmartimages.com/seo/Cafe-Bustelo-Espresso-Style-Dark-Roast-Ground-Coffee-Vacuum-Packed-10-oz-Brick_4c3fb1f7-6418-4a7f-a5d1-fe1f4f4731b0.eba0f86bcfee48952cc30ca52f971e30.jpeg',
+    imageUrl: 'https://i5.walmartimages.com/asr/fdd10c55-c489-460d-b3fc-59245607ae16.7f6d4cf0ffcbaa385959af66a807be64.jpeg?odnHeight=450&odnWidth=450&odnBg=FFFFFF',
     packagingType: 'bag',
   },
   {
@@ -726,7 +726,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/cafe-bustelo-espresso-style-dark-roast-ground-coffee-10-oz-can/10543894',
     description: 'Cafe Bustelo estilo espresso en lata metalica de 10 oz. Sabor fuerte y aromatico.',
-    imageUrl: 'https://i5.walmartimages.com/seo/Cafe-Bustelo-Espresso-Style-Dark-Roast-Ground-Coffee-10-oz-Can_9a1b98c6-8051-41c8-8496-e4fdd84cd620.3bd794c6d21de62a18125aef0b8d2037.jpeg',
+    imageUrl: 'https://i5.walmartimages.com/asr/cf4a6cd3-2df8-4448-8c8b-7956deea40fc.799d9a5c27d95232e765e13477884949.jpeg?odnHeight=450&odnWidth=450&odnBg=FFFFFF',
     packagingType: 'can',
   },
   {
@@ -745,7 +745,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/cafe-bustelo-espresso-style-dark-roast-ground-coffee-10-oz-can/10543894',
     description: 'Cafe Bustelo estilo espresso lata de 12 oz. El clasico cafe latinoamericano.',
-    imageUrl: 'https://i5.walmartimages.com/seo/Cafe-Bustelo-Espresso-Style-Dark-Roast-Ground-Coffee-10-oz-Can_9a1b98c6-8051-41c8-8496-e4fdd84cd620.3bd794c6d21de62a18125aef0b8d2037.jpeg',
+    imageUrl: 'https://i5.walmartimages.com/asr/cf4a6cd3-2df8-4448-8c8b-7956deea40fc.799d9a5c27d95232e765e13477884949.jpeg?odnHeight=450&odnWidth=450&odnBg=FFFFFF',
     packagingType: 'can',
   },
   {
@@ -764,7 +764,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/cafe-bustelo-espresso-ground-coffee-dark-roast-36-oz-canister/10543895',
     description: 'Cafe Bustelo espresso lata grande de 36 oz. Para los que no pueden vivir sin su cafe.',
-    imageUrl: 'https://i5.walmartimages.com/seo/Cafe-Bustelo-Espresso-Ground-Coffee-Dark-Roast-36-oz-Canister_993861c3-3981-467c-a3c9-f6293635d043.56a77ef0a8cfa9fd6ee1573c1c1ce4e9.jpeg',
+    imageUrl: 'https://i5.walmartimages.com/asr/93ef434e-8a66-4f2b-b096-a10b31cb0e63.e0f9fc710ae1dd90e5e9478a1f35e9a8.jpeg?odnHeight=450&odnWidth=450&odnBg=FFFFFF',
     packagingType: 'can',
   },
 

@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { BoxConfig, BOXES } from '@/lib/boxes';
-import { Product, PRODUCTS, ProductInBox } from '@/lib/products';
+import { Product, PRODUCTS } from '@/lib/products';
 
 interface PlacedItem {
   id: string;
@@ -29,14 +29,22 @@ interface BoxFillerState {
 
   // Computed
   currentWeight: () => number;
+  currentVolume: () => number;
   productCost: () => number;
+  walmartTax: () => number;
   totalCost: () => number;
   remainingWeight: () => number;
+  remainingVolume: () => number;
   weightPercentage: () => number;
-  boxItems: () => { product: Product; quantity: number }[];
+  volumePercentage: () => number;
+  boxFull: () => boolean;
+  boxFullReason: () => 'peso' | 'volumen' | null;
 }
 
-// Simple first-fit packing algorithm
+// ─────────────────────────────────────────────────────────────────────────────
+// RIGOROUS 3D BIN-PACKING — Step 0.5" grid
+// Checks BOTH weight AND volume capacity before placing
+// ─────────────────────────────────────────────────────────────────────────────
 function findPosition(
   items: PlacedItem[],
   product: Product,
@@ -48,24 +56,33 @@ function findPosition(
   const ph = product.height;
   const pd = product.depth;
 
-  // Try placing at each z level (bottom to top)
+  // Try all positions on a 0.5" grid
   const step = 0.5;
   for (let z = 0; z + pd <= boxD + 0.01; z += step) {
     for (let y = 0; y + ph <= boxH + 0.01; y += step) {
       for (let x = 0; x + pw <= boxW + 0.01; x += step) {
-        // Check for collisions
-        const hasCollision = items.some(
-          (item) =>
-            x < item.x + item.w &&
-            x + pw > item.x &&
-            y < item.y + item.h &&
-            y + ph > item.y &&
-            z < item.z + item.d &&
-            z + pd > item.z
-        );
+        // Collision detection with all placed items
+        let hasCollision = false;
+        for (const item of items) {
+          if (
+            x < item.x + item.w + 0.01 &&
+            x + pw > item.x - 0.01 &&
+            y < item.y + item.h + 0.01 &&
+            y + ph > item.y - 0.01 &&
+            z < item.z + item.d + 0.01 &&
+            z + pd > item.z - 0.01
+          ) {
+            hasCollision = true;
+            break;
+          }
+        }
         if (!hasCollision) {
-          // Check bounds
-          if (x + pw <= boxW + 0.01 && y + ph <= boxH + 0.01 && z + pd <= boxD + 0.01) {
+          // Verify it fits within box boundaries
+          if (
+            x + pw <= boxW + 0.01 &&
+            y + ph <= boxH + 0.01 &&
+            z + pd <= boxD + 0.01
+          ) {
             return { x, y, z, w: pw, h: ph, d: pd };
           }
         }
@@ -74,6 +91,9 @@ function findPosition(
   }
   return null;
 }
+
+// Walmart average sales tax ~7%
+const WALMART_TAX_RATE = 0.07;
 
 export const useBoxFillerStore = create<BoxFillerState>((set, get) => ({
   selectedBox: BOXES[1], // Medium box by default (popular)
@@ -86,19 +106,24 @@ export const useBoxFillerStore = create<BoxFillerState>((set, get) => ({
 
   canAddProduct: (product) => {
     const { items, selectedBox } = get();
+
+    // CHECK WEIGHT
     const currentW = items.reduce((sum, item) => sum + item.product.weight * item.quantity, 0);
     if (currentW + product.weight > selectedBox.maxWeight) return false;
 
-    // Check if there's room in the box
+    // CHECK VOLUME (bin-packing)
     const pos = findPosition(items, product, selectedBox.width, selectedBox.height, selectedBox.depth);
     return pos !== null;
   },
 
   addProduct: (product) => {
     const { items, selectedBox } = get();
+
+    // CHECK WEIGHT
     const currentW = items.reduce((sum, item) => sum + item.product.weight * item.quantity, 0);
     if (currentW + product.weight > selectedBox.maxWeight) return false;
 
+    // CHECK VOLUME (bin-packing)
     const pos = findPosition(items, product, selectedBox.width, selectedBox.height, selectedBox.depth);
     if (!pos) return false;
 
@@ -128,13 +153,22 @@ export const useBoxFillerStore = create<BoxFillerState>((set, get) => ({
     return get().items.reduce((sum, item) => sum + item.product.weight * item.quantity, 0);
   },
 
+  currentVolume: () => {
+    return get().items.reduce((sum, item) => sum + item.product.volume * item.quantity, 0);
+  },
+
   productCost: () => {
     return get().items.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
   },
 
+  walmartTax: () => {
+    const pCost = get().productCost();
+    return pCost * WALMART_TAX_RATE;
+  },
+
   totalCost: () => {
-    const { selectedBox, productCost } = get();
-    return selectedBox.price + selectedBox.managementFee + productCost();
+    const { selectedBox, productCost, walmartTax } = get();
+    return selectedBox.price + selectedBox.managementFee + productCost() + walmartTax();
   },
 
   remainingWeight: () => {
@@ -142,21 +176,32 @@ export const useBoxFillerStore = create<BoxFillerState>((set, get) => ({
     return Math.max(0, selectedBox.maxWeight - currentWeight());
   },
 
+  remainingVolume: () => {
+    const { selectedBox, currentVolume } = get();
+    const boxVol = selectedBox.width * selectedBox.height * selectedBox.depth;
+    return Math.max(0, boxVol - currentVolume());
+  },
+
   weightPercentage: () => {
     const { selectedBox, currentWeight } = get();
     return Math.min(100, (currentWeight() / selectedBox.maxWeight) * 100);
   },
 
-  boxItems: () => {
-    const { items } = get();
-    const grouped: Record<string, { product: Product; quantity: number }> = {};
-    for (const item of items) {
-      if (grouped[item.product.id]) {
-        grouped[item.product.id].quantity += item.quantity;
-      } else {
-        grouped[item.product.id] = { product: item.product, quantity: item.quantity };
-      }
-    }
-    return Object.values(grouped);
+  volumePercentage: () => {
+    const { selectedBox, currentVolume } = get();
+    const boxVol = selectedBox.width * selectedBox.height * selectedBox.depth;
+    return Math.min(100, (currentVolume() / boxVol) * 100);
+  },
+
+  boxFull: () => {
+    return get().weightPercentage() >= 99.5 || get().volumePercentage() >= 99.5;
+  },
+
+  boxFullReason: () => {
+    const wp = get().weightPercentage();
+    const vp = get().volumePercentage();
+    if (wp >= 99.5) return 'peso';
+    if (vp >= 99.5) return 'volumen';
+    return null;
   },
 }));

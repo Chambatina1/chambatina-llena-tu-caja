@@ -4,7 +4,7 @@ import { BOXES, BoxConfig } from '@/lib/boxes';
 import { useBoxFillerStore } from '@/store/box-filler-store';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Package, Star, Truck, Weight } from 'lucide-react';
+import { Star, Truck, Weight, BoxIcon } from 'lucide-react';
 
 export default function BoxSelector() {
   const { selectedBox, setSelectedBox, items } = useBoxFillerStore();
@@ -23,8 +23,7 @@ export default function BoxSelector() {
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
       {BOXES.map((box) => {
         const isSelected = selectedBox.id === box.id;
-        const icon =
-          box.id === 'small' ? '📦' : box.id === 'medium' ? '📦' : '📦';
+        const vol = box.width * box.height * box.depth;
 
         return (
           <Card
@@ -44,7 +43,7 @@ export default function BoxSelector() {
             )}
 
             <div className="flex flex-col items-center text-center gap-2">
-              <span className="text-3xl">{icon}</span>
+              <span className="text-3xl">📦</span>
               <h3 className="font-bold text-sm">{box.name}</h3>
 
               <div className="text-xs space-y-0.5 text-muted-foreground">
@@ -54,6 +53,10 @@ export default function BoxSelector() {
                 <div className="flex items-center justify-center gap-1">
                   <Weight className="w-3 h-3" />
                   <span>Hasta {box.maxWeight} lbs</span>
+                </div>
+                <div className="flex items-center justify-center gap-1">
+                  <BoxIcon className="w-3 h-3" />
+                  <span>Volumen: {vol.toFixed(0)} in³</span>
                 </div>
                 <div className="flex items-center justify-center gap-1">
                   <Truck className="w-3 h-3" />

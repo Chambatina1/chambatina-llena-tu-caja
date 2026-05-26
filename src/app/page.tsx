@@ -10,8 +10,8 @@ import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 
 export default function Home() {
-  const items = useBoxFillerStore((s) => s.items);
   const selectedBox = useBoxFillerStore((s) => s.selectedBox);
+  const boxVol = selectedBox.width * selectedBox.height * selectedBox.depth;
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-background to-orange-50/30 dark:to-orange-950/10">
@@ -31,16 +31,16 @@ export default function Home() {
 
         <Separator className="mb-8" />
 
-        {/* Step 2 & 3: Products + Box View + Summary */}
+        {/* Step 2: Products + Box + Summary */}
         <section>
           <h2 className="text-base font-bold mb-4 flex items-center gap-2">
             <span className="w-6 h-6 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center font-bold">
               2
             </span>
-            Selecciona productos para tu caja{' '}
-            <span className="text-xs text-muted-foreground font-normal">
-              ({selectedBox.width}&quot;×{selectedBox.height}&quot;×{selectedBox.depth}&quot; — hasta{' '}
-              {selectedBox.maxWeight} lbs)
+            Selecciona productos para tu caja
+            <span className="text-[10px] sm:text-xs text-muted-foreground font-normal ml-1">
+              ({selectedBox.width}&quot;×{selectedBox.height}&quot;×{selectedBox.depth}&quot; ·{' '}
+              {boxVol.toFixed(0)} in³ · hasta {selectedBox.maxWeight} lbs)
             </span>
           </h2>
 
@@ -54,14 +54,9 @@ export default function Home() {
             <div className="lg:col-span-4 xl:col-span-4">
               <Card className="p-4 sticky top-4">
                 <h3 className="text-sm font-bold mb-3 text-center">
-                  Vista de la Caja
+                  Vista de la Caja — Tiempo Real
                 </h3>
                 <Box3DView />
-                {items.length > 0 && (
-                  <p className="text-[10px] text-center text-muted-foreground mt-2">
-                    {items.length} producto{items.length !== 1 ? 's' : ''} en la caja
-                  </p>
-                )}
               </Card>
             </div>
 
@@ -74,32 +69,35 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Info banner */}
+        {/* How it works */}
         <section className="mt-8 mb-4">
           <div className="bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4">
-            <h3 className="text-sm font-bold text-amber-800 dark:text-amber-300 mb-2">
-              ¿Cómo funciona?
+            <h3 className="text-sm font-bold text-amber-800 dark:text-amber-300 mb-3">
+              Cómo funciona Chambatina
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs text-amber-700 dark:text-amber-400">
               <div>
                 <p className="font-semibold mb-1">1. Elige tu caja</p>
                 <p>
-                  Selecciona entre 3 tamaños de caja según tus necesidades. Cada caja tiene un
-                  límite de peso máximo y un precio de envío fijo que incluye la gestión de compra.
+                  Tres tamaños disponibles. Cada caja tiene límites de peso Y volumen.
+                  Cuando cualquiera de los dos llegue al 100%, la caja se cierra automáticamente
+                  para que quepa todo sin sorpresas.
                 </p>
               </div>
               <div>
-                <p className="font-semibold mb-1">2. Llena tu caja</p>
+                <p className="font-semibold mb-1">2. Llena con productos Walmart</p>
                 <p>
-                  Explora el catálogo de productos que duran hasta 30+ días. Agrega los que necesites
-                  y observa cómo se acomodan visualmente en tu caja en tiempo real.
+                  Elige de nuestro catálogo de productos reales de Walmart. Los precios incluyen
+                  el tax de Walmart (~7%). Verás en tiempo real cómo se acomodan en tu caja
+                  con cálculo preciso de volumen.
                 </p>
               </div>
               <div>
                 <p className="font-semibold mb-1">3. Completa tu pedido</p>
                 <p>
-                  Revisa el peso total y el costo. El precio incluye el envío más un fee de gestión
-                  de compra de ${selectedBox.managementFee.toFixed(2)} por caja. ¡Listo para tu pueblo!
+                  El precio total incluye: costo de productos + tax Walmart + envío +
+                  fee de gestión (${selectedBox.managementFee.toFixed(2)} por caja).
+                  Cuando la caja esté llena, presiona &quot;Completar Pedido&quot;.
                 </p>
               </div>
             </div>
@@ -108,11 +106,11 @@ export default function Home() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t bg-background/80 backdrop-blur">
+      <footer className="border-t bg-background/80 backdrop-blur mt-auto">
         <div className="max-w-7xl mx-auto px-4 py-3 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-muted-foreground">
           <p>© 2025 Chambatina — Llena tu Caja, Llena tu Mesa</p>
           <p>
-            Precios sujetos a cambio · Productos seleccionados para durar hasta 30 días de envío
+            Precios de Walmart sujetos a cambio · Tax ~7% incluido · Cálculo riguroso de peso y volumen
           </p>
         </div>
       </footer>

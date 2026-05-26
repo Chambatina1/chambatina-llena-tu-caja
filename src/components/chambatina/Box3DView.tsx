@@ -14,7 +14,7 @@ export default function Box3DView() {
   const dh = bh * scale;
   const dd = bd * scale;
 
-  // Isometric projection (30-degree)
+  // Isometric projection
   const angle = Math.PI / 6;
   const cosA = Math.cos(angle);
   const sinA = Math.sin(angle);
@@ -54,20 +54,19 @@ export default function Box3DView() {
   const cx = (minX + maxX) / 2;
   const cy = (minY + maxY) / 2;
 
-  const viewW = (maxX - minX) + 40;
-  const viewH = (maxY - minY) + 40;
+  const viewW = (maxX - minX) + 50;
+  const viewH = (maxY - minY) + 50;
 
   const getBarColor = (pct: number) =>
     pct > 90 ? '#ef4444' : pct > 70 ? '#f59e0b' : pct > 40 ? '#3b82f6' : '#22c55e';
 
-  // Sort items by z then y then x for painter's algorithm
+  // Sort items by painter's algorithm
   const sortedItems = [...items].sort((a, b) => {
     if (a.z !== b.z) return a.z - b.z;
     if (a.y !== b.y) return a.y - b.y;
     return a.x - b.x;
   });
 
-  // Map packaging type to product image
   function getProductImage(packagingType: string): string {
     switch (packagingType) {
       case 'can': return '/products/can.png';
@@ -79,6 +78,178 @@ export default function Box3DView() {
       case 'pouch': return '/products/pouch.png';
       default: return '/products/box.png';
     }
+  }
+
+  // Draw a cylinder (for cans, jars) in isometric
+  function drawCylinder(
+    item: typeof sortedItems[0],
+    ix: number, iy: number, iz: number,
+    iw: number, ih: number, id_: number
+  ) {
+    const p = [
+      project(ix, iy, iz),
+      project(ix + iw, iy, iz),
+      project(ix + iw, iy + ih, iz),
+      project(ix, iy + ih, iz),
+      project(ix, iy, iz + id_),
+      project(ix + iw, iy, iz + id_),
+      project(ix + iw, iy + ih, iz + id_),
+      project(ix, iy + ih, iz + id_),
+    ];
+
+    const clipId = `clip-${item.id.replace(/[^a-zA-Z0-9]/g, '')}`;
+
+    // Front face polygon
+    const frontPoly = `${p[0].sx},${p[0].sy} ${p[1].sx},${p[1].sy} ${p[2].sx},${p[2].sy} ${p[3].sx},${p[3].sy}`;
+    // Top face
+    const topPoly = `${p[3].sx},${p[3].sy} ${p[2].sx},${p[2].sy} ${p[6].sx},${p[6].sy} ${p[7].sx},${p[7].sy}`;
+    // Right face
+    const rightPoly = `${p[1].sx},${p[1].sy} ${p[5].sx},${p[5].sy} ${p[6].sx},${p[6].sy} ${p[2].sx},${p[2].sy}`;
+
+    // Front face center
+    const fcx = (p[0].sx + p[1].sx + p[2].sx + p[3].sx) / 4;
+    const fcy = (p[0].sy + p[1].sy + p[2].sy + p[3].sy) / 4;
+    const faceW = Math.sqrt(Math.pow(p[1].sx - p[0].sx, 2) + Math.pow(p[1].sy - p[0].sy, 2));
+    const faceH = Math.sqrt(Math.pow(p[3].sx - p[0].sx, 2) + Math.pow(p[3].sy - p[0].sy, 2));
+    const faceSize = Math.min(iw, ih, id_);
+
+    const baseColor = item.product.color;
+    const imgSrc = getProductImage(item.product.packagingType);
+
+    return (
+      <g key={item.id}>
+        <polygon points={rightPoly} fill={baseColor} opacity="0.25" stroke="#64748b" strokeWidth="0.4" />
+        <polygon points={topPoly} fill={baseColor} opacity="0.12" stroke="#64748b" strokeWidth="0.4" />
+
+        <defs>
+          <clipPath id={clipId}>
+            <polygon points={frontPoly} />
+          </clipPath>
+          {/* Shadow filter per item */}
+          <filter id={`shadow-${clipId}`} x="-5%" y="-5%" width="115%" height="115%">
+            <feDropShadow dx="0.5" dy="1" stdDeviation="1" floodOpacity="0.15" />
+          </filter>
+        </defs>
+
+        {/* Background fill for front face */}
+        <polygon points={frontPoly} fill={baseColor} opacity="0.15" />
+
+        {/* Product image on front face */}
+        <image
+          href={imgSrc}
+          x={fcx - faceW / 2}
+          y={fcy - faceH / 2}
+          width={faceW}
+          height={faceH}
+          preserveAspectRatio="xMidYMid slice"
+          clipPath={`url(#${clipId})`}
+          opacity="0.95"
+        />
+
+        {/* Front face border */}
+        <polygon points={frontPoly} fill="none" stroke="#475569" strokeWidth="0.6" opacity="0.5" />
+
+        {/* Product label on front face */}
+        {faceSize > 12 && (
+          <g>
+            <rect
+              x={fcx - faceW * 0.38}
+              y={fcy - faceH * 0.08}
+              width={faceW * 0.76}
+              height={faceH * 0.22}
+              rx={2}
+              fill="rgba(0,0,0,0.65)"
+              opacity="0.8"
+              clipPath={`url(#${clipId})`}
+            />
+            <text
+              x={fcx}
+              y={fcy + faceH * 0.04}
+              textAnchor="middle"
+              dominantBaseline="middle"
+              fontSize={Math.max(2.5, Math.min(faceSize * 0.11, 6))}
+              fontWeight="800"
+              fill="#ffffff"
+              clipPath={`url(#${clipId})`}
+            >
+              {item.product.nameEs.length > 20 ? item.product.nameEs.substring(0, 18) + '...' : item.product.nameEs}
+            </text>
+          </g>
+        )}
+
+        {/* Weight/price label for larger items */}
+        {faceSize > 20 && (
+          <g>
+            <rect
+              x={fcx - faceW * 0.3}
+              y={fcy + faceH * 0.2}
+              width={faceW * 0.6}
+              height={faceH * 0.14}
+              rx={1.5}
+              fill="rgba(0,0,0,0.55)"
+              clipPath={`url(#${clipId})`}
+            />
+            <text
+              x={fcx}
+              y={fcy + faceH * 0.28}
+              textAnchor="middle"
+              dominantBaseline="middle"
+              fontSize={Math.max(2, Math.min(faceSize * 0.08, 4.5))}
+              fill="#4ade80"
+              fontWeight="700"
+              clipPath={`url(#${clipId})`}
+            >
+              {item.product.weight} lb · ${item.product.price.toFixed(2)}
+            </text>
+          </g>
+        )}
+      </g>
+    );
+  }
+
+  // Draw a bag/pouch (soft sides, slightly rounded)
+  function drawBag(
+    item: typeof sortedItems[0],
+    ix: number, iy: number, iz: number,
+    iw: number, ih: number, id_: number
+  ) {
+    return drawCylinder(item, ix, iy, iz, iw, ih, id_);
+  }
+
+  // Draw a bottle (tall, narrow)
+  function drawBottle(
+    item: typeof sortedItems[0],
+    ix: number, iy: number, iz: number,
+    iw: number, ih: number, id_: number
+  ) {
+    return drawCylinder(item, ix, iy, iz, iw, ih, id_);
+  }
+
+  // Draw a box (sharp edges, cardboard look)
+  function drawBox(
+    item: typeof sortedItems[0],
+    ix: number, iy: number, iz: number,
+    iw: number, ih: number, id_: number
+  ) {
+    return drawCylinder(item, ix, iy, iz, iw, ih, id_);
+  }
+
+  // Draw a bar (soap bar, flat rectangle)
+  function drawBar(
+    item: typeof sortedItems[0],
+    ix: number, iy: number, iz: number,
+    iw: number, ih: number, id_: number
+  ) {
+    return drawCylinder(item, ix, iy, iz, iw, ih, id_);
+  }
+
+  // Draw a pouch (small flat pouch)
+  function drawPouch(
+    item: typeof sortedItems[0],
+    ix: number, iy: number, iz: number,
+    iw: number, ih: number, id_: number
+  ) {
+    return drawCylinder(item, ix, iy, iz, iw, ih, id_);
   }
 
   return (
@@ -116,7 +287,7 @@ export default function Box3DView() {
         </div>
       )}
 
-      {/* ── 3D Box with product images ── */}
+      {/* 3D Box with realistic product images */}
       <div className="relative w-full" style={{ aspectRatio: `${viewW}/${viewH + 20}` }}>
         <svg
           viewBox={`${cx - viewW / 2} ${cy - viewH / 2 - 5} ${viewW} ${viewH + 10}`}
@@ -135,7 +306,7 @@ export default function Box3DView() {
           {/* Floor shadow */}
           <ellipse cx={cx} cy={corners[0].sy + 8} rx={(maxX - minX) / 2} ry={12} fill="#000" opacity="0.05" />
 
-          {/* Box wireframe faces */}
+          {/* Box wireframe */}
           <g filter="url(#shadow)">
             <path d={poly([0, 1, 2, 3])} fill="#ffffff" fillOpacity="0.6" stroke="#94a3b8" strokeWidth="1.2" />
             <path d={poly([1, 5, 6, 2])} fill="#e2e8f0" fillOpacity="0.5" stroke="#94a3b8" strokeWidth="1.2" />
@@ -143,7 +314,7 @@ export default function Box3DView() {
             <path d={poly([3, 2, 6, 7])} fill="url(#grid)" opacity="0.2" />
           </g>
 
-          {/* ── Products rendered with real product images ── */}
+          {/* Render each product */}
           {sortedItems.map((item) => {
             const ix = item.x * scale;
             const iy = item.y * scale;
@@ -152,110 +323,16 @@ export default function Box3DView() {
             const ih = item.h * scale;
             const id_ = item.d * scale;
 
-            const p = [
-              project(ix, iy, iz),
-              project(ix + iw, iy, iz),
-              project(ix + iw, iy + ih, iz),
-              project(ix, iy + ih, iz),
-              project(ix, iy, iz + id_),
-              project(ix + iw, iy, iz + id_),
-              project(ix + iw, iy + ih, iz + id_),
-              project(ix, iy + ih, iz + id_),
-            ];
-
-            // Front face polygon for image clipping
-            const frontPoly = `${p[0].sx},${p[0].sy} ${p[1].sx},${p[1].sy} ${p[2].sx},${p[2].sy} ${p[3].sx},${p[3].sy}`;
-            // Top face
-            const topPoly = `${p[3].sx},${p[3].sy} ${p[2].sx},${p[2].sy} ${p[6].sx},${p[6].sy} ${p[7].sx},${p[7].sy}`;
-            // Right face
-            const rightPoly = `${p[1].sx},${p[1].sy} ${p[5].sx},${p[5].sy} ${p[6].sx},${p[6].sy} ${p[2].sx},${p[2].sy}`;
-
-            // Front face center and size
-            const fcx = (p[0].sx + p[1].sx + p[2].sx + p[3].sx) / 4;
-            const fcy = (p[0].sy + p[1].sy + p[2].sy + p[3].sy) / 4;
-            const faceW = Math.sqrt(Math.pow(p[1].sx - p[0].sx, 2) + Math.pow(p[1].sy - p[0].sy, 2));
-            const faceH = Math.sqrt(Math.pow(p[3].sx - p[0].sx, 2) + Math.pow(p[3].sy - p[0].sy, 2));
-
-            // Angle of front face for image rotation
-            const faceAngle = Math.atan2(p[1].sy - p[0].sy, p[1].sx - p[0].sx) * (180 / Math.PI);
-
-            // Skew transform for isometric perspective
-            const skewAngle = Math.atan2(p[3].sx - p[0].sx, p[3].sy - p[0].sy) * (180 / Math.PI);
-
-            const baseColor = item.product.color;
-            const imgSrc = getProductImage(item.product.packagingType);
-            const faceSize = Math.min(iw, ih, id_);
-
-            // Unique clipPath ID per item
-            const clipId = `clip-${item.id.replace(/[^a-zA-Z0-9]/g, '')}`;
-
-            return (
-              <g key={item.id}>
-                {/* Side face (darker) */}
-                <polygon points={rightPoly} fill={baseColor} opacity="0.3" stroke="#94a3b8" strokeWidth="0.3" />
-                {/* Top face (lighter) */}
-                <polygon points={topPoly} fill={baseColor} opacity="0.15" stroke="#94a3b8" strokeWidth="0.3" />
-
-                {/* Clip path for front face */}
-                <defs>
-                  <clipPath id={clipId}>
-                    <polygon points={frontPoly} />
-                  </clipPath>
-                </defs>
-
-                {/* Product image on front face */}
-                <image
-                  href={imgSrc}
-                  x={fcx - faceW / 2}
-                  y={fcy - faceH / 2}
-                  width={faceW}
-                  height={faceH}
-                  preserveAspectRatio="xMidYMid slice"
-                  clipPath={`url(#${clipId})`}
-                  opacity="0.92"
-                />
-
-                {/* Front face border */}
-                <polygon points={frontPoly} fill="none" stroke="#94a3b8" strokeWidth="0.5" opacity="0.6" />
-
-                {/* Product name label on front face */}
-                {faceSize > 14 && (
-                  <text
-                    x={fcx}
-                    y={fcy + faceH * 0.35}
-                    textAnchor="middle"
-                    dominantBaseline="middle"
-                    fontSize={Math.max(3, Math.min(faceSize * 0.12, 6.5))}
-                    fontWeight="800"
-                    fill="#ffffff"
-                    stroke="#000000"
-                    strokeWidth="0.3"
-                    paintOrder="stroke"
-                    style={{ pointerEvents: 'none' }}
-                  >
-                    {item.product.nameEs.length > 22 ? item.product.nameEs.substring(0, 20) + '...' : item.product.nameEs}
-                  </text>
-                )}
-
-                {/* Weight/price on front face for larger items */}
-                {faceSize > 22 && (
-                  <text
-                    x={fcx}
-                    y={fcy + faceH * 0.42}
-                    textAnchor="middle"
-                    dominantBaseline="middle"
-                    fontSize={Math.max(2.5, Math.min(faceSize * 0.09, 5))}
-                    fill="#ffffff"
-                    stroke="#000000"
-                    strokeWidth="0.3"
-                    paintOrder="stroke"
-                    style={{ pointerEvents: 'none' }}
-                  >
-                    {item.product.weight} lb · ${item.product.price.toFixed(2)}
-                  </text>
-                )}
-              </g>
-            );
+            switch (item.product.packagingType) {
+              case 'can': return drawCylinder(item, ix, iy, iz, iw, ih, id_);
+              case 'bottle': return drawBottle(item, ix, iy, iz, iw, ih, id_);
+              case 'bag': return drawBag(item, ix, iy, iz, iw, ih, id_);
+              case 'jar': return drawCylinder(item, ix, iy, iz, iw, ih, id_);
+              case 'box': return drawBox(item, ix, iy, iz, iw, ih, id_);
+              case 'bar': return drawBar(item, ix, iy, iz, iw, ih, id_);
+              case 'pouch': return drawPouch(item, ix, iy, iz, iw, ih, id_);
+              default: return drawBox(item, ix, iy, iz, iw, ih, id_);
+            }
           })}
 
           {/* Dimension labels */}

@@ -2,29 +2,6 @@
 
 import { useState } from 'react';
 import { useBoxFillerStore } from '@/store/box-filler-store';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
-import { Input } from '@/components/ui/input';
-import {
-  Package,
-  Trash2,
-  ShoppingCart,
-  Truck,
-  FileText,
-  AlertTriangle,
-  Lock,
-  Scale,
-  BoxIcon,
-  CheckCircle2,
-  Loader2,
-  XCircle,
-  RotateCcw,
-  CreditCard,
-  User,
-  Mail,
-  Phone,
-} from 'lucide-react';
 
 export default function MobileOrderSummary() {
   const store = useBoxFillerStore();
@@ -94,22 +71,26 @@ export default function MobileOrderSummary() {
 
   const isFormValid = customerInfo.name.trim() !== '' && customerInfo.email.trim() !== '' && customerInfo.phone.trim() !== '';
 
-  // ── Render ──
-
   return (
-    <Card className="p-4 flex flex-col gap-3" style={{ touchAction: 'manipulation' }}>
+    <div
+      className="p-4 flex flex-col gap-3 border border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800"
+      style={{ touchAction: 'manipulation' }}
+    >
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h3 className="font-bold text-sm flex items-center gap-2">
-          <ShoppingCart className="w-4 h-4" />
-          Tu Pedido
-        </h3>
+        <div className="flex items-center gap-2">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/>
+            <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+          </svg>
+          <span className="font-bold text-sm">Tu Pedido</span>
+        </div>
         {items.length > 0 && paymentState !== 'success' && (
           <button
-            className="h-7 text-xs text-red-500 font-medium"
+            className="h-7 text-xs text-red-500 font-medium border-none bg-transparent cursor-pointer p-0"
             onClick={store.clearBox}
+            style={{ touchAction: 'manipulation' }}
           >
-            <Trash2 className="w-3 h-3 inline mr-1" />
             Vaciar
           </button>
         )}
@@ -119,13 +100,13 @@ export default function MobileOrderSummary() {
       <div className="bg-gray-50 dark:bg-gray-900/50 rounded-lg p-2.5 text-xs space-y-1.5">
         <div className="flex justify-between">
           <span className="text-gray-500">Caja:</span>
-          <span className="font-semibold">{selectedBox.width}&quot;×{selectedBox.height}&quot;×{selectedBox.depth}&quot;</span>
+          <span className="font-semibold">{selectedBox.width}&quot;x{selectedBox.height}&quot;x{selectedBox.depth}&quot;</span>
         </div>
         <div className="flex justify-between text-[10px] text-gray-500">
           <span>Volumen: {boxVol.toFixed(0)} in³</span>
           <span>Peso máx: {selectedBox.maxWeight} lbs</span>
         </div>
-        <Separator className="my-1" />
+        <hr className="border-gray-200 dark:border-gray-700 my-1" />
         <div className="flex justify-between">
           <span className="text-gray-500">Envío:</span>
           <span className="font-semibold">${selectedBox.price.toFixed(2)}</span>
@@ -168,7 +149,7 @@ export default function MobileOrderSummary() {
       {isFull && (
         <div className="bg-red-50 border border-red-200 rounded-lg p-2.5 text-xs">
           <div className="flex items-center gap-1.5 font-bold text-red-600 mb-1">
-            <Lock className="w-3.5 h-3.5" /> CAJA LLENA
+            CAJA LLENA
           </div>
           <p className="text-red-500">
             {reason === 'peso'
@@ -178,33 +159,35 @@ export default function MobileOrderSummary() {
         </div>
       )}
 
-      <Separator />
+      <hr className="border-gray-200 dark:border-gray-700" />
 
       {/* Items list - plain div, NO ScrollArea */}
       <div style={{ maxHeight: '200px', overflowY: 'auto', WebkitOverflowScrolling: 'touch' }}>
         {items.length === 0 ? (
           <div className="flex flex-col items-center text-center text-gray-400 py-4">
-            <Package className="w-8 h-8 mb-2 opacity-20" />
             <p className="text-xs">Tu caja está vacía</p>
             <p className="text-[10px] mt-0.5">Agrega productos del catálogo</p>
           </div>
         ) : (
           Object.values(grouped).map((group) => (
-            <div key={group.product.id} className="flex items-center gap-2 py-1.5 border-b last:border-0">
+            <div key={group.product.id} className="flex items-center gap-2 py-1.5" style={{ borderBottom: '1px solid #e5e7eb' }}>
               <span className="text-base">{group.product.emoji}</span>
               <div className="flex-1 min-w-0">
                 <p className="text-[11px] font-medium truncate">{group.product.nameEs}</p>
-                <p className="text-[10px] text-gray-500">{group.product.weight} lb × {group.quantity}</p>
+                <p className="text-[10px] text-gray-500">{group.product.weight} lb x {group.quantity}</p>
               </div>
               <div className="text-right shrink-0">
                 <p className="text-xs font-bold">${(group.product.price * group.quantity).toFixed(2)}</p>
               </div>
               {paymentState !== 'success' && (
                 <button
-                  className="h-6 w-6 p-0 text-red-500 shrink-0"
+                  className="h-6 w-6 flex items-center justify-center text-red-500 shrink-0 border-none bg-transparent cursor-pointer p-0"
                   onClick={() => store.removeProduct(group.ids[group.ids.length - 1])}
+                  style={{ touchAction: 'manipulation' }}
                 >
-                  <Trash2 className="w-3 h-3" />
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
+                  </svg>
                 </button>
               )}
             </div>
@@ -212,7 +195,7 @@ export default function MobileOrderSummary() {
         )}
       </div>
 
-      <Separator />
+      <hr className="border-gray-200 dark:border-gray-700" />
 
       {/* Cost breakdown */}
       <div className="space-y-1.5">
@@ -228,14 +211,14 @@ export default function MobileOrderSummary() {
           <span className="text-gray-500">Envío + Gestión:</span>
           <span className="font-medium">${(selectedBox.price + selectedBox.managementFee).toFixed(2)}</span>
         </div>
-        <Separator />
+        <hr className="border-gray-200 dark:border-gray-700" />
         <div className="flex justify-between items-center">
           <span className="font-bold text-sm">TOTAL:</span>
           <span className="font-black text-xl text-green-600">${tCost.toFixed(2)}</span>
         </div>
       </div>
 
-      {/* ── PAYMENT SECTION ── */}
+      {/* PAYMENT SECTION */}
       {items.length > 0 && (
         <div className="space-y-3">
           {/* Idle: Show pay button */}
@@ -243,11 +226,15 @@ export default function MobileOrderSummary() {
             <div>
               <button
                 onClick={() => setShowPaymentForm(true)}
-                className="w-full font-bold h-14 gap-2 text-white text-base rounded-xl flex items-center justify-center"
+                className="w-full font-bold h-14 text-white text-base rounded-xl flex items-center justify-center gap-2 border-none cursor-pointer"
                 style={{ backgroundColor: '#2CA01C', touchAction: 'manipulation' }}
               >
-                <CreditCard className="w-5 h-5" />
-                <Lock className="w-4 h-4" />
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/>
+                </svg>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
                 Pagar ${tCost.toFixed(2)} con QuickBooks
               </button>
               <p className="text-[10px] text-center text-gray-500 mt-1">
@@ -258,24 +245,26 @@ export default function MobileOrderSummary() {
 
           {/* Idle: Show inline payment form */}
           {paymentState === 'idle' && showPaymentForm && (
-            <div className="bg-gray-50 dark:bg-gray-900/30 rounded-xl p-4 space-y-3 border">
+            <div className="bg-gray-50 dark:bg-gray-900/30 rounded-xl p-4 space-y-3 border border-gray-200 dark:border-gray-700">
               <div className="flex items-center justify-between">
                 <h4 className="font-bold text-sm flex items-center gap-2">
                   <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#2CA01C' }}>
-                    <Lock className="w-3.5 h-3.5 text-white" />
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    </svg>
                   </div>
                   Pago Seguro
                 </h4>
                 <button
                   onClick={() => setShowPaymentForm(false)}
-                  className="text-xs text-gray-500 underline"
+                  className="text-xs text-gray-500 underline border-none bg-transparent cursor-pointer p-0"
                   style={{ touchAction: 'manipulation' }}
                 >
                   Cancelar
                 </button>
               </div>
 
-              <div className="bg-white dark:bg-gray-800 rounded-lg p-2.5 space-y-1 text-xs border">
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-2.5 space-y-1 text-xs border border-gray-200 dark:border-gray-600">
                 <div className="flex justify-between">
                   <span className="text-gray-500">Total:</span>
                   <span className="font-bold text-base">${tCost.toFixed(2)}</span>
@@ -288,44 +277,35 @@ export default function MobileOrderSummary() {
 
               <div className="space-y-3">
                 <div>
-                  <label className="text-xs font-medium block mb-1">
-                    <User className="w-3 h-3 inline mr-1" />
-                    Nombre completo *
-                  </label>
+                  <label className="text-xs font-medium block mb-1">Nombre completo *</label>
                   <input
                     type="text"
                     placeholder="Tu nombre completo"
                     value={customerInfo.name}
                     onChange={(e) => setCustomerInfo({ ...customerInfo, name: e.target.value })}
-                    className="w-full h-11 px-3 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 outline-none focus:ring-2 focus:ring-green-500"
+                    className="w-full h-11 px-3 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 outline-none"
                     style={{ touchAction: 'manipulation' }}
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-medium block mb-1">
-                    <Mail className="w-3 h-3 inline mr-1" />
-                    Correo electrónico *
-                  </label>
+                  <label className="text-xs font-medium block mb-1">Correo electrónico *</label>
                   <input
                     type="email"
                     placeholder="tu@email.com"
                     value={customerInfo.email}
                     onChange={(e) => setCustomerInfo({ ...customerInfo, email: e.target.value })}
-                    className="w-full h-11 px-3 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 outline-none focus:ring-2 focus:ring-green-500"
+                    className="w-full h-11 px-3 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 outline-none"
                     style={{ touchAction: 'manipulation' }}
                   />
                 </div>
                 <div>
-                  <label className="text-xs font-medium block mb-1">
-                    <Phone className="w-3 h-3 inline mr-1" />
-                    Teléfono *
-                  </label>
+                  <label className="text-xs font-medium block mb-1">Teléfono *</label>
                   <input
                     type="tel"
                     placeholder="+1 (555) 123-4567"
                     value={customerInfo.phone}
                     onChange={(e) => setCustomerInfo({ ...customerInfo, phone: e.target.value })}
-                    className="w-full h-11 px-3 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 outline-none focus:ring-2 focus:ring-green-500"
+                    className="w-full h-11 px-3 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 outline-none"
                     style={{ touchAction: 'manipulation' }}
                   />
                 </div>
@@ -340,15 +320,23 @@ export default function MobileOrderSummary() {
               <button
                 onClick={handleProcessPayment}
                 disabled={!isFormValid}
-                className="w-full font-bold h-12 gap-2 text-white text-base rounded-xl flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed"
-                style={{ backgroundColor: isFormValid ? '#2CA01C' : '#9ca3af', touchAction: 'manipulation' }}
+                className="w-full font-bold h-12 text-white text-base rounded-xl flex items-center justify-center gap-2 border-none cursor-pointer"
+                style={{
+                  backgroundColor: isFormValid ? '#2CA01C' : '#9ca3af',
+                  touchAction: 'manipulation',
+                  opacity: isFormValid ? 1 : 0.4,
+                }}
               >
-                <Lock className="w-4 h-4" />
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
                 Confirmar Pago ${tCost.toFixed(2)}
               </button>
 
               <p className="text-[10px] text-center text-gray-400 flex items-center justify-center gap-1">
-                <Lock className="w-3 h-3" />
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                </svg>
                 Pago seguro procesado por QuickBooks Payments
               </p>
             </div>
@@ -357,7 +345,7 @@ export default function MobileOrderSummary() {
           {/* Processing */}
           {paymentState === 'processing' && (
             <div className="flex flex-col items-center gap-2 py-6">
-              <Loader2 className="w-10 h-10 animate-spin" style={{ color: '#2CA01C' }} />
+              <div className="w-10 h-10 border-4 rounded-full animate-spin" style={{ borderColor: '#e5e7eb', borderTopColor: '#2CA01C' }} />
               <p className="text-sm font-semibold text-gray-500">Procesando pago...</p>
               <p className="text-[10px] text-gray-400">Conectando con QuickBooks Payments</p>
             </div>
@@ -366,7 +354,9 @@ export default function MobileOrderSummary() {
           {/* Success */}
           {paymentState === 'success' && (
             <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-center space-y-3">
-              <CheckCircle2 className="w-10 h-10 text-green-600 mx-auto" />
+              <svg className="mx-auto" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
               <div>
                 <p className="text-base font-bold text-green-700">Pago exitoso!</p>
                 <p className="text-xs text-green-600 mt-1">
@@ -375,10 +365,9 @@ export default function MobileOrderSummary() {
               </div>
               <button
                 onClick={handleNewOrder}
-                className="w-full bg-green-600 text-white font-bold h-10 rounded-lg flex items-center justify-center gap-2"
-                style={{ touchAction: 'manipulation' }}
+                className="w-full text-white font-bold h-10 rounded-lg flex items-center justify-center gap-2 border-none cursor-pointer text-sm"
+                style={{ backgroundColor: '#16a34a', touchAction: 'manipulation' }}
               >
-                <ShoppingCart className="w-4 h-4" />
                 Nuevo Pedido
               </button>
             </div>
@@ -387,21 +376,22 @@ export default function MobileOrderSummary() {
           {/* Error */}
           {paymentState === 'error' && (
             <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-center space-y-2">
-              <XCircle className="w-8 h-8 text-red-500 mx-auto" />
+              <svg className="mx-auto" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>
+              </svg>
               <p className="text-sm font-bold text-red-600">Error al procesar el pago</p>
               <p className="text-xs text-red-400">Intenta de nuevo.</p>
               <button
                 onClick={handleRetry}
-                className="text-xs gap-1.5 border rounded-lg px-4 py-2 mx-auto flex items-center"
+                className="text-xs gap-1.5 border rounded-lg px-4 py-2 mx-auto flex items-center border-red-300 text-red-600 bg-transparent cursor-pointer"
                 style={{ touchAction: 'manipulation' }}
               >
-                <RotateCcw className="w-3 h-3" />
                 Reintentar pago
               </button>
             </div>
           )}
         </div>
       )}
-    </Card>
+    </div>
   );
 }

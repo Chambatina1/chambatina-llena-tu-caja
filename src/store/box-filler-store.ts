@@ -275,8 +275,7 @@ export const useBoxFillerStore = create<BoxFillerState>((set, get) => ({
     if (currentW + product.weight > selectedBox.maxWeight) return 'peso';
     const currentV = items.reduce((sum, item) => sum + item.product.volume * item.quantity, 0);
     const boxVol = selectedBox.width * selectedBox.height * selectedBox.depth;
-    // Allow 95% volume packing (real boxes can't achieve 100% due to shape gaps)
-    if (currentV + product.volume > boxVol * 0.95) return 'espacio';
+    if (currentV + product.volume > boxVol) return 'espacio';
     return null;
   },
 
@@ -286,7 +285,7 @@ export const useBoxFillerStore = create<BoxFillerState>((set, get) => ({
     if (currentW + product.weight > selectedBox.maxWeight) return false;
     const currentV = items.reduce((sum, item) => sum + item.product.volume * item.quantity, 0);
     const boxVol = selectedBox.width * selectedBox.height * selectedBox.depth;
-    if (currentV + product.volume > boxVol * 0.95) return false;
+    if (currentV + product.volume > boxVol) return false;
     return true;
   },
 
@@ -296,7 +295,7 @@ export const useBoxFillerStore = create<BoxFillerState>((set, get) => ({
     if (currentW + product.weight > selectedBox.maxWeight) return false;
     const currentV = items.reduce((sum, item) => sum + item.product.volume * item.quantity, 0);
     const boxVol = selectedBox.width * selectedBox.height * selectedBox.depth;
-    if (currentV + product.volume > boxVol * 0.95) return false;
+    if (currentV + product.volume > boxVol) return false;
 
     // Try 3D placement for visualization
     const pos = findPosition(items, product, selectedBox.width, selectedBox.height, selectedBox.depth);
@@ -370,14 +369,14 @@ export const useBoxFillerStore = create<BoxFillerState>((set, get) => ({
   boxFull: () => {
     const wp = get().weightPercentage();
     const vp = get().volumePercentage();
-    return wp >= 99.5 || vp >= 94.5;
+    return wp >= 99.5 || vp >= 99.5;
   },
 
   boxFullReason: () => {
     const wp = get().weightPercentage();
     const vp = get().volumePercentage();
     if (wp >= 99.5) return 'peso';
-    if (vp >= 94.5) return 'volumen';
+    if (vp >= 99.5) return 'volumen';
     return null;
   },
 

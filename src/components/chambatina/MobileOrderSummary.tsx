@@ -336,9 +336,9 @@ export default function MobileOrderSummary() {
           </div>
         </div>
 
-        {/* CTA — Only when box is full */}
+        {/* CTA — Show whenever there are items */}
         <AnimatePresence>
-          {isFull && (
+          {items.length > 0 && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -348,6 +348,11 @@ export default function MobileOrderSummary() {
               {/* Payment State: Idle */}
               {paymentState === 'idle' && (
                 <>
+                  {isFull && (
+                    <div className="bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 rounded-lg px-3 py-1.5 text-center text-[10px] font-semibold text-green-700 dark:text-green-400">
+                      Caja llena — lista para enviar
+                    </div>
+                  )}
                   <Button
                     onClick={handleOpenPaymentDialog}
                     className="w-full font-bold h-12 gap-2 text-white text-base"
@@ -358,7 +363,9 @@ export default function MobileOrderSummary() {
                     Pagar ${tCost.toFixed(2)} con QuickBooks
                   </Button>
                   <p className="text-[10px] text-center text-muted-foreground">
-                    Tu caja está lista — completa el pago para confirmar
+                    {isFull
+                      ? 'Tu caja está lista — completa el pago para confirmar'
+                      : `Puedes seguir agregando productos o pagar ahora`}
                   </p>
                 </>
               )}

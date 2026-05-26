@@ -5,7 +5,7 @@ import { useBoxFillerStore } from '@/store/box-filler-store';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Plus, Check, Package, ExternalLink } from 'lucide-react';
+import { Plus, Check, Package, ExternalLink, Weight, BoxIcon } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useMemo, useState } from 'react';
 import { Input } from '@/components/ui/input';
@@ -16,8 +16,8 @@ export default function ProductCatalog() {
   const categoryFilter = store.categoryFilter;
   const setCategoryFilter = store.setCategoryFilter;
   const addProduct = store.addProduct;
-  const canAddProduct = store.canAddProduct;
   const isBoxFull = store.boxFull();
+  const rejectReason = store.rejectReason;
   const [search, setSearch] = useState('');
 
   const filteredProducts = useMemo(() => {
@@ -90,8 +90,19 @@ export default function ProductCatalog() {
 
         <div className="grid grid-cols-2 gap-2 pb-4">
           {filteredProducts.map((product, index) => {
-            const canAdd = canAddProduct(product) && !isBoxFull;
+            const reason = rejectReason(product);
+            const canAdd = reason === null && !isBoxFull;
             const count = itemCounts[product.id] || 0;
+
+            // Determine rejection message
+            let rejectMsg = '';
+            if (isBoxFull) {
+              rejectMsg = 'Caja llena';
+            } else if (reason === 'peso') {
+              rejectMsg = 'Supera peso';
+            } else if (reason === 'espacio') {
+              rejectMsg = 'No cabe';
+            }
 
             return (
               <motion.div
@@ -101,13 +112,16 @@ export default function ProductCatalog() {
                 transition={{ delay: index * 0.02, duration: 0.2 }}
               >
                 <Card
-                  className={'relative p-2.5 transition-all group ' +
+                  className={
+                    'relative p-2.5 transition-all group ' +
                     (canAdd
                       ? 'hover:shadow-md hover:border-primary/40 cursor-pointer'
-                      : 'opacity-50 cursor-not-allowed')
-                    + (count > 0 ? ' border-green-400 bg-green-50/50 dark:bg-green-950/20' : '')
+                      : 'opacity-50 cursor-not-allowed') +
+                    (count > 0 ? ' border-green-400 bg-green-50/50 dark:bg-green-950/20' : '')
                   }
-                  onClick={() => { if (canAdd) addProduct(product); }}
+                  onClick={() => {
+                    if (canAdd) addProduct(product);
+                  }}
                 >
                   {count > 0 && (
                     <div className="absolute -top-1.5 -right-1.5 bg-green-500 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center z-10">
@@ -126,10 +140,13 @@ export default function ProductCatalog() {
 
                     <div className="flex items-center gap-2 text-[9px] text-muted-foreground">
                       <span className="flex items-center gap-0.5">
-                        <Package className="w-2.5 h-2.5" />
+                        <Weight className="w-2.5 h-2.5" />
                         {product.weight} lb
                       </span>
-                      <span>{product.volume} in³</span>
+                      <span className="flex items-center gap-0.5">
+                        <BoxIcon className="w-2.5 h-2.5" />
+                        {product.volume} in³
+                      </span>
                     </div>
 
                     <p className="text-sm font-bold text-primary">
@@ -147,18 +164,24 @@ export default function ProductCatalog() {
                           <Plus className="w-2.5 h-2.5" />
                           Agregar
                         </span>
-                      ) : isBoxFull ? (
-                        <span className="flex items-center gap-0.5">
-                          <Check className="w-2.5 h-2.5" />
-                          Caja llena
-                        </span>
                       ) : (
                         <span className="flex items-center gap-0.5">
                           <Check className="w-2.5 h-2.5" />
-                          No cabe
+                          {rejectMsg}
                         </span>
                       )}
                     </Button>
+
+                    {/* Rejection detail on hover */}
+                    {!canAdd && !isBoxFull && (
+                      <p className="text-[9px] text-muted-foreground leading-tight mt-0.5">
+                        {reason === 'peso'
+                          ? `Pesa ${product.weight} lb — supera el limite`
+                          : reason === 'espacio'
+                            ? `${product.width}"×${product.height}"×${product.depth}" — no hay espacio`
+                            : ''}
+                      </p>
+                    )}
 
                     <a
                       href={product.walmartUrl}

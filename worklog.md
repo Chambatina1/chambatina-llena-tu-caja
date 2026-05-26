@@ -52,3 +52,24 @@ Stage Summary:
 - Box auto-closes when either weight or volume hits 100%
 - Green "Completar Pedido" button appears when box is full
 - Lint passes cleanly, server returns 200 OK
+
+---
+Task ID: 3
+Agent: Main Agent
+Task: Fix bin-packing algorithm - products blocked despite available weight/volume
+
+Work Log:
+- Root cause: old algorithm only tested ONE orientation per product on a coarse 0.5" grid
+- Rewrote findPosition() with smart corner-based placement (no grid scanning)
+- Added getRotations() to try ALL 6 orientations (WxHxD permutations) of each product
+- Algorithm now checks candidate positions at corners of existing placed items + origin
+- Uses scoring function to prefer bottom-front-left placements for stable stacking
+- Added rejectReason(product) function returning 'peso' | 'espacio' | null
+- Updated ProductCatalog to show WHY each product cannot be added
+- Removed coarse grid stepping - now places at exact positions
+
+Stage Summary:
+- Bin-packing now much more efficient - tries rotations and corner placement
+- User can always see WHY a product cannot be added
+- Products that fit will be found and placed correctly
+- Lint passes cleanly, server returns 200 OK

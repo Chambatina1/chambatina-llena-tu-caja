@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { BoxConfig, BOXES } from '@/lib/boxes';
-import { Product, PRODUCTS } from '@/lib/products';
+import { Product } from '@/lib/products';
 
 interface PlacedItem {
   id: string;
@@ -14,6 +14,8 @@ interface PlacedItem {
   d: number;
 }
 
+export type RejectionReason = 'peso' | 'espacio' | null;
+
 interface BoxFillerState {
   selectedBox: BoxConfig;
   items: PlacedItem[];
@@ -26,6 +28,7 @@ interface BoxFillerState {
   removeProduct: (itemId: string) => void;
   clearBox: () => void;
   canAddProduct: (product: Product) => boolean;
+  rejectReason: (product: Product) => RejectionReason;
 
   // Computed
   currentWeight: () => number;
@@ -42,9 +45,44 @@ interface BoxFillerState {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// RIGOROUS 3D BIN-PACKING — Step 0.5" grid
-// Checks BOTH weight AND volume capacity before placing
+// SMART 3D BIN-PACKING
+// - Tries ALL 6 rotations of the product (W×H×D permutations)
+// - Checks placement at corner points of existing items + origin
+// - Tightly fits items without gaps
 // ─────────────────────────────────────────────────────────────────────────────
+
+function getRotations(pw: number, ph: number, pd: number) {
+  return [
+    [pw, ph, pd],
+    [pw, pd, ph],
+    [ph, pw, pd],
+    [ph, pd, pw],
+    [pd, pw, ph],
+    [pd, ph, pw],
+  ];
+}
+
+function collides(
+  x: number, y: number, z: number, w: number, h: number, d: number,
+  item: PlacedItem
+): boolean {
+  return (
+    x < item.x + item.w &&
+    x + w > item.x &&
+    y < item.y + item.h &&
+    y + h > item.y &&
+    z < item.z + item.d &&
+    z + d > item.z
+  );
+}
+
+function fitsBox(x: number, y: number, z: number, w: number, h: number, d: number, boxW: number, boxH: number, boxD: number): boolean {
+  return x >= 0 && y >= 0 && z >= 0 &&
+    x + w <= boxW + 0.01 &&
+    y + h <= boxH + 0.01 &&
+    z + d <= boxD + 0.01;
+}
+
 function findPosition(
   items: PlacedItem[],
   product: Product,
@@ -52,78 +90,87 @@ function findPosition(
   boxH: number,
   boxD: number
 ): { x: number; y: number; z: number; w: number; h: number; d: number } | null {
-  const pw = product.width;
-  const ph = product.height;
-  const pd = product.depth;
 
-  // Try all positions on a 0.5" grid
-  const step = 0.5;
-  for (let z = 0; z + pd <= boxD + 0.01; z += step) {
-    for (let y = 0; y + ph <= boxH + 0.01; y += step) {
-      for (let x = 0; x + pw <= boxW + 0.01; x += step) {
-        // Collision detection with all placed items
-        let hasCollision = false;
-        for (const item of items) {
-          if (
-            x < item.x + item.w + 0.01 &&
-            x + pw > item.x - 0.01 &&
-            y < item.y + item.h + 0.01 &&
-            y + ph > item.y - 0.01 &&
-            z < item.z + item.d + 0.01 &&
-            z + pd > item.z - 0.01
-          ) {
-            hasCollision = true;
-            break;
-          }
+  // Generate candidate positions from corners of existing items
+  const candidates: number[][] = [[0, 0, 0]];
+  for (const item of items) {
+    candidates.push([item.x + item.w, item.y, item.z]);
+    candidates.push([item.x, item.y + item.h, item.z]);
+    candidates.push([item.x, item.y, item.z + item.d]);
+  }
+
+  // Try ALL 6 rotations of the product
+  const rotations = getRotations(product.width, product.height, product.depth);
+
+  let best: { x: number; y: number; z: number; w: number; h: number; d: number } | null = null;
+  let bestScore = Infinity;
+
+  for (const [rw, rh, rd] of rotations) {
+    // Skip rotation if it doesn't fit in the box at all
+    if (rw > boxW + 0.01 || rh > boxH + 0.01 || rd > boxD + 0.01) continue;
+
+    for (const [cx, cy, cz] of candidates) {
+      const x = Math.max(0, cx);
+      const y = Math.max(0, cy);
+      const z = Math.max(0, cz);
+
+      // Check box bounds
+      if (!fitsBox(x, y, z, rw, rh, rd, boxW, boxH, boxD)) continue;
+
+      // Check collisions with all placed items
+      let hasCollision = false;
+      for (const item of items) {
+        if (collides(x, y, z, rw, rh, rd, item)) {
+          hasCollision = true;
+          break;
         }
-        if (!hasCollision) {
-          // Verify it fits within box boundaries
-          if (
-            x + pw <= boxW + 0.01 &&
-            y + ph <= boxH + 0.01 &&
-            z + pd <= boxD + 0.01
-          ) {
-            return { x, y, z, w: pw, h: ph, d: pd };
-          }
-        }
+      }
+      if (hasCollision) continue;
+
+      // Score: prefer bottom-left-front placement (stable stacking)
+      const score = z * 10000 + y * 100 + x;
+      if (score < bestScore) {
+        bestScore = score;
+        best = { x, y, z, w: rw, h: rh, d: rd };
       }
     }
   }
-  return null;
+
+  return best;
 }
 
 // Walmart average sales tax ~7%
 const WALMART_TAX_RATE = 0.07;
 
 export const useBoxFillerStore = create<BoxFillerState>((set, get) => ({
-  selectedBox: BOXES[1], // Medium box by default (popular)
+  selectedBox: BOXES[1],
   items: [],
   categoryFilter: 'Todos',
 
   setSelectedBox: (box) => set({ selectedBox: box, items: [] }),
-
   setCategoryFilter: (category) => set({ categoryFilter: category }),
+
+  rejectReason: (product) => {
+    const { items, selectedBox } = get();
+    const currentW = items.reduce((sum, item) => sum + item.product.weight * item.quantity, 0);
+    if (currentW + product.weight > selectedBox.maxWeight) return 'peso';
+    const pos = findPosition(items, product, selectedBox.width, selectedBox.height, selectedBox.depth);
+    if (!pos) return 'espacio';
+    return null;
+  },
 
   canAddProduct: (product) => {
     const { items, selectedBox } = get();
-
-    // CHECK WEIGHT
     const currentW = items.reduce((sum, item) => sum + item.product.weight * item.quantity, 0);
     if (currentW + product.weight > selectedBox.maxWeight) return false;
-
-    // CHECK VOLUME (bin-packing)
     const pos = findPosition(items, product, selectedBox.width, selectedBox.height, selectedBox.depth);
     return pos !== null;
   },
 
   addProduct: (product) => {
     const { items, selectedBox } = get();
-
-    // CHECK WEIGHT
     const currentW = items.reduce((sum, item) => sum + item.product.weight * item.quantity, 0);
     if (currentW + product.weight > selectedBox.maxWeight) return false;
-
-    // CHECK VOLUME (bin-packing)
     const pos = findPosition(items, product, selectedBox.width, selectedBox.height, selectedBox.depth);
     if (!pos) return false;
 
@@ -194,7 +241,9 @@ export const useBoxFillerStore = create<BoxFillerState>((set, get) => ({
   },
 
   boxFull: () => {
-    return get().weightPercentage() >= 99.5 || get().volumePercentage() >= 99.5;
+    const wp = get().weightPercentage();
+    const vp = get().volumePercentage();
+    return wp >= 99.5 || vp >= 99.5;
   },
 
   boxFullReason: () => {

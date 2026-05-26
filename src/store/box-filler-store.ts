@@ -273,36 +273,33 @@ export const useBoxFillerStore = create<BoxFillerState>((set, get) => ({
     const { items, selectedBox } = get();
     const currentW = items.reduce((sum, item) => sum + item.product.weight * item.quantity, 0);
     if (currentW + product.weight > selectedBox.maxWeight) return 'peso';
-    const pos = findPosition(items, product, selectedBox.width, selectedBox.height, selectedBox.depth);
-    if (!pos) return 'espacio';
     return null;
   },
 
   canAddProduct: (product) => {
     const { items, selectedBox } = get();
     const currentW = items.reduce((sum, item) => sum + item.product.weight * item.quantity, 0);
-    if (currentW + product.weight > selectedBox.maxWeight) return false;
-    const pos = findPosition(items, product, selectedBox.width, selectedBox.height, selectedBox.depth);
-    return pos !== null;
+    return currentW + product.weight <= selectedBox.maxWeight;
   },
 
   addProduct: (product) => {
     const { items, selectedBox } = get();
     const currentW = items.reduce((sum, item) => sum + item.product.weight * item.quantity, 0);
     if (currentW + product.weight > selectedBox.maxWeight) return false;
+
+    // Try 3D placement for visualization, but don't block if no space found
     const pos = findPosition(items, product, selectedBox.width, selectedBox.height, selectedBox.depth);
-    if (!pos) return false;
 
     const newItem: PlacedItem = {
       id: `${product.id}-${Date.now()}`,
       product,
       quantity: 1,
-      x: pos.x,
-      y: pos.y,
-      z: pos.z,
-      w: pos.w,
-      h: pos.h,
-      d: pos.d,
+      x: pos?.x ?? 0,
+      y: pos?.y ?? 0,
+      z: pos?.z ?? 0,
+      w: pos?.w ?? product.width,
+      h: pos?.h ?? product.height,
+      d: pos?.d ?? product.depth,
     };
 
     set({ items: [...items, newItem] });
@@ -361,15 +358,12 @@ export const useBoxFillerStore = create<BoxFillerState>((set, get) => ({
 
   boxFull: () => {
     const wp = get().weightPercentage();
-    const vp = get().volumePercentage();
-    return wp >= 99.5 || vp >= 99.5;
+    return wp >= 99.5;
   },
 
   boxFullReason: () => {
     const wp = get().weightPercentage();
-    const vp = get().volumePercentage();
     if (wp >= 99.5) return 'peso';
-    if (vp >= 99.5) return 'volumen';
     return null;
   },
 

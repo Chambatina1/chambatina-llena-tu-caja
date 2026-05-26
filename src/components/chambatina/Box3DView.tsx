@@ -1,7 +1,7 @@
 'use client';
 
 import { useBoxFillerStore } from '@/store/box-filler-store';
-import { useMemo } from 'react';
+import { useMemo, useState, useCallback } from 'react';
 
 // ─── Product image map by packaging type ───
 const PRODUCT_IMAGES: Record<string, string> = {
@@ -16,6 +16,11 @@ const PRODUCT_IMAGES: Record<string, string> = {
 
 export default function Box3DView() {
   const { items, selectedBox, weightPercentage, volumePercentage, boxFull, boxFullReason } = useBoxFillerStore();
+  const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
+
+  const handleImageError = useCallback((itemKey: string) => {
+    setFailedImages((prev) => new Set(prev).add(itemKey));
+  }, []);
   const { width: bw, height: bh, depth: bd } = selectedBox;
 
   const wp = weightPercentage();
@@ -164,7 +169,12 @@ export default function Box3DView() {
             const iy = boxH - (item.y + item.h) * itemScale; // flip Y (CSS y goes down)
             const iz = item.z * itemScale;
 
-            const imgSrc = PRODUCT_IMAGES[item.product.packagingType] || PRODUCT_IMAGES.box;
+            const fallbackSrc = PRODUCT_IMAGES[item.product.packagingType] || PRODUCT_IMAGES.box;
+            const itemKey = item.id;
+            const useRealImage = !failedImages.has(itemKey);
+            const imgSrc = useRealImage
+              ? `/api/walmart-image?url=${encodeURIComponent(item.product.walmartUrl)}`
+              : fallbackSrc;
             const baseColor = item.product.color;
             const isCylinder = item.product.packagingType === 'can' || item.product.packagingType === 'jar' || item.product.packagingType === 'bottle';
             const faceSize = Math.min(item.w, item.h, item.d);
@@ -200,11 +210,12 @@ export default function Box3DView() {
                     style={{
                       width: '100%',
                       height: '100%',
-                      objectFit: 'cover',
+                      objectFit: useRealImage ? 'contain' : 'cover',
                       display: 'block',
                       borderRadius: isCylinder ? '8px' : '3px',
                     }}
                     draggable={false}
+                    onError={() => handleImageError(itemKey)}
                   />
 
                   {/* Product name label */}

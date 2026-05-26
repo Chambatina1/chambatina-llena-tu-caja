@@ -15,6 +15,7 @@ export interface Product {
   emoji: string;
   shelfLife: string;      // shelf life
   walmartUrl: string;     // product URL
+  imageUrl: string;       // product image URL (populated at runtime)
   description: string;    // Spanish description
   packagingType: PackagingType;
 }
@@ -65,6 +66,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '12 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-long-grain-white-rice-5-lb/10314157',
     description: 'Arroz blanco grano largo Great Value, bolsa de 5 libras.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -83,6 +85,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-dried-pinto-beans-2-lb/155982624',
     description: 'Frijoles pintos secos Great Value, bolsa de 2 libras.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -101,6 +104,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '36 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-black-beans-15-5-oz-cans-4-count/456294568',
     description: 'Pack de 4 latas de frijoles negros, 15.5 oz cada una.',
+    imageUrl: '',
     packagingType: 'can',
   },
   {
@@ -119,6 +123,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '12 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-all-purpose-flour-5-lb/10450619',
     description: 'Harina de trigo todo uso Great Value, 5 libras.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -137,6 +142,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '12 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-yellow-cornmeal-2-lb/10450613',
     description: 'Harina de maíz amarilla Great Value, 2 libras.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -155,6 +161,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-spaghetti-16-oz/10450637',
     description: 'Espagueti Great Value, paquete de 16 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -173,6 +180,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '18 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-mac-and-cheese-7-25-oz-5-count/470844108',
     description: 'Pack de 5 macarrones con queso Great Value, 7.25 oz c/u.',
+    imageUrl: '',
     packagingType: 'box',
   },
   {
@@ -191,6 +199,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '12 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-old-fashioned-oats-42-oz/10450641',
     description: 'Avena en hojuelas Great Value, 42 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -209,6 +218,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-dried-lentils-16-oz/456920738',
     description: 'Lentejas secas Great Value, 16 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -227,6 +237,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-dried-chickpeas-16-oz/456920736',
     description: 'Garbanzos secos Great Value, 16 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
 
@@ -247,6 +258,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '18 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-non-fat-dry-milk-25-6-oz/10450602',
     description: 'Leche en polvo descremada Great Value, 25.6 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -265,6 +277,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '18 meses',
     walmartUrl: 'https://www.walmart.com/ip/nestle-nido-kinder-1-12-6-oz/10312650',
     description: 'Leche en polvo entera NIDO, 12.6 oz.',
+    imageUrl: '',
     packagingType: 'can',
   },
 
@@ -286,6 +299,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '18 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-100-pure-vegetable-oil-48-fl-oz/10450596',
     description: 'Aceite vegetal 100% puro Great Value, 48 fl oz.',
+    imageUrl: '',
     packagingType: 'bottle',
   },
 
@@ -305,6 +319,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '6 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-creamy-peanut-butter-40-oz/10450610',
     description: 'Mantequilla de cacahuete cremosa Great Value, 40 oz.',
+    imageUrl: '',
     packagingType: 'jar',
   },
 
@@ -325,6 +340,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-granulated-sugar-4-lb/10450607',
     description: 'Azúcar blanca granulada Great Value, 4 libras.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -343,6 +359,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-clover-honey-12-oz/10450609',
     description: 'Miel de trébol pura Great Value, 12 oz.',
+    imageUrl: '',
     packagingType: 'jar',
   },
   {
@@ -361,6 +378,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '12 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-original-syrup-24-oz/10450611',
     description: 'Jarabe original Great Value, 24 oz.',
+    imageUrl: '',
     packagingType: 'bottle',
   },
 
@@ -381,6 +399,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '36 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-chunk-light-tuna-in-water-5-oz-cans-6-count/10450590',
     description: 'Pack de 6 latas de atún en agua Great Value, 5 oz c/u.',
+    imageUrl: '',
     packagingType: 'can',
   },
   {
@@ -399,6 +418,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-chicken-broth-14-5-oz-cans-4-count/10450593',
     description: 'Pack de 4 latas de caldo de pollo Great Value, 14.5 oz c/u.',
+    imageUrl: '',
     packagingType: 'can',
   },
   {
@@ -417,6 +437,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-tomato-sauce-15-oz-cans-3-count/10450595',
     description: 'Pack de 3 latas de salsa de tomate Great Value, 15 oz c/u.',
+    imageUrl: '',
     packagingType: 'can',
   },
   {
@@ -435,6 +456,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-whole-kernel-sweet-corn-15-25-oz-cans-3-count/10450589',
     description: 'Pack de 3 latas de maíz dulce Great Value, 15.25 oz c/u.',
+    imageUrl: '',
     packagingType: 'can',
   },
   {
@@ -453,6 +475,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-tomato-paste-6-oz-cans-4-count/10450586',
     description: 'Pack de 4 latas de pasta de tomate Great Value, 6 oz c/u.',
+    imageUrl: '',
     packagingType: 'can',
   },
   {
@@ -471,6 +494,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-refried-beans-16-oz-cans-3-count/10450585',
     description: 'Pack de 3 latas de frijoles refritos Great Value, 16 oz c/u.',
+    imageUrl: '',
     packagingType: 'can',
   },
   {
@@ -489,6 +513,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/la-costena-sliced-jalapenos-12-oz-jar-2-count/20814033',
     description: 'Pack de 2 frascos de chiles jalapeños rebanados La Costena.',
+    imageUrl: '',
     packagingType: 'jar',
   },
 
@@ -509,6 +534,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '12 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-ground-coffee-classic-roast-7-oz/10450603',
     description: 'Paquetito de café molido Great Value, 7 oz.',
+    imageUrl: '',
     packagingType: 'pouch',
   },
   {
@@ -527,6 +553,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '12 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-ground-coffee-classic-roast-30-5-oz/10450603',
     description: 'Bolsa de café molido Great Value, 30.5 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -545,6 +572,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-instant-coffee-7-oz/10450604',
     description: '3 sobres individuales de café instantáneo.',
+    imageUrl: '',
     packagingType: 'pouch',
   },
   {
@@ -563,6 +591,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '9 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-creamer-french-vanilla-15-oz/10450605',
     description: 'Crema para café sabor vainilla Great Value, 15 oz.',
+    imageUrl: '',
     packagingType: 'bottle',
   },
   {
@@ -581,6 +610,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '18 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-french-vanilla-cappuccino/10450607',
     description: '6 sobres de capuchino vainilla instantáneo.',
+    imageUrl: '',
     packagingType: 'box',
   },
   {
@@ -599,6 +629,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '12 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-rich-chocolate-cocoa-10-oz/10450606',
     description: 'Cacao en polvo chocolate Great Value, 10 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   // ── Café La Llave ──
@@ -618,6 +649,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '18 meses',
     walmartUrl: 'https://www.walmart.com/ip/cafe-la-llave-dark-roast-espresso-coffee-10-oz/10454135',
     description: 'Cafe La Llave espresso tueste oscuro, presentacion ladrillo de 10 oz. El sabor autentico cubano.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -636,6 +668,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/cafe-la-llave-cuban-style-espresso-10-oz/15800728',
     description: 'Cafe La Llave estilo cubano en lata metalica de 10 oz. Sabor intenso y cremoso.',
+    imageUrl: '',
     packagingType: 'can',
   },
   {
@@ -654,6 +687,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/cafe-la-llave-dark-roast-espresso-coffee-36-oz/456114537',
     description: 'Cafe La Llave espresso lata grande de 36 oz. Ideal para familias que aman el cafe cubano.',
+    imageUrl: '',
     packagingType: 'can',
   },
   // ── Café Bustelo ──
@@ -673,6 +707,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '18 meses',
     walmartUrl: 'https://www.walmart.com/ip/cafe-bustelo-cafe-espresso-style-dark-roast-ground-coffee-10-oz/10454167',
     description: 'Cafe Bustelo estilo espresso tueste oscuro, ladrillo de 10 oz. Cafe latino autentico.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -691,6 +726,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/cafe-bustelo-cafe-espresso-style-dark-roast-ground-coffee-10-oz-can/15800745',
     description: 'Cafe Bustelo estilo espresso en lata metalica de 10 oz. Sabor fuerte y aromatico.',
+    imageUrl: '',
     packagingType: 'can',
   },
   {
@@ -709,6 +745,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/cafe-bustelo-cafe-espresso-style-dark-roast-ground-coffee-12-oz/456114526',
     description: 'Cafe Bustelo estilo espresso lata de 12 oz. El clasico cafe latinoamericano.',
+    imageUrl: '',
     packagingType: 'can',
   },
   {
@@ -727,6 +764,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '18 meses',
     walmartUrl: 'https://www.walmart.com/ip/cafe-bustelo-cafe-espresso-style-dark-roast-ground-coffee-24-oz/456114530',
     description: 'Cafe Bustelo espresso ladrillo grande de 24 oz. Para los que no pueden vivir sin su cafe.',
+    imageUrl: '',
     packagingType: 'bag',
   },
 
@@ -747,6 +785,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '9 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-corn-flakes-cereal-13-oz/10450618',
     description: 'Cereal hojuelas de maíz Great Value, 13 oz.',
+    imageUrl: '',
     packagingType: 'box',
   },
   {
@@ -765,6 +804,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '9 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-buttermilk-pancake-complete-mix-32-oz/10450615',
     description: 'Mezcla para panqueques Great Value, 32 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -783,6 +823,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '6 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-granola-honey-oats-20-oz/470848029',
     description: 'Granola miel y avena Great Value, 20 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -801,6 +842,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '9 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-original-saltine-crackers-16-oz/10450619',
     description: 'Galletas saladas Great Value, 16 oz.',
+    imageUrl: '',
     packagingType: 'box',
   },
 
@@ -821,6 +863,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/dial-gold-antibacterial-deodorant-bar-soap-4-oz-3-count/10313825',
     description: 'Pack de 3 barras de jabón Dial antibacterial, 4 oz c/u.',
+    imageUrl: '',
     packagingType: 'bar',
   },
   {
@@ -839,6 +882,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/colgate-cavity-protection-fluoride-toothpaste-6-0-oz/10312168',
     description: 'Pasta dental Colgate protección contra caries, 6 oz.',
+    imageUrl: '',
     packagingType: 'box',
   },
   {
@@ -857,6 +901,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/suave-professionals-keratin-infusion-smooth-shampoo-12-oz/456154215',
     description: 'Champú profesional Suave, 12 oz.',
+    imageUrl: '',
     packagingType: 'bottle',
   },
   {
@@ -875,6 +920,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/secret-invisible-solid-deodorant-powder-fresh-2-6-oz/10311780',
     description: 'Desodorante Secret invisible sólido, 2.6 oz.',
+    imageUrl: '',
     packagingType: 'box',
   },
   {
@@ -893,6 +939,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/dove-body-wash-deep-moisture-18-oz/10312758',
     description: 'Gel de baño Dove hidratación profunda, 18 oz.',
+    imageUrl: '',
     packagingType: 'bottle',
   },
 
@@ -913,6 +960,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-liquid-laundry-detergent-original-scent-52-oz/10450597',
     description: 'Detergente líquido para ropa Great Value, 52 oz.',
+    imageUrl: '',
     packagingType: 'bottle',
   },
   {
@@ -931,6 +979,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-lemon-scent-dish-soap-14-oz/10450599',
     description: 'Jabón para platos aroma a limón Great Value, 14 oz.',
+    imageUrl: '',
     packagingType: 'bottle',
   },
   {
@@ -949,6 +998,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-ultra-strong-toilet-paper-4-mega-rolls/456292873',
     description: 'Papel higiénico ultra fuerte Great Value, 4 mega rollos.',
+    imageUrl: '',
     packagingType: 'box',
   },
   {
@@ -967,6 +1017,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '12 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-disinfecting-bleach-121-fl-oz/10450601',
     description: 'Cloro blanqueador desinfectante Great Value, 121 fl oz.',
+    imageUrl: '',
     packagingType: 'bottle',
   },
   {
@@ -985,6 +1036,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '60 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-iodized-salt-26-oz/10450608',
     description: 'Sal yodada Great Value, 26 oz.',
+    imageUrl: '',
     packagingType: 'jar',
   },
   {
@@ -1003,6 +1055,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-distilled-white-vinegar-1-gal/10450614',
     description: 'Vinagre blanco destilado Great Value, 1 galón.',
+    imageUrl: '',
     packagingType: 'bottle',
   },
 
@@ -1023,6 +1076,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-sweetened-condensed-milk-14-oz/10450623',
     description: 'Leche condensada azucarada Great Value, 14 oz.',
+    imageUrl: '',
     packagingType: 'can',
   },
   {
@@ -1041,6 +1095,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-evaporated-milk-12-oz-cans-6-count/10450622',
     description: 'Pack de 6 latas de leche evaporada Great Value, 12 oz c/u.',
+    imageUrl: '',
     packagingType: 'can',
   },
   {
@@ -1059,6 +1114,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '12 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-grated-parmesan-cheese-8-oz/10450624',
     description: 'Queso parmesano rallado Great Value, 8 oz.',
+    imageUrl: '',
     packagingType: 'jar',
   },
   // QUESO MOZZARELLA REMOVIDO: requiere refrigeracion - no sobrevive 30 dias en barco
@@ -1080,6 +1136,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '12 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-long-grain-white-rice-2-lb/10314158',
     description: 'Arroz blanco grano largo Great Value, 2 libras.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -1098,6 +1155,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-elbow-macaroni-16-oz/10450638',
     description: 'Coditos macarrones Great Value, 16 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -1116,6 +1174,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-penne-pasta-16-oz/10450636',
     description: 'Penne pasta Great Value, 16 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -1134,6 +1193,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '18 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-cornstarch-16-oz/10450612',
     description: 'Maicena Great Value, 16 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -1152,6 +1212,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '18 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-tri-color-quinoa-12-oz/456920737',
     description: 'Quinoa tricolor Great Value, 12 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -1170,6 +1231,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '18 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-potato-gnocchi-16-oz/456920740',
     description: 'Nquis de papa Great Value, 16 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
 
@@ -1190,6 +1252,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '12 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-long-grain-white-rice-10-lb/10314159',
     description: 'Arroz blanco grano largo Great Value, 10 libras.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -1208,6 +1271,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-thin-spaghetti-16-oz/10450640',
     description: 'Fideo delgado Great Value, 16 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -1226,6 +1290,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-dried-pinto-beans-4-lb/155982625',
     description: 'Frijoles pintos secos Great Value, 4 libras.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -1244,6 +1309,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-dried-navy-beans-2-lb/155982627',
     description: 'Frijoles blancos secos Great Value, 2 libras.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -1262,6 +1328,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '12 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-all-purpose-flour-10-lb/10450620',
     description: 'Harina de trigo todo uso Great Value, 10 libras.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -1280,6 +1347,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '12 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-long-grain-brown-rice-2-lb/10314160',
     description: 'Arroz integral grano largo Great Value, 2 libras.',
+    imageUrl: '',
     packagingType: 'bag',
   },
 
@@ -1300,6 +1368,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '36 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-cut-green-beans-14-5-oz-cans-3-count/10450588',
     description: 'Pack de 3 latas de habichuelas verdes Great Value.',
+    imageUrl: '',
     packagingType: 'can',
   },
   {
@@ -1318,6 +1387,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '36 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-sweet-peas-15-oz-cans-3-count/10450592',
     description: 'Pack de 3 latas de guisantes dulces Great Value.',
+    imageUrl: '',
     packagingType: 'can',
   },
   {
@@ -1336,6 +1406,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '36 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-mixed-vegetables-15-25-oz-cans-3-count/10450594',
     description: 'Pack de 3 latas de vegetales mixtos Great Value.',
+    imageUrl: '',
     packagingType: 'can',
   },
   {
@@ -1354,6 +1425,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '36 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-chili-with-beans-15-oz-cans-3-count/10450591',
     description: 'Pack de 3 latas de chili con frijoles Great Value.',
+    imageUrl: '',
     packagingType: 'can',
   },
   {
@@ -1372,6 +1444,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '36 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-chunk-light-tuna-in-oil-5-oz-cans-3-count/10450589',
     description: 'Pack de 3 latas de atun en aceite Great Value.',
+    imageUrl: '',
     packagingType: 'can',
   },
   {
@@ -1390,6 +1463,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '36 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-whole-white-potatoes-15-25-oz-cans-3-count/456294567',
     description: 'Pack de 3 latas de papas enteras Great Value.',
+    imageUrl: '',
     packagingType: 'can',
   },
   {
@@ -1408,6 +1482,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '36 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-canned-chicken-breast-5-oz-cans-3-count/456294569',
     description: 'Pack de 3 latas de pechuga de pollo Great Value.',
+    imageUrl: '',
     packagingType: 'can',
   },
 
@@ -1428,6 +1503,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '9 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-roasted-sunflower-seeds-8-75-oz/456920742',
     description: 'Semillas de girasol tostadas con sal, 8.75 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -1446,6 +1522,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '9 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-dry-roasted-peanuts-16-oz/456920744',
     description: 'Cacahuates tostados secos con sal, 16 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -1464,6 +1541,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '9 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-mixed-nuts-10-oz/456920746',
     description: 'Mezcla de frutos secos, 10 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -1482,6 +1560,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '12 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-raisins-15-oz/10450625',
     description: 'Pasas Great Value, 15 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -1500,6 +1579,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '12 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-sliced-almonds-6-oz/456920748',
     description: 'Almendras rebanadas Great Value, 6 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -1518,6 +1598,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '9 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-roasted-pumpkin-seeds-5-oz/456920750',
     description: 'Semillas de calabaza tostadas con sal, 5 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
 
@@ -1538,6 +1619,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '15 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-tomato-ketchup-20-oz/10450626',
     description: 'Ketchup de tomate Great Value, 20 oz.',
+    imageUrl: '',
     packagingType: 'bottle',
   },
   {
@@ -1556,6 +1638,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '6 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-real-mayonnaise-30-oz/10450627',
     description: 'Mayonesa real Great Value, 30 oz.',
+    imageUrl: '',
     packagingType: 'jar',
   },
   {
@@ -1574,6 +1657,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '12 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-yellow-mustard-12-oz/10450628',
     description: 'Mostaza amarilla Great Value, 12 oz.',
+    imageUrl: '',
     packagingType: 'bottle',
   },
   {
@@ -1592,6 +1676,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-hot-sauce-5-oz/10450629',
     description: 'Salsa picante tipo Tabasco Great Value, 5 oz.',
+    imageUrl: '',
     packagingType: 'bottle',
   },
   {
@@ -1610,6 +1695,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-soy-sauce-10-oz/10450630',
     description: 'Salsa de soya Great Value, 10 oz.',
+    imageUrl: '',
     packagingType: 'bottle',
   },
   {
@@ -1628,6 +1714,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/goya-sazon-con-azafran-1-41-oz-4-count/10314275',
     description: 'Pack de 4 sobres de sazon Goya con azafran.',
+    imageUrl: '',
     packagingType: 'box',
   },
   {
@@ -1646,6 +1733,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/goya-adobo-all-purpose-seasoning-8-5-oz-2-count/10314277',
     description: 'Pack de 2 sazonadores adobo Goya todo uso, 8.5 oz c/u.',
+    imageUrl: '',
     packagingType: 'jar',
   },
   {
@@ -1664,6 +1752,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-garlic-powder-2-75-oz/10450631',
     description: 'Ajo en polvo Great Value, 2.75 oz.',
+    imageUrl: '',
     packagingType: 'jar',
   },
   {
@@ -1682,6 +1771,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-onion-powder-2-75-oz/10450632',
     description: 'Cebolla en polvo Great Value, 2.75 oz.',
+    imageUrl: '',
     packagingType: 'jar',
   },
   {
@@ -1700,6 +1790,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-black-pepper-1-5-oz/10450633',
     description: 'Pimienta negra molida Great Value, 1.5 oz.',
+    imageUrl: '',
     packagingType: 'jar',
   },
   {
@@ -1718,6 +1809,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-oregano-leaves-0-7-oz/10450634',
     description: 'Oregano Great Value, 0.7 oz.',
+    imageUrl: '',
     packagingType: 'jar',
   },
   {
@@ -1736,6 +1828,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-ground-cumin-1-75-oz/10450635',
     description: 'Comino molido Great Value, 1.75 oz.',
+    imageUrl: '',
     packagingType: 'jar',
   },
 
@@ -1756,6 +1849,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/la-costena-salsa-verde-7-oz-jar-3-count/20814035',
     description: 'Pack de 3 frascos de salsa verde La Costena.',
+    imageUrl: '',
     packagingType: 'jar',
   },
   {
@@ -1774,6 +1868,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/goya-adobo-all-purpose-seasoning-11-oz/10314161',
     description: 'Adobo completo sazón Goya, 11 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -1792,6 +1887,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/goya-sazon-with-coriander-and-annatto-10-5-oz/10314162',
     description: 'Sazón Goya con culantro y achiote.',
+    imageUrl: '',
     packagingType: 'box',
   },
   {
@@ -1810,6 +1906,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-ground-cumin-1-75-oz/10450633',
     description: 'Comino molido Great Value, 1.75 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
 
@@ -1830,6 +1927,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '18 meses',
     walmartUrl: 'https://www.walmart.com/ip/nesquik-chocolate-powder-21-8-oz/10313810',
     description: 'Nesquik en polvo sabor chocolate, 21.8 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -1848,6 +1946,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-black-tea-bags-100-count/10450639',
     description: 'Té negro en sobres Great Value, 100 sobres.',
+    imageUrl: '',
     packagingType: 'box',
   },
   {
@@ -2078,6 +2177,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '12 meses',
     walmartUrl: 'https://www.walmart.com/ip/hershey-milk-chocolate-candy-bar-1-55-oz/10315345',
     description: 'Barra de chocolate con leche Hershey, 1.55 oz.',
+    imageUrl: '',
     packagingType: 'bar',
   },
   {
@@ -2096,6 +2196,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '12 meses',
     walmartUrl: 'https://www.walmart.com/ip/hershey-milk-chocolate-candy-bars-6-count/10450546',
     description: 'Pack de 6 barras de chocolate con leche Hershey.',
+    imageUrl: '',
     packagingType: 'box',
   },
   {
@@ -2114,6 +2215,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '12 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-semi-sweet-chocolate-chips-12-oz/10450643',
     description: 'Chispas de chocolate semi-amargo Great Value, 12 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -2132,6 +2234,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '12 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-white-chocolate-chips-10-oz/456294581',
     description: 'Chispas de chocolate blanco Great Value, 10 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -2150,6 +2253,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '12 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-butterscotch-chips-11-oz/456294583',
     description: 'Chispas de caramelo Great Value, 11 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -2168,6 +2272,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '12 meses',
     walmartUrl: 'https://www.walmart.com/ip/m-ms-milk-chocolate-candy-10-7-oz/10315350',
     description: 'M&M chocolate con leche, 10.7 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -2186,6 +2291,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '9 meses',
     walmartUrl: 'https://www.walmart.com/ip/snickers-candy-bars-1-86-oz-6-count/10315355',
     description: 'Pack de 6 barras de caramelo Snickers.',
+    imageUrl: '',
     packagingType: 'box',
   },
   {
@@ -2204,6 +2310,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '9 meses',
     walmartUrl: 'https://www.walmart.com/ip/reese-peanut-butter-cups-1-5-oz-6-count/10315358',
     description: 'Pack de 6 tazas de mantequilla de cacahuete Reese.',
+    imageUrl: '',
     packagingType: 'box',
   },
   {
@@ -2222,6 +2329,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '9 meses',
     walmartUrl: 'https://www.walmart.com/ip/kit-kat-candy-bars-1-5-oz-6-count/10315362',
     description: 'Pack de 6 barras Kit Kat.',
+    imageUrl: '',
     packagingType: 'box',
   },
   {
@@ -2240,6 +2348,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '12 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-candy-corn-15-oz/10450644',
     description: 'Candy corn Great Value, 15 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -2258,6 +2367,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '18 meses',
     walmartUrl: 'https://www.walmart.com/ip/jolly-rancher-hard-candy-13-oz/10315370',
     description: 'Caramelos duros Jolly Rancher, 13 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -2276,6 +2386,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '12 meses',
     walmartUrl: 'https://www.walmart.com/ip/twizzlers-strawberry-twists-16-oz/10315375',
     description: 'Twizzlers sabor fresa, 16 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
 
@@ -2296,6 +2407,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '18 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-unsweetened-cocoa-powder-8-oz/10450606',
     description: 'Cacao en polvo sin azúcar Great Value, 8 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -2314,6 +2426,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '9 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-chocolate-candy-10-5-oz/456294571',
     description: 'Dulces de chocolate Great Value, 10.5 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -2332,6 +2445,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '9 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-soft-caramels-11-oz/456294575',
     description: 'Caramelos suaves Great Value, 11 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -2350,6 +2464,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '9 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-gummy-bears-4-oz/456294577',
     description: 'Ositos de gomita Great Value, 4 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
 
@@ -2370,6 +2485,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '12 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-whole-wheat-flour-5-lb/10450641',
     description: 'Harina de trigo integral Great Value, 5 libras.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -2388,6 +2504,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-jasmine-rice-5-lb/456294585',
     description: 'Arroz jasmin Great Value, 5 libras.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -2406,6 +2523,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-dried-red-beans-2-lb/456294587',
     description: 'Frijoles rojos secos Great Value, 2 libras.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -2424,6 +2542,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-dried-navy-beans-2-lb/456294589',
     description: 'Frijoles blancos secos Great Value, 2 libras.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -2442,6 +2561,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-split-peas-16-oz/456294591',
     description: 'Arvejas partidas secas Great Value, 16 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -2460,6 +2580,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-pearl-barley-16-oz/456294593',
     description: 'Cebada perlada Great Value, 16 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -2478,6 +2599,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-rotini-pasta-16-oz/10450635',
     description: 'Rotini pasta Great Value, 16 oz.',
+    imageUrl: '',
     packagingType: 'box',
   },
   {
@@ -2496,6 +2618,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-fettuccine-16-oz/10450637',
     description: 'Fettuccine Great Value, 16 oz.',
+    imageUrl: '',
     packagingType: 'box',
   },
   {
@@ -2514,6 +2637,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-egg-noodles-12-oz/456294595',
     description: 'Fideos de huevo Great Value, 12 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -2532,6 +2656,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-lasagna-16-oz/10450639',
     description: 'Lasagna pasta Great Value, 16 oz.',
+    imageUrl: '',
     packagingType: 'box',
   },
   {
@@ -2550,6 +2675,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-medium-shell-pasta-16-oz/10450633',
     description: 'Conchitas pasta Great Value, 16 oz.',
+    imageUrl: '',
     packagingType: 'box',
   },
 
@@ -2570,6 +2696,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '12 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-chopped-walnuts-8-oz/456294597',
     description: 'Nueces picadas Great Value, 8 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -2588,6 +2715,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '12 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-pecan-halves-5-oz/456294599',
     description: 'Nueces pecan mitades Great Value, 5 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -2606,6 +2734,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '12 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-roasted-cashews-8-5-oz/456294601',
     description: 'Anacardos tostados Great Value, 8.5 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
   {
@@ -2624,6 +2753,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '12 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-dried-cranberries-6-oz/456294603',
     description: 'Arandanos rojos secos Great Value, 6 oz.',
+    imageUrl: '',
     packagingType: 'bag',
   },
 
@@ -2644,6 +2774,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/nestle-la-lechera-sweetened-condensed-milk-14-oz-2-count/10312655',
     description: 'Pack de 2 latas de leche condensada La Lechera, 14 oz c/u.',
+    imageUrl: '',
     packagingType: 'can',
   },
   {
@@ -2662,6 +2793,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-sweetened-condensed-milk-14-oz-2-count/456294605',
     description: 'Pack de 2 latas de leche condensada Great Value.',
+    imageUrl: '',
     packagingType: 'can',
   },
 
@@ -2682,6 +2814,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-beef-bouillon-cubes-36-count/10450645',
     description: 'Cubos de caldo de res Great Value, 36 unidades.',
+    imageUrl: '',
     packagingType: 'box',
   },
   {
@@ -2700,6 +2833,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/knorr-chicken-bouillon-8-count/10314280',
     description: 'Cubos de caldo de pollo Knorr, 8 unidades.',
+    imageUrl: '',
     packagingType: 'box',
   },
   {
@@ -2718,6 +2852,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-gelatin-6-oz-4-count/456294607',
     description: 'Gelatina Great Value, 4 sobres de 6 oz.',
+    imageUrl: '',
     packagingType: 'box',
   },
   {
@@ -2736,6 +2871,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-instant-pudding-5-1-oz-4-count/456294609',
     description: 'Pudding instantaneo Great Value, 4 sobres.',
+    imageUrl: '',
     packagingType: 'box',
   },
   {
@@ -2754,6 +2890,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-chicken-noodle-soup-10-5-oz-4-count/456294611',
     description: 'Sopa de pollo con fideos Great Value, 4 latas.',
+    imageUrl: '',
     packagingType: 'can',
   },
   {
@@ -2772,6 +2909,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-tomato-soup-10-75-oz-4-count/456294613',
     description: 'Sopa de tomate Great Value, 4 latas.',
+    imageUrl: '',
     packagingType: 'can',
   },
   {
@@ -2790,6 +2928,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '18 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-baking-powder-8-1-oz/456294615',
     description: 'Polvo para hornear Great Value, 8.1 oz.',
+    imageUrl: '',
     packagingType: 'can',
   },
   {
@@ -2808,6 +2947,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '36 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-baking-soda-16-oz/456294617',
     description: 'Bicarbonato de sodio Great Value, 16 oz.',
+    imageUrl: '',
     packagingType: 'box',
   },
   {
@@ -2826,6 +2966,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '36 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-pure-vanilla-extract-2-oz/456294619',
     description: 'Extracto de vainilla pura Great Value, 2 oz.',
+    imageUrl: '',
     packagingType: 'bottle',
   },
   {
@@ -2844,6 +2985,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-chili-powder-2-25-oz/456294621',
     description: 'Chile en polvo Great Value, 2.25 oz.',
+    imageUrl: '',
     packagingType: 'box',
   },
   {
@@ -2862,6 +3004,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-paprika-2-5-oz/456294623',
     description: 'Pimenton dulce Great Value, 2.5 oz.',
+    imageUrl: '',
     packagingType: 'box',
   },
   {
@@ -2880,6 +3023,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-ground-cinnamon-3-oz/456294625',
     description: 'Canela molida Great Value, 3 oz.',
+    imageUrl: '',
     packagingType: 'box',
   },
   {
@@ -2898,6 +3042,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '36 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-chili-beans-in-mild-sauce-15-5-oz-3-count/456294627',
     description: 'Frijoles para chili Great Value, 3 latas de 15.5 oz.',
+    imageUrl: '',
     packagingType: 'can',
   },
   {
@@ -2916,6 +3061,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '36 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-pinto-beans-in-sauce-15-5-oz-3-count/456294629',
     description: 'Frijoles pintos en salsa Great Value, 3 latas.',
+    imageUrl: '',
     packagingType: 'can',
   },
   {
@@ -2934,6 +3080,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '36 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-sliced-mushrooms-4-oz-3-count/456294631',
     description: 'Hongos rebanados enlatados Great Value, 3 latas.',
+    imageUrl: '',
     packagingType: 'can',
   },
 
@@ -2954,6 +3101,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-daily-body-lotion-original-16-oz/456294580',
     description: 'Loción corporal diaria Great Value, 16 oz.',
+    imageUrl: '',
     packagingType: 'bottle',
   },
   {
@@ -2972,6 +3120,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/suave-professionals-keratin-infusion-conditioner-12-oz/456154216',
     description: 'Acondicionador profesional Suave, 12 oz.',
+    imageUrl: '',
     packagingType: 'bottle',
   },
   {
@@ -2990,6 +3139,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/dial-complete-antibacterial-hand-soap-7-5-oz/10313826',
     description: 'Jabón de manos antibacterial Dial, 7.5 oz.',
+    imageUrl: '',
     packagingType: 'bottle',
   },
   {
@@ -3008,6 +3158,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-shampoo-2-count/456294582',
     description: 'Pack de 2 champús Great Value.',
+    imageUrl: '',
     packagingType: 'bottle',
   },
 
@@ -3028,6 +3179,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/fabuloso-multi-purpose-cleaner-lavender-56-oz/10313827',
     description: 'Limpiador multiusos Fabuloso lavanda, 56 oz.',
+    imageUrl: '',
     packagingType: 'bottle',
   },
   {
@@ -3046,6 +3198,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '36 meses',
     walmartUrl: 'https://www.walmart.com/ip/arm-hammer-baking-sodium-2-lb/10313828',
     description: 'Bicarbonato de sodio Arm & Hammer, 2 libras.',
+    imageUrl: '',
     packagingType: 'box',
   },
   {
@@ -3064,6 +3217,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '60 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-aluminum-foil-75-sq-ft/10450650',
     description: 'Papel aluminio Great Value, 75 pies cuadrados.',
+    imageUrl: '',
     packagingType: 'box',
   },
   {
@@ -3082,6 +3236,7 @@ export const PRODUCTS: Product[] = [
     shelfLife: '24 meses',
     walmartUrl: 'https://www.walmart.com/ip/great-value-facial-tissue-3-count/456294584',
     description: 'Pack de 3 cajas de pañuelos faciales Great Value.',
+    imageUrl: '',
     packagingType: 'box',
   },
 ];

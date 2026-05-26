@@ -2,7 +2,7 @@
 
 import { PRODUCT_CATEGORIES, PRODUCTS } from '@/lib/products';
 import { useBoxFillerStore } from '@/store/box-filler-store';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 
 export default function ProductCatalog() {
   const store = useBoxFillerStore();
@@ -13,6 +13,19 @@ export default function ProductCatalog() {
   const items = store.items;
 
   const [search, setSearch] = useState('');
+  const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
+
+  const handleImageError = useCallback((productId: string) => {
+    setFailedImages((prev) => new Set(prev).add(productId));
+  }, []);
+
+  const getImageSrc = useCallback(
+    (product: (typeof PRODUCTS)[number]) => {
+      if (failedImages.has(product.id)) return null;
+      return `/api/walmart-image?url=${encodeURIComponent(product.walmartUrl)}`;
+    },
+    [failedImages]
+  );
 
   const filteredProducts = useMemo(() => {
     return PRODUCTS.filter((p) => {
@@ -110,7 +123,31 @@ export default function ProductCatalog() {
                 )}
 
                 <div className="flex flex-col items-center text-center gap-1">
-                  <span className="text-2xl leading-none">{product.emoji}</span>
+                  {(() => {
+                    const imgSrc = getImageSrc(product);
+                    return imgSrc ? (
+                      <div
+                        className="w-14 h-14 rounded-lg overflow-hidden bg-gray-50 dark:bg-gray-700 flex items-center justify-center shrink-0"
+                        style={{ backgroundColor: product.color + '22' }}
+                      >
+                        <img
+                          src={imgSrc}
+                          alt={product.nameEs}
+                          className="w-full h-full object-contain"
+                          loading="lazy"
+                          onError={() => handleImageError(product.id)}
+                          draggable={false}
+                        />
+                      </div>
+                    ) : (
+                      <div
+                        className="w-14 h-14 rounded-lg flex items-center justify-center shrink-0"
+                        style={{ backgroundColor: product.color + '33' }}
+                      >
+                        <span className="text-2xl leading-none">{product.emoji}</span>
+                      </div>
+                    );
+                  })()}
 
                   <div className="min-h-[2.2rem]">
                     <p className="text-[11px] font-semibold leading-tight line-clamp-2">

@@ -82,7 +82,7 @@ export async function POST(request: NextRequest) {
 
     // ─── Send email ───
     const { data, error } = await resend.emails.send({
-      from: 'Chambatina <facturas@chambatina.com>',
+      from: process.env.EMAIL_FROM || 'Chambatina <onboarding@resend.dev>',
       to: [customerEmail],
       subject: `Factura ${qbInvoiceRef || orderId} — Chambatina Walmart a tu Familia`,
       html: invoiceHtml,

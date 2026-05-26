@@ -269,9 +269,9 @@ export async function POST(request: NextRequest) {
         });
 
         const { data: emailData, error: emailErr } = await resend.emails.send({
-          from: 'Chambatina <facturas@chambatina.com>',
+          from: process.env.EMAIL_FROM || 'Chambatina <onboarding@resend.dev>',
           to: [customerEmail.trim().toLowerCase()],
-          subject: `Factura ${qbInvoiceRef} - Tu pedido Chambatina Walmart`,
+          subject: `Factura ${qbInvoiceRef} - Tu pedido Chambatina Walmart a tu Familia`,
           html: invoiceHtml,
           headers: {
             'X-Priority': '1',

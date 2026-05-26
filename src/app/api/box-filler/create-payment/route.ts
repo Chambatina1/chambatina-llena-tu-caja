@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { db } from '@/lib/db';
 
 export async function POST(request: NextRequest) {
   try {
@@ -29,12 +30,50 @@ export async function POST(request: NextRequest) {
     // For now, we simulate the payment flow:
     // - Generate a simulated payment token
     // - Return a success response with order details
-    
+
     const paymentToken = `QB_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`;
     const orderId = `ORD-${Date.now().toString(36).toUpperCase()}`;
-    
+
     // Simulate QuickBooks payment processing delay
     await new Promise(resolve => setTimeout(resolve, 1500));
+
+    // Calculate cost breakdown
+    const productCost = items.reduce((sum: number, item: { price: number; quantity: number }) => sum + item.price * item.quantity, 0);
+    const walmartTax = productCost * 0.07;
+
+    // Determine shipping cost and management fee from box size
+    let shippingCost = 65;
+    let managementFee = 6.6;
+    if (boxSize.includes('12')) {
+      shippingCost = 45;
+    } else if (boxSize.includes('16')) {
+      shippingCost = 85;
+    }
+
+    const qbTransactionId = `TXN_${Math.random().toString(36).substring(2, 10).toUpperCase()}`;
+    const qbPaymentId = `PAY_${Math.random().toString(36).substring(2, 10).toUpperCase()}`;
+
+    // ─── Persist order to database ───
+    await db.walmartOrder.create({
+      data: {
+        orderId,
+        customerName,
+        customerEmail,
+        customerPhone,
+        boxSize,
+        items: JSON.stringify(items),
+        productCost,
+        walmartTax,
+        shippingCost,
+        managementFee,
+        totalAmount: amount,
+        currency: 'USD',
+        status: 'pending',
+        paymentToken,
+        qbTransactionId,
+        qbPaymentId,
+      },
+    });
 
     const paymentRecord = {
       orderId,
@@ -51,9 +90,8 @@ export async function POST(request: NextRequest) {
       items: items,
       paymentMethod: 'QuickBooks Payments',
       timestamp: new Date().toISOString(),
-      // QuickBooks would return these in production:
-      qbTransactionId: `TXN_${Math.random().toString(36).substring(2, 10).toUpperCase()}`,
-      qbPaymentId: `PAY_${Math.random().toString(36).substring(2, 10).toUpperCase()}`,
+      qbTransactionId,
+      qbPaymentId,
     };
 
     return NextResponse.json({

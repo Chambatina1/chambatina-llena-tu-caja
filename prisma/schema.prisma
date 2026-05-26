@@ -30,3 +30,25 @@ model Post {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model WalmartOrder {
+  id          String   @id @default(cuid())
+  orderId     String   @unique // ORD-XXXXXXXX
+  customerName  String
+  customerEmail String
+  customerPhone String
+  boxSize     String
+  items       String   // JSON array of order items
+  productCost Float
+  walmartTax  Float
+  shippingCost Float
+  managementFee Float
+  totalAmount Float
+  currency    String   @default("USD")
+  status      String   @default("pending") // pending, processing, purchased, shipped, delivered
+  paymentToken String?
+  qbTransactionId String?
+  qbPaymentId String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

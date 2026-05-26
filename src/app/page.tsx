@@ -87,12 +87,20 @@ export default function LandingPage() {
               </p>
             </div>
           </div>
-          <Link
-            href="/box-filler"
-            className="text-sm font-semibold px-5 py-2.5 rounded-lg bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-md hover:shadow-lg hover:from-orange-600 hover:to-amber-600 transition-all"
-          >
-            Comenzar
-          </Link>
+          <div className="flex items-center gap-2">
+            <Link
+              href="/admin"
+              className="text-xs font-medium px-3 py-2 rounded-lg border border-muted hover:bg-muted transition-colors"
+            >
+              Admin
+            </Link>
+            <Link
+              href="/box-filler"
+              className="text-sm font-semibold px-5 py-2.5 rounded-lg bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-md hover:shadow-lg hover:from-orange-600 hover:to-amber-600 transition-all"
+            >
+              Comenzar
+            </Link>
+          </div>
         </div>
       </header>
 

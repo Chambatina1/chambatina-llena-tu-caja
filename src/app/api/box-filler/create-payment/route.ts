@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
+import { Resend } from 'resend';
+import { generateInvoiceEmail } from '@/lib/invoice-email';
 
 /* ═══════════════════════════════════════════════════════════════════════════
    QuickBooks Payments Integration — Production-Ready Simulation
@@ -227,6 +229,71 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    // ─── Send Invoice Email (like QuickBooks native) ───
+    // QuickBooks automatically emails a receipt to the customer after payment.
+    // We do the same using Resend.
+    let emailSent = false;
+    let emailError = '';
+    const resendApiKey = process.env.RESEND_API_KEY;
+
+    if (resendApiKey) {
+      try {
+        const resend = new Resend(resendApiKey);
+
+        const invoiceHtml = generateInvoiceEmail({
+          orderId,
+          qbInvoiceRef,
+          qbTransactionId: chargeResult.id,
+          authCode: chargeResult.authCode,
+          customerName: customerName.trim(),
+          customerEmail: customerEmail.trim().toLowerCase(),
+          customerPhone: customerPhone.trim(),
+          customerAddress: customerAddress?.trim() || '',
+          date: now.toLocaleDateString('es-NI', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' }),
+          boxSize: boxSize || 'N/A',
+          items: (items || []).map((item: { name: string; quantity: number; price: number; weight: number }) => ({
+            name: item.name,
+            quantity: item.quantity,
+            price: item.price,
+            weight: item.weight,
+          })),
+          productCost: Math.round(productCost * 100) / 100,
+          walmartTax: Math.round(walmartTax * 100) / 100,
+          shippingCost,
+          managementFee,
+          total: Math.round(amount * 100) / 100,
+          cardBrand: chargeResult.cardBrand,
+          cardLast4: chargeResult.cardLast4,
+          processingFee: chargeResult.fee,
+          netAmount: chargeResult.netAmount,
+        });
+
+        const { data: emailData, error: emailErr } = await resend.emails.send({
+          from: 'Chambatina <facturas@chambatina.com>',
+          to: [customerEmail.trim().toLowerCase()],
+          subject: `Factura ${qbInvoiceRef} - Tu pedido Chambatina Walmart`,
+          html: invoiceHtml,
+          headers: {
+            'X-Priority': '1',
+            'X-Mailer': 'QuickBooks Payments / Chambatina',
+          },
+        });
+
+        if (emailErr) {
+          console.error('[RESEND] Failed to send invoice email:', emailErr);
+          emailError = emailErr.message;
+        } else {
+          emailSent = true;
+          console.log(`[RESEND] Invoice sent to ${customerEmail} — ${emailData?.id}`);
+        }
+      } catch (emailCatchErr) {
+        console.error('[RESEND] Email error:', emailCatchErr);
+        emailError = 'Unexpected email error';
+      }
+    } else {
+      console.warn('[RESEND] No API key. Invoice email not sent. Set RESEND_API_KEY env var.');
+    }
+
     // ─── Return success response ───
     return NextResponse.json({
       success: true,
@@ -264,6 +331,11 @@ export async function POST(request: NextRequest) {
       box: boxSize || 'N/A',
       items,
       paymentMethod: 'QuickBooks Payments',
+      invoice: {
+        sent: emailSent,
+        to: customerEmail.trim().toLowerCase(),
+        error: emailError || undefined,
+      },
     });
   } catch (error) {
     console.error('Payment processing error:', error);

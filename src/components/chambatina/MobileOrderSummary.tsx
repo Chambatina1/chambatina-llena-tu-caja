@@ -935,9 +935,20 @@ export default function MobileOrderSummary() {
           Hacer Nuevo Pedido
         </button>
 
-        <p className="text-[9px] text-center text-gray-400">
-          Recibirás un correo de confirmación a {customerInfo.email}
-        </p>
+        {/* Invoice email notification */}
+        {data.invoice?.sent && (
+          <div className="flex items-center justify-center gap-2 py-2">
+            <div className="w-5 h-5 rounded-full flex items-center justify-center" style={{ backgroundColor: '#16a34a' }}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            </div>
+            <span className="text-xs font-semibold text-green-700">Factura enviada a {customerInfo.email}</span>
+          </div>
+        )}
+        {!data.invoice?.sent && (
+          <p className="text-[9px] text-center text-gray-400">
+            Recibirás confirmación en {customerInfo.email}
+          </p>
+        )}
       </div>
     );
   }

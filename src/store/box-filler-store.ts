@@ -273,21 +273,32 @@ export const useBoxFillerStore = create<BoxFillerState>((set, get) => ({
     const { items, selectedBox } = get();
     const currentW = items.reduce((sum, item) => sum + item.product.weight * item.quantity, 0);
     if (currentW + product.weight > selectedBox.maxWeight) return 'peso';
+    const currentV = items.reduce((sum, item) => sum + item.product.volume * item.quantity, 0);
+    const boxVol = selectedBox.width * selectedBox.height * selectedBox.depth;
+    // Allow 95% volume packing (real boxes can't achieve 100% due to shape gaps)
+    if (currentV + product.volume > boxVol * 0.95) return 'espacio';
     return null;
   },
 
   canAddProduct: (product) => {
     const { items, selectedBox } = get();
     const currentW = items.reduce((sum, item) => sum + item.product.weight * item.quantity, 0);
-    return currentW + product.weight <= selectedBox.maxWeight;
+    if (currentW + product.weight > selectedBox.maxWeight) return false;
+    const currentV = items.reduce((sum, item) => sum + item.product.volume * item.quantity, 0);
+    const boxVol = selectedBox.width * selectedBox.height * selectedBox.depth;
+    if (currentV + product.volume > boxVol * 0.95) return false;
+    return true;
   },
 
   addProduct: (product) => {
     const { items, selectedBox } = get();
     const currentW = items.reduce((sum, item) => sum + item.product.weight * item.quantity, 0);
     if (currentW + product.weight > selectedBox.maxWeight) return false;
+    const currentV = items.reduce((sum, item) => sum + item.product.volume * item.quantity, 0);
+    const boxVol = selectedBox.width * selectedBox.height * selectedBox.depth;
+    if (currentV + product.volume > boxVol * 0.95) return false;
 
-    // Try 3D placement for visualization, but don't block if no space found
+    // Try 3D placement for visualization
     const pos = findPosition(items, product, selectedBox.width, selectedBox.height, selectedBox.depth);
 
     const newItem: PlacedItem = {
@@ -358,12 +369,15 @@ export const useBoxFillerStore = create<BoxFillerState>((set, get) => ({
 
   boxFull: () => {
     const wp = get().weightPercentage();
-    return wp >= 99.5;
+    const vp = get().volumePercentage();
+    return wp >= 99.5 || vp >= 94.5;
   },
 
   boxFullReason: () => {
     const wp = get().weightPercentage();
+    const vp = get().volumePercentage();
     if (wp >= 99.5) return 'peso';
+    if (vp >= 94.5) return 'volumen';
     return null;
   },
 

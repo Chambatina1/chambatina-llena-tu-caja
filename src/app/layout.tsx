@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Chambatina — Llena tu Caja",
-  description: "Servicio de envío de productos Walmart a tu pueblo.",
+  title: "Chambatina — Walmart a tu Familia",
+  description: "Walmart a tu Familia — Productos reales de Walmart con envío seguro hasta tu destino.",
   icons: {
     icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📦</text></svg>",
   },

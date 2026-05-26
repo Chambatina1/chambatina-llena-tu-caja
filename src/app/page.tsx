@@ -6,7 +6,7 @@ import Link from 'next/link';
 const slides = [
   {
     emoji: '📦',
-    title: 'Llena tu Caja',
+    title: 'Walmart a tu Familia',
     description: 'Elige entre 3 tamaños de caja y selecciona productos reales de Walmart. Visualización 3D en tiempo real.',
     cta: 'Comenzar Ahora',
     gradient: 'from-orange-400 to-amber-400',

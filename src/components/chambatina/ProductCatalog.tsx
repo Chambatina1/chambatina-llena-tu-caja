@@ -22,6 +22,7 @@ export default function ProductCatalog() {
   const getImageSrc = useCallback(
     (product: (typeof PRODUCTS)[number]) => {
       if (failedImages.has(product.id)) return null;
+      if (product.imageUrl) return product.imageUrl;
       return `/api/walmart-image?url=${encodeURIComponent(product.walmartUrl)}`;
     },
     [failedImages]

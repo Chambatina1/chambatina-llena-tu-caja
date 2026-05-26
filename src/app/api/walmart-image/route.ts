@@ -168,7 +168,7 @@ export async function GET(request: NextRequest) {
   // Check cache
   const cached = imageCache.get(productId);
   if (cached) {
-    return NextResponse.json({ imageUrl: cached, cached: true });
+    return NextResponse.redirect(cached, 302);
   }
 
   // Check if there's already an in-flight request
@@ -176,9 +176,9 @@ export async function GET(request: NextRequest) {
   if (inflight) {
     const result = await inflight;
     if (result) {
-      return NextResponse.json({ imageUrl: result });
+      return NextResponse.redirect(result, 302);
     }
-    return NextResponse.json({ imageUrl: '' });
+    return NextResponse.redirect(new URL('/products/box.png', request.url), 302);
   }
 
   // Start the fetch
@@ -195,5 +195,8 @@ export async function GET(request: NextRequest) {
   inflightRequests.set(productId, fetchPromise);
 
   const imageUrl = await fetchPromise;
-  return NextResponse.json({ imageUrl: imageUrl || '' });
+  if (imageUrl) {
+    return NextResponse.redirect(imageUrl, 302);
+  }
+  return NextResponse.redirect(new URL('/products/box.png', request.url), 302);
 }

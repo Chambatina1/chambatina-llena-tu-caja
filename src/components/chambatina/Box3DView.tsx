@@ -173,7 +173,7 @@ export default function Box3DView() {
             const itemKey = item.id;
             const useRealImage = !failedImages.has(itemKey);
             const imgSrc = useRealImage
-              ? `/api/walmart-image?url=${encodeURIComponent(item.product.walmartUrl)}`
+              ? (item.product.imageUrl || `/api/walmart-image?url=${encodeURIComponent(item.product.walmartUrl)}`)
               : fallbackSrc;
             const baseColor = item.product.color;
             const isCylinder = item.product.packagingType === 'can' || item.product.packagingType === 'jar' || item.product.packagingType === 'bottle';

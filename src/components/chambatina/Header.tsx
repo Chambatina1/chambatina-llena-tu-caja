@@ -22,7 +22,7 @@ export default function Header() {
                 Chambatina
               </h1>
               <p className="text-[10px] text-muted-foreground -mt-0.5">
-                Llena tu Caja — Productos Walmart con envío
+                Walmart a tu Familia
               </p>
             </div>
           </div>

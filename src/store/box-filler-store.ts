@@ -42,6 +42,13 @@ interface BoxFillerState {
   volumePercentage: () => number;
   boxFull: () => boolean;
   boxFullReason: () => 'peso' | 'volumen' | null;
+
+  // Payment
+  paymentState: 'idle' | 'processing' | 'success' | 'error';
+  paymentOrderId: string | null;
+  setPaymentState: (state: 'idle' | 'processing' | 'success' | 'error') => void;
+  setPaymentOrderId: (id: string | null) => void;
+  processPayment: (customerInfo: { name: string; email: string; phone: string }) => Promise<boolean>;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -364,5 +371,55 @@ export const useBoxFillerStore = create<BoxFillerState>((set, get) => ({
     if (wp >= 99.5) return 'peso';
     if (vp >= 99.5) return 'volumen';
     return null;
+  },
+
+  // Payment state
+  paymentState: 'idle',
+  paymentOrderId: null,
+  setPaymentState: (state) => set({ paymentState: state }),
+  setPaymentOrderId: (id) => set({ paymentOrderId: id }),
+
+  processPayment: async (customerInfo) => {
+    const { items, selectedBox, totalCost } = get();
+
+    set({ paymentState: 'processing' });
+
+    try {
+      // Group items for the order
+      const orderItems = items.map((item) => ({
+        id: item.product.id,
+        name: item.product.nameEs,
+        quantity: item.quantity,
+        price: item.product.price,
+        weight: item.product.weight,
+      }));
+
+      const response = await fetch('/api/box-filler/create-payment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: totalCost(),
+          customerName: customerInfo.name,
+          customerEmail: customerInfo.email,
+          customerPhone: customerInfo.phone,
+          boxSize: `${selectedBox.width}"×${selectedBox.height}"×${selectedBox.depth}"`,
+          items: orderItems,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        set({ paymentState: 'success', paymentOrderId: data.orderId });
+        return true;
+      } else {
+        set({ paymentState: 'error' });
+        return false;
+      }
+    } catch (error) {
+      console.error('Payment error:', error);
+      set({ paymentState: 'error' });
+      return false;
+    }
   },
 }));

@@ -81,7 +81,7 @@ export default function ProductCatalog() {
       </div>
 
       {/* Product grid */}
-      <ScrollArea className="flex-1 pr-2" style={{ maxHeight: 'calc(100vh - 440px)' }}>
+      <ScrollArea className="flex-1 pr-2" style={{ maxHeight: 'calc(100vh - 360px)' }}>
         {isBoxFull && (
           <div className="bg-red-50 dark:bg-red-950/20 border border-red-200 dark:border-red-800 rounded-lg p-2.5 mb-3 text-xs text-red-600 dark:text-red-400 text-center">
             La caja esta llena — no puedes agregar mas productos

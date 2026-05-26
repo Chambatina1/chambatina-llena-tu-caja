@@ -25,47 +25,29 @@ import {
   Mail,
   Phone,
 } from 'lucide-react';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { motion, AnimatePresence } from 'framer-motion';
 
 export default function MobileOrderSummary() {
-  const {
-    selectedBox,
-    items,
-    currentWeight,
-    currentVolume,
-    productCost,
-    walmartTax,
-    totalCost,
-    remainingWeight,
-    remainingVolume,
-    weightPercentage,
-    volumePercentage,
-    boxFull,
-    boxFullReason,
-    removeProduct,
-    clearBox,
-  } = useBoxFillerStore();
-
-  const paymentState = useBoxFillerStore((s) => s.paymentState);
-  const processPayment = useBoxFillerStore((s) => s.processPayment);
-  const paymentOrderId = useBoxFillerStore((s) => s.paymentOrderId);
-  const setPaymentState = useBoxFillerStore((s) => s.setPaymentState);
+  const store = useBoxFillerStore();
+  const { selectedBox, items } = store;
+  const paymentState = store.paymentState;
+  const processPayment = store.processPayment;
+  const paymentOrderId = store.paymentOrderId;
+  const setPaymentState = store.setPaymentState;
 
   const [customerInfo, setCustomerInfo] = useState({ name: '', email: '', phone: '' });
   const [showPaymentForm, setShowPaymentForm] = useState(false);
 
-  const wp = weightPercentage();
-  const vp = volumePercentage();
-  const isFull = boxFull();
-  const reason = boxFullReason();
-  const weight = currentWeight();
-  const volume = currentVolume();
-  const pCost = productCost();
-  const wTax = walmartTax();
-  const tCost = totalCost();
-  const remW = remainingWeight();
-  const remV = remainingVolume();
+  const wp = store.weightPercentage();
+  const vp = store.volumePercentage();
+  const isFull = store.boxFull();
+  const reason = store.boxFullReason();
+  const weight = store.currentWeight();
+  const volume = store.currentVolume();
+  const pCost = store.productCost();
+  const wTax = store.walmartTax();
+  const tCost = store.totalCost();
+  const remW = store.remainingWeight();
+  const remV = store.remainingVolume();
   const boxVol = selectedBox.width * selectedBox.height * selectedBox.depth;
 
   const getBarColor = (pct: number) =>
@@ -104,7 +86,7 @@ export default function MobileOrderSummary() {
   };
 
   const handleNewOrder = () => {
-    clearBox();
+    store.clearBox();
     setPaymentState('idle');
     setCustomerInfo({ name: '', email: '', phone: '' });
     setShowPaymentForm(false);
@@ -112,8 +94,10 @@ export default function MobileOrderSummary() {
 
   const isFormValid = customerInfo.name.trim() !== '' && customerInfo.email.trim() !== '' && customerInfo.phone.trim() !== '';
 
+  // ── Render ──
+
   return (
-    <Card className="p-4 flex flex-col gap-3">
+    <Card className="p-4 flex flex-col gap-3" style={{ touchAction: 'manipulation' }}>
       {/* Header */}
       <div className="flex items-center justify-between">
         <h3 className="font-bold text-sm flex items-center gap-2">
@@ -121,41 +105,33 @@ export default function MobileOrderSummary() {
           Tu Pedido
         </h3>
         {items.length > 0 && paymentState !== 'success' && (
-          <Button
-            variant="ghost"
-            size="sm"
-            className="h-7 text-xs text-destructive hover:text-destructive"
-            onClick={clearBox}
+          <button
+            className="h-7 text-xs text-red-500 font-medium"
+            onClick={store.clearBox}
           >
-            <Trash2 className="w-3 h-3 mr-1" />
+            <Trash2 className="w-3 h-3 inline mr-1" />
             Vaciar
-          </Button>
+          </button>
         )}
       </div>
 
       {/* Box info */}
-      <div className="bg-muted/50 rounded-lg p-2.5 text-xs space-y-1.5">
+      <div className="bg-gray-50 dark:bg-gray-900/50 rounded-lg p-2.5 text-xs space-y-1.5">
         <div className="flex justify-between">
-          <span className="text-muted-foreground">Caja:</span>
-          <span className="font-semibold">
-            {selectedBox.width}&quot;×{selectedBox.height}&quot;×{selectedBox.depth}&quot;
-          </span>
+          <span className="text-gray-500">Caja:</span>
+          <span className="font-semibold">{selectedBox.width}&quot;×{selectedBox.height}&quot;×{selectedBox.depth}&quot;</span>
         </div>
-        <div className="flex justify-between text-[10px] text-muted-foreground">
-          <span>Volumen total: {boxVol.toFixed(0)} in³</span>
+        <div className="flex justify-between text-[10px] text-gray-500">
+          <span>Volumen: {boxVol.toFixed(0)} in³</span>
           <span>Peso máx: {selectedBox.maxWeight} lbs</span>
         </div>
         <Separator className="my-1" />
         <div className="flex justify-between">
-          <span className="text-muted-foreground flex items-center gap-1">
-            <Truck className="w-3 h-3" /> Envío:
-          </span>
+          <span className="text-gray-500">Envío:</span>
           <span className="font-semibold">${selectedBox.price.toFixed(2)}</span>
         </div>
         <div className="flex justify-between">
-          <span className="text-muted-foreground flex items-center gap-1">
-            <FileText className="w-3 h-3" /> Gestión:
-          </span>
+          <span className="text-gray-500">Gestión:</span>
           <span className="font-semibold">${selectedBox.managementFee.toFixed(2)}</span>
         </div>
       </div>
@@ -163,360 +139,269 @@ export default function MobileOrderSummary() {
       {/* Weight bar */}
       <div>
         <div className="flex justify-between text-xs mb-1">
-          <span className="font-medium flex items-center gap-1">
-            <Scale className="w-3 h-3" />
-            Peso
-          </span>
+          <span className="font-medium">Peso</span>
           <span className="font-bold" style={{ color: getBarColor(wp) }}>
             {weight.toFixed(1)} / {selectedBox.maxWeight} lbs
           </span>
         </div>
-        <div className="w-full h-2.5 bg-muted rounded-full overflow-hidden">
-          <motion.div
-            className="h-full rounded-full"
-            style={{ backgroundColor: getBarColor(wp) }}
-            animate={{ width: `${Math.min(100, wp)}%` }}
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-          />
+        <div className="w-full h-2.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+          <div className="h-full rounded-full transition-all duration-300" style={{ backgroundColor: getBarColor(wp), width: `${Math.min(100, wp)}%` }} />
         </div>
-        <p className="text-[10px] text-muted-foreground mt-0.5">
-          {remW.toFixed(1)} lbs disponibles
-        </p>
+        <p className="text-[10px] text-gray-500 mt-0.5">{remW.toFixed(1)} lbs disponibles</p>
       </div>
 
       {/* Volume bar */}
       <div>
         <div className="flex justify-between text-xs mb-1">
-          <span className="font-medium flex items-center gap-1">
-            <BoxIcon className="w-3 h-3" />
-            Volumen
-          </span>
+          <span className="font-medium">Volumen</span>
           <span className="font-bold" style={{ color: getBarColor(vp) }}>
             {volume.toFixed(0)} / {boxVol.toFixed(0)} in³
           </span>
         </div>
-        <div className="w-full h-2.5 bg-muted rounded-full overflow-hidden">
-          <motion.div
-            className="h-full rounded-full"
-            style={{ backgroundColor: getBarColor(vp) }}
-            animate={{ width: `${Math.min(100, vp)}%` }}
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-          />
+        <div className="w-full h-2.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+          <div className="h-full rounded-full transition-all duration-300" style={{ backgroundColor: getBarColor(vp), width: `${Math.min(100, vp)}%` }} />
         </div>
-        <p className="text-[10px] text-muted-foreground mt-0.5">
-          {remV.toFixed(0)} in³ disponibles
-        </p>
+        <p className="text-[10px] text-gray-500 mt-0.5">{remV.toFixed(0)} in³ disponibles</p>
       </div>
 
       {/* Box full warning */}
-      <AnimatePresence>
-        {isFull && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="overflow-hidden"
-          >
-            <div className="bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-lg p-2.5 text-xs">
-              <div className="flex items-center gap-1.5 font-bold text-red-600 dark:text-red-400 mb-1">
-                <Lock className="w-3.5 h-3.5" />
-                CAJA LLENA
-              </div>
-              <p className="text-red-600/80 dark:text-red-400/80">
-                {reason === 'peso'
-                  ? `Alcanzaste el peso máximo de ${selectedBox.maxWeight} lbs. No puedes agregar más productos.`
-                  : `No hay más espacio en la caja (${boxVol.toFixed(0)} in³). No puedes agregar más productos.`}
-              </p>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {isFull && (
+        <div className="bg-red-50 border border-red-200 rounded-lg p-2.5 text-xs">
+          <div className="flex items-center gap-1.5 font-bold text-red-600 mb-1">
+            <Lock className="w-3.5 h-3.5" /> CAJA LLENA
+          </div>
+          <p className="text-red-500">
+            {reason === 'peso'
+              ? `Alcanzaste ${selectedBox.maxWeight} lbs.`
+              : `No hay más espacio en la caja.`}
+          </p>
+        </div>
+      )}
 
       <Separator />
 
-      {/* Items list */}
-      <ScrollArea className="flex-1" style={{ maxHeight: '200px' }}>
-        <AnimatePresence mode="popLayout">
-          {items.length === 0 ? (
-            <motion.div
-              key="empty"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="flex flex-col items-center text-center text-muted-foreground py-4"
-            >
-              <Package className="w-8 h-8 mb-2 opacity-20" />
-              <p className="text-xs">Tu caja está vacía</p>
-              <p className="text-[10px] mt-0.5">Agrega productos del catálogo</p>
-            </motion.div>
-          ) : (
-            Object.values(grouped).map((group) => (
-              <motion.div
-                key={group.product.id}
-                layout
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 10 }}
-                className="flex items-center gap-2 py-1.5 border-b last:border-0"
-              >
-                <span className="text-base">{group.product.emoji}</span>
-                <div className="flex-1 min-w-0">
-                  <p className="text-[11px] font-medium truncate">
-                    {group.product.nameEs}
-                  </p>
-                  <p className="text-[10px] text-muted-foreground">
-                    {group.product.weight} lb × {group.quantity}
-                  </p>
-                </div>
-                <div className="text-right shrink-0">
-                  <p className="text-xs font-bold">
-                    ${(group.product.price * group.quantity).toFixed(2)}
-                  </p>
-                </div>
-                {paymentState !== 'success' && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="h-6 w-6 p-0 text-destructive hover:text-destructive hover:bg-destructive/10 shrink-0"
-                    onClick={() => removeProduct(group.ids[group.ids.length - 1])}
-                  >
-                    <Trash2 className="w-3 h-3" />
-                  </Button>
-                )}
-              </motion.div>
-            ))
-          )}
-        </AnimatePresence>
-      </ScrollArea>
+      {/* Items list - plain div, NO ScrollArea */}
+      <div style={{ maxHeight: '200px', overflowY: 'auto', WebkitOverflowScrolling: 'touch' }}>
+        {items.length === 0 ? (
+          <div className="flex flex-col items-center text-center text-gray-400 py-4">
+            <Package className="w-8 h-8 mb-2 opacity-20" />
+            <p className="text-xs">Tu caja está vacía</p>
+            <p className="text-[10px] mt-0.5">Agrega productos del catálogo</p>
+          </div>
+        ) : (
+          Object.values(grouped).map((group) => (
+            <div key={group.product.id} className="flex items-center gap-2 py-1.5 border-b last:border-0">
+              <span className="text-base">{group.product.emoji}</span>
+              <div className="flex-1 min-w-0">
+                <p className="text-[11px] font-medium truncate">{group.product.nameEs}</p>
+                <p className="text-[10px] text-gray-500">{group.product.weight} lb × {group.quantity}</p>
+              </div>
+              <div className="text-right shrink-0">
+                <p className="text-xs font-bold">${(group.product.price * group.quantity).toFixed(2)}</p>
+              </div>
+              {paymentState !== 'success' && (
+                <button
+                  className="h-6 w-6 p-0 text-red-500 shrink-0"
+                  onClick={() => store.removeProduct(group.ids[group.ids.length - 1])}
+                >
+                  <Trash2 className="w-3 h-3" />
+                </button>
+              )}
+            </div>
+          ))
+        )}
+      </div>
 
       <Separator />
 
       {/* Cost breakdown */}
       <div className="space-y-1.5">
         <div className="flex justify-between text-xs">
-          <span className="text-muted-foreground">
-            Productos ({items.length}):
-          </span>
+          <span className="text-gray-500">Productos ({items.length}):</span>
           <span className="font-medium">${pCost.toFixed(2)}</span>
         </div>
         <div className="flex justify-between text-xs">
-          <span className="text-muted-foreground flex items-center gap-1">
-            <AlertTriangle className="w-3 h-3 text-amber-500" />
-            Tax Walmart (7%):
-          </span>
+          <span className="text-gray-500">Tax Walmart (7%):</span>
           <span className="font-medium">${wTax.toFixed(2)}</span>
         </div>
         <div className="flex justify-between text-xs">
-          <span className="text-muted-foreground">Envío + Gestión:</span>
-          <span className="font-medium">
-            ${(selectedBox.price + selectedBox.managementFee).toFixed(2)}
-          </span>
+          <span className="text-gray-500">Envío + Gestión:</span>
+          <span className="font-medium">${(selectedBox.price + selectedBox.managementFee).toFixed(2)}</span>
         </div>
         <Separator />
         <div className="flex justify-between items-center">
           <span className="font-bold text-sm">TOTAL:</span>
-          <motion.span
-            className="font-black text-xl text-primary"
-            key={tCost}
-            initial={{ scale: 1.2 }}
-            animate={{ scale: 1 }}
-            transition={{ type: 'spring', stiffness: 400 }}
-          >
-            ${tCost.toFixed(2)}
-          </motion.span>
+          <span className="font-black text-xl text-green-600">${tCost.toFixed(2)}</span>
         </div>
       </div>
 
-      {/* CTA — Show whenever there are items */}
-      <AnimatePresence>
-        {items.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            className="space-y-3"
-          >
-            {/* Payment State: Idle - Show inline form */}
-            {paymentState === 'idle' && !showPaymentForm && (
-              <>
-                {isFull && (
-                  <div className="bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 rounded-lg px-3 py-1.5 text-center text-[10px] font-semibold text-green-700 dark:text-green-400">
-                    Caja llena — lista para enviar
+      {/* ── PAYMENT SECTION ── */}
+      {items.length > 0 && (
+        <div className="space-y-3">
+          {/* Idle: Show pay button */}
+          {paymentState === 'idle' && !showPaymentForm && (
+            <div>
+              <button
+                onClick={() => setShowPaymentForm(true)}
+                className="w-full font-bold h-14 gap-2 text-white text-base rounded-xl flex items-center justify-center"
+                style={{ backgroundColor: '#2CA01C', touchAction: 'manipulation' }}
+              >
+                <CreditCard className="w-5 h-5" />
+                <Lock className="w-4 h-4" />
+                Pagar ${tCost.toFixed(2)} con QuickBooks
+              </button>
+              <p className="text-[10px] text-center text-gray-500 mt-1">
+                {isFull ? 'Caja llena — completa el pago' : 'Puedes seguir agregando o pagar ahora'}
+              </p>
+            </div>
+          )}
+
+          {/* Idle: Show inline payment form */}
+          {paymentState === 'idle' && showPaymentForm && (
+            <div className="bg-gray-50 dark:bg-gray-900/30 rounded-xl p-4 space-y-3 border">
+              <div className="flex items-center justify-between">
+                <h4 className="font-bold text-sm flex items-center gap-2">
+                  <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#2CA01C' }}>
+                    <Lock className="w-3.5 h-3.5 text-white" />
                   </div>
-                )}
-                <Button
-                  onClick={() => setShowPaymentForm(true)}
-                  className="w-full font-bold h-12 gap-2 text-white text-base"
-                  style={{ backgroundColor: '#2CA01C' }}
+                  Pago Seguro
+                </h4>
+                <button
+                  onClick={() => setShowPaymentForm(false)}
+                  className="text-xs text-gray-500 underline"
+                  style={{ touchAction: 'manipulation' }}
                 >
-                  <CreditCard className="w-5 h-5" />
-                  <Lock className="w-4 h-4" />
-                  Pagar ${tCost.toFixed(2)} con QuickBooks
-                </Button>
-                <p className="text-[10px] text-center text-muted-foreground">
-                  {isFull
-                    ? 'Tu caja está lista — completa el pago para confirmar'
-                    : 'Puedes seguir agregando productos o pagar ahora'}
-                </p>
-              </>
-            )}
+                  Cancelar
+                </button>
+              </div>
 
-            {/* Payment State: Idle - Show inline payment form */}
-            {paymentState === 'idle' && showPaymentForm && (
-              <div className="bg-muted/30 rounded-xl p-4 space-y-3 border">
-                <div className="flex items-center justify-between">
-                  <h4 className="font-bold text-sm flex items-center gap-2">
-                    <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#2CA01C' }}>
-                      <Lock className="w-3.5 h-3.5 text-white" />
-                    </div>
-                    Pago Seguro
-                  </h4>
-                  <button
-                    onClick={() => setShowPaymentForm(false)}
-                    className="text-xs text-muted-foreground hover:text-foreground underline"
-                  >
-                    Cancelar
-                  </button>
+              <div className="bg-white dark:bg-gray-800 rounded-lg p-2.5 space-y-1 text-xs border">
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Total:</span>
+                  <span className="font-bold text-base">${tCost.toFixed(2)}</span>
                 </div>
-
-                <div className="bg-white dark:bg-card rounded-lg p-2.5 space-y-1.5 text-xs border">
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Total:</span>
-                    <span className="font-bold text-base">${tCost.toFixed(2)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Caja:</span>
-                    <span className="font-medium">{selectedBox.width}&quot;×{selectedBox.height}&quot;×{selectedBox.depth}&quot;</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Productos:</span>
-                    <span className="font-medium">{items.length} items</span>
-                  </div>
-                </div>
-
-                <div className="space-y-2.5">
-                  <div className="space-y-1">
-                    <label className="text-xs font-medium flex items-center gap-1">
-                      <User className="w-3 h-3" />
-                      Nombre completo <span className="text-red-500">*</span>
-                    </label>
-                    <Input
-                      placeholder="Tu nombre completo"
-                      value={customerInfo.name}
-                      onChange={(e) => setCustomerInfo({ ...customerInfo, name: e.target.value })}
-                      className="h-10 text-sm"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-xs font-medium flex items-center gap-1">
-                      <Mail className="w-3 h-3" />
-                      Correo electrónico <span className="text-red-500">*</span>
-                    </label>
-                    <Input
-                      type="email"
-                      placeholder="tu@email.com"
-                      value={customerInfo.email}
-                      onChange={(e) => setCustomerInfo({ ...customerInfo, email: e.target.value })}
-                      className="h-10 text-sm"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-xs font-medium flex items-center gap-1">
-                      <Phone className="w-3 h-3" />
-                      Teléfono <span className="text-red-500">*</span>
-                    </label>
-                    <Input
-                      type="tel"
-                      placeholder="+1 (555) 123-4567"
-                      value={customerInfo.phone}
-                      onChange={(e) => setCustomerInfo({ ...customerInfo, phone: e.target.value })}
-                      className="h-10 text-sm"
-                    />
-                  </div>
-                </div>
-
-                <Button
-                  onClick={handleProcessPayment}
-                  disabled={!isFormValid}
-                  className="w-full font-bold h-12 gap-2 text-white text-base"
-                  style={{ backgroundColor: isFormValid ? '#2CA01C' : undefined }}
-                >
-                  <CreditCard className="w-5 h-5" />
-                  <Lock className="w-4 h-4" />
-                  Confirmar Pago ${tCost.toFixed(2)}
-                </Button>
-
-                {!isFormValid && (
-                  <p className="text-[10px] text-center text-amber-600">
-                    Completa todos los campos para pagar
-                  </p>
-                )}
-
-                <div className="flex items-center justify-center gap-1.5 text-[10px] text-muted-foreground">
-                  <Lock className="w-3 h-3" />
-                  <span>Pago seguro procesado por QuickBooks Payments</span>
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Productos:</span>
+                  <span>{items.length} items</span>
                 </div>
               </div>
-            )}
 
-            {/* Payment State: Processing */}
-            {paymentState === 'processing' && (
-              <div className="flex flex-col items-center gap-2 py-6">
-                <Loader2 className="w-10 h-10 animate-spin" style={{ color: '#2CA01C' }} />
-                <p className="text-sm font-semibold text-muted-foreground">
-                  Procesando pago...
-                </p>
-                <p className="text-[10px] text-muted-foreground">
-                  Conectando con QuickBooks Payments
-                </p>
-              </div>
-            )}
-
-            {/* Payment State: Success */}
-            {paymentState === 'success' && (
-              <div className="bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-800 rounded-lg p-4 text-center space-y-3">
-                <CheckCircle2 className="w-10 h-10 text-green-600 mx-auto" />
+              <div className="space-y-3">
                 <div>
-                  <p className="text-base font-bold text-green-700 dark:text-green-400">
-                    Pago exitoso!
-                  </p>
-                  <p className="text-xs text-green-600/80 dark:text-green-400/80 mt-1">
-                    Orden: <span className="font-mono font-bold">{paymentOrderId}</span>
-                  </p>
+                  <label className="text-xs font-medium block mb-1">
+                    <User className="w-3 h-3 inline mr-1" />
+                    Nombre completo *
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Tu nombre completo"
+                    value={customerInfo.name}
+                    onChange={(e) => setCustomerInfo({ ...customerInfo, name: e.target.value })}
+                    className="w-full h-11 px-3 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 outline-none focus:ring-2 focus:ring-green-500"
+                    style={{ touchAction: 'manipulation' }}
+                  />
                 </div>
-                <Button
-                  onClick={handleNewOrder}
-                  className="w-full bg-green-600 hover:bg-green-700 text-white font-bold h-10 gap-2"
-                >
-                  <ShoppingCart className="w-4 h-4" />
-                  Nuevo Pedido
-                </Button>
+                <div>
+                  <label className="text-xs font-medium block mb-1">
+                    <Mail className="w-3 h-3 inline mr-1" />
+                    Correo electrónico *
+                  </label>
+                  <input
+                    type="email"
+                    placeholder="tu@email.com"
+                    value={customerInfo.email}
+                    onChange={(e) => setCustomerInfo({ ...customerInfo, email: e.target.value })}
+                    className="w-full h-11 px-3 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 outline-none focus:ring-2 focus:ring-green-500"
+                    style={{ touchAction: 'manipulation' }}
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-medium block mb-1">
+                    <Phone className="w-3 h-3 inline mr-1" />
+                    Teléfono *
+                  </label>
+                  <input
+                    type="tel"
+                    placeholder="+1 (555) 123-4567"
+                    value={customerInfo.phone}
+                    onChange={(e) => setCustomerInfo({ ...customerInfo, phone: e.target.value })}
+                    className="w-full h-11 px-3 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 outline-none focus:ring-2 focus:ring-green-500"
+                    style={{ touchAction: 'manipulation' }}
+                  />
+                </div>
               </div>
-            )}
 
-            {/* Payment State: Error */}
-            {paymentState === 'error' && (
-              <div className="bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 rounded-lg p-4 text-center space-y-2">
-                <XCircle className="w-8 h-8 text-red-500 mx-auto" />
-                <p className="text-sm font-bold text-red-600 dark:text-red-400">
-                  Error al procesar el pago
+              {!isFormValid && (
+                <p className="text-[11px] text-center text-amber-600 font-medium">
+                  Completa todos los campos para pagar
                 </p>
-                <p className="text-xs text-red-500/80 dark:text-red-400/80">
-                  Hubo un problema con la transacción. Intenta de nuevo.
+              )}
+
+              <button
+                onClick={handleProcessPayment}
+                disabled={!isFormValid}
+                className="w-full font-bold h-12 gap-2 text-white text-base rounded-xl flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed"
+                style={{ backgroundColor: isFormValid ? '#2CA01C' : '#9ca3af', touchAction: 'manipulation' }}
+              >
+                <Lock className="w-4 h-4" />
+                Confirmar Pago ${tCost.toFixed(2)}
+              </button>
+
+              <p className="text-[10px] text-center text-gray-400 flex items-center justify-center gap-1">
+                <Lock className="w-3 h-3" />
+                Pago seguro procesado por QuickBooks Payments
+              </p>
+            </div>
+          )}
+
+          {/* Processing */}
+          {paymentState === 'processing' && (
+            <div className="flex flex-col items-center gap-2 py-6">
+              <Loader2 className="w-10 h-10 animate-spin" style={{ color: '#2CA01C' }} />
+              <p className="text-sm font-semibold text-gray-500">Procesando pago...</p>
+              <p className="text-[10px] text-gray-400">Conectando con QuickBooks Payments</p>
+            </div>
+          )}
+
+          {/* Success */}
+          {paymentState === 'success' && (
+            <div className="bg-green-50 border border-green-200 rounded-lg p-4 text-center space-y-3">
+              <CheckCircle2 className="w-10 h-10 text-green-600 mx-auto" />
+              <div>
+                <p className="text-base font-bold text-green-700">Pago exitoso!</p>
+                <p className="text-xs text-green-600 mt-1">
+                  Orden: <span className="font-mono font-bold">{paymentOrderId}</span>
                 </p>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="text-xs gap-1.5"
-                  onClick={handleRetry}
-                >
-                  <RotateCcw className="w-3 h-3" />
-                  Reintentar pago
-                </Button>
               </div>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
+              <button
+                onClick={handleNewOrder}
+                className="w-full bg-green-600 text-white font-bold h-10 rounded-lg flex items-center justify-center gap-2"
+                style={{ touchAction: 'manipulation' }}
+              >
+                <ShoppingCart className="w-4 h-4" />
+                Nuevo Pedido
+              </button>
+            </div>
+          )}
+
+          {/* Error */}
+          {paymentState === 'error' && (
+            <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-center space-y-2">
+              <XCircle className="w-8 h-8 text-red-500 mx-auto" />
+              <p className="text-sm font-bold text-red-600">Error al procesar el pago</p>
+              <p className="text-xs text-red-400">Intenta de nuevo.</p>
+              <button
+                onClick={handleRetry}
+                className="text-xs gap-1.5 border rounded-lg px-4 py-2 mx-auto flex items-center"
+                style={{ touchAction: 'manipulation' }}
+              >
+                <RotateCcw className="w-3 h-3" />
+                Reintentar pago
+              </button>
+            </div>
+          )}
+        </div>
+      )}
     </Card>
   );
 }

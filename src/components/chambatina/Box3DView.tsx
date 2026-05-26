@@ -60,6 +60,61 @@ export default function Box3DView() {
   const getBarColor = (pct: number) =>
     pct > 90 ? '#ef4444' : pct > 70 ? '#f59e0b' : pct > 40 ? '#3b82f6' : '#22c55e';
 
+  // Sort items by z for painter's algorithm
+  const sortedItems = [...items].sort((a, b) => {
+    if (a.z !== b.z) return a.z - b.z;
+    if (a.y !== b.y) return a.y - b.y;
+    return a.x - b.x;
+  });
+
+  // Pre-calculate projected product positions and sizes for product labels
+  const productLabels = sortedItems.map((item) => {
+    const ix = item.x * scale;
+    const iy = item.y * scale;
+    const iz = item.z * scale;
+    const iw = item.w * scale;
+    const ih = item.h * scale;
+    const id_ = item.d * scale;
+
+    const p = [
+      project(ix, iy, iz),
+      project(ix + iw, iy, iz),
+      project(ix + iw, iy + ih, iz),
+      project(ix, iy + ih, iz),
+      project(ix, iy, iz + id_),
+      project(ix + iw, iy, iz + id_),
+      project(ix + iw, iy + ih, iz + id_),
+      project(ix, iy + ih, iz + id_),
+    ];
+
+    // Center of the front face for label positioning
+    const frontCx = (p[0].sx + p[1].sx + p[2].sx + p[3].sx) / 4;
+    const frontCy = (p[0].sy + p[1].sy + p[2].sy + p[3].sy) / 4;
+
+    // Size of the projected front face (approximate)
+    const frontW = Math.abs(p[1].sx - p[0].sx);
+    const frontH = Math.abs(p[3].sy - p[0].sy);
+
+    const makePoly = (idx: number[]) =>
+      idx.map((i) => `${p[i].sx},${p[i].sy}`).join(' ');
+
+    return {
+      item,
+      p,
+      frontCx,
+      frontCy,
+      frontW,
+      frontH,
+      topPoly: `${p[3].sx},${p[3].sy} ${p[2].sx},${p[2].sy} ${p[6].sx},${p[6].sy} ${p[7].sx},${p[7].sy}`,
+      frontPoly: `${p[0].sx},${p[0].sy} ${p[1].sx},${p[1].sy} ${p[2].sx},${p[2].sy} ${p[3].sx},${p[3].sy}`,
+      rightPoly: `${p[1].sx},${p[1].sy} ${p[5].sx},${p[5].sy} ${p[6].sx},${p[6].sy} ${p[2].sx},${p[2].sy}`,
+      baseColor: item.product.color,
+      iw,
+      ih,
+      id_,
+    };
+  });
+
   return (
     <div className="relative w-full flex flex-col items-center">
       {/* Weight bar */}
@@ -74,7 +129,7 @@ export default function Box3DView() {
           <motion.div
             className="h-full rounded-full"
             style={{ backgroundColor: getBarColor(wp) }}
-            animate={{ width: `${wp}%` }}
+            animate={{ width: `${Math.min(100, wp)}%` }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
           />
         </div>
@@ -92,7 +147,7 @@ export default function Box3DView() {
           <motion.div
             className="h-full rounded-full"
             style={{ backgroundColor: getBarColor(vp) }}
-            animate={{ width: `${vp}%` }}
+            animate={{ width: `${Math.min(100, vp)}%` }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
           />
         </div>
@@ -150,70 +205,181 @@ export default function Box3DView() {
           <path d={poly([3, 2, 6, 7])} fill="url(#grid)" opacity="0.3" />
         </g>
 
-        {/* Placed products — sorted by z for painter's algorithm */}
+        {/* Placed products with product label rendering */}
         <AnimatePresence>
-          {[...items]
-            .sort((a, b) => {
-              // Sort by z then y then x (back to front)
-              if (a.z !== b.z) return a.z - b.z;
-              if (a.y !== b.y) return a.y - b.y;
-              return a.x - b.x;
-            })
-            .map((item) => {
-              const ix = item.x * scale;
-              const iy = item.y * scale;
-              const iz = item.z * scale;
-              const iw = item.w * scale;
-              const ih = item.h * scale;
-              const id_ = item.d * scale;
+          {productLabels.map(({ item, p, frontCx, frontCy, frontW, frontH, topPoly, frontPoly, rightPoly, baseColor, iw, ih, id_ }) => {
+            const topColor = lighten(baseColor, 32);
+            const frontColor = baseColor;
+            const sideColor = darken(baseColor, 22);
+            const strokeColor = darken(baseColor, 25);
 
-              const p = [
-                project(ix, iy, iz),
-                project(ix + iw, iy, iz),
-                project(ix + iw, iy + ih, iz),
-                project(ix, iy + ih, iz),
-                project(ix, iy, iz + id_),
-                project(ix + iw, iy, iz + id_),
-                project(ix + iw, iy + ih, iz + id_),
-                project(ix, iy + ih, iz + id_),
-              ];
+            const pkg = item.product.packagingType;
 
-              const makePoly = (idx: number[]) =>
-                idx.map((i) => `${p[i].sx},${p[i].sy}`).join(' ');
+            // Determine visual style based on packaging type
+            let topFill = topColor;
+            let frontFill = frontColor;
+            let sideFill = sideColor;
+            let stroke = strokeColor;
+            let strokeWidth = 0.4;
 
-              const baseColor = item.product.color;
-              const pkg = item.product.packagingType;
+            // Special packaging visual tweaks
+            if (pkg === 'can') {
+              stroke = darken(baseColor, 40);
+              strokeWidth = 0.5;
+            } else if (pkg === 'bottle') {
+              stroke = darken(baseColor, 30);
+            } else if (pkg === 'jar') {
+              frontFill = lighten(baseColor, 5);
+            }
 
-              return (
-                <motion.g
-                  key={item.id}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ type: 'spring', stiffness: 500, damping: 25 }}
-                  style={{
-                    transformOrigin: `${(p[0].sx + p[6].sx) / 2}px ${(p[0].sy + p[6].sy) / 2}px`,
-                  }}
-                >
-                  {/* Render based on packaging type */}
-                  {pkg === 'can' ? (
-                    <CanProduct p={p} baseColor={baseColor} item={item} iw={iw} ih={ih} id_={id_} />
-                  ) : pkg === 'bottle' ? (
-                    <BottleProduct p={p} baseColor={baseColor} item={item} iw={iw} ih={ih} id_={id_} />
-                  ) : pkg === 'bag' ? (
-                    <BagProduct p={p} baseColor={baseColor} item={item} iw={iw} ih={ih} id_={id_} />
-                  ) : pkg === 'jar' ? (
-                    <JarProduct p={p} baseColor={baseColor} item={item} iw={iw} ih={ih} id_={id_} />
-                  ) : pkg === 'bar' ? (
-                    <BarProduct p={p} baseColor={baseColor} item={item} iw={iw} ih={ih} id_={id_} />
-                  ) : pkg === 'pouch' ? (
-                    <PouchProduct p={p} baseColor={baseColor} item={item} iw={iw} ih={ih} id_={id_} />
-                  ) : (
-                    <BoxProduct p={p} baseColor={baseColor} item={item} iw={iw} ih={ih} id_={id_} />
-                  )}
-                </motion.g>
-              );
-            })}
+            const faceSize = Math.min(iw, ih, id_);
+            const showLabel = faceSize > 8;
+
+            return (
+              <motion.g
+                key={item.id}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ type: 'spring', stiffness: 500, damping: 25 }}
+              >
+                {/* 3D box faces with product color */}
+                <polygon points={topPoly} fill={topFill} stroke={stroke} strokeWidth={strokeWidth} opacity="0.95" />
+                <polygon points={frontPoly} fill={frontFill} stroke={stroke} strokeWidth={strokeWidth} opacity="0.95" />
+                <polygon points={rightPoly} fill={sideFill} stroke={stroke} strokeWidth={strokeWidth} opacity="0.95" />
+
+                {/* Packaging-specific details */}
+                {pkg === 'can' && (
+                  <>
+                    <line x1={p[3].sx} y1={p[3].sy} x2={p[2].sx} y2={p[2].sy} stroke={darken(baseColor, 40)} strokeWidth="0.6" opacity="0.7" />
+                    {ih > 12 && (
+                      <polygon
+                        points={`${p[0].sx},${p[0].sy * 0.7 + p[3].sy * 0.3} ${p[1].sx},${p[1].sy * 0.7 + p[2].sy * 0.3} ${p[1].sx},${p[1].sy * 0.4 + p[2].sy * 0.6} ${p[0].sx},${p[0].sy * 0.4 + p[3].sy * 0.6}`}
+                        fill={lighten(baseColor, 55)}
+                        opacity="0.4"
+                      />
+                    )}
+                  </>
+                )}
+
+                {pkg === 'bottle' && ih > 20 && iw > 15 && (
+                  <rect
+                    x={(p[3].sx + p[7].sx) / 2 - 3}
+                    y={p[3].sy - 2}
+                    width={6}
+                    height={3}
+                    fill={darken(baseColor, 50)}
+                    rx="1"
+                    opacity="0.8"
+                  />
+                )}
+
+                {pkg === 'jar' && ih > 15 && (
+                  <line
+                    x1={p[0].sx} y1={p[0].sy + (p[3].sy - p[0].sy) * 0.15}
+                    x2={p[1].sx} y2={p[1].sy + (p[2].sy - p[1].sy) * 0.15}
+                    stroke={darken(baseColor, 35)}
+                    strokeWidth="1.2"
+                    opacity="0.6"
+                  />
+                )}
+
+                {pkg === 'pouch' && (
+                  <line
+                    x1={p[0].sx} y1={p[0].sy + (p[3].sy - p[0].sy) * 0.08}
+                    x2={p[1].sx} y2={p[1].sy + (p[2].sy - p[1].sy) * 0.08}
+                    stroke={darken(baseColor, 35)}
+                    strokeWidth="0.8"
+                    strokeDasharray="1,0.5"
+                    opacity="0.5"
+                  />
+                )}
+
+                {/* ─── PRODUCT LABEL (foreignObject) ─── */}
+                {showLabel && (
+                  <foreignObject
+                    x={frontCx - Math.max(20, frontW * 0.4)}
+                    y={frontCy - Math.max(14, frontH * 0.25)}
+                    width={Math.max(40, frontW * 0.8)}
+                    height={Math.max(28, frontH * 0.5)}
+                    style={{ pointerEvents: 'none', overflow: 'visible' }}
+                  >
+                    <div
+                      xmlns="http://www.w3.org/1999/xhtml"
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '0px',
+                        pointerEvents: 'none',
+                        userSelect: 'none',
+                      }}
+                    >
+                      {/* Product emoji */}
+                      <div style={{
+                        fontSize: `${Math.max(12, Math.min(faceSize * 0.35, 22))}px`,
+                        lineHeight: 1,
+                        textAlign: 'center',
+                      }}>
+                        {item.product.emoji}
+                      </div>
+                      {/* Product name */}
+                      {faceSize > 18 && (
+                        <div style={{
+                          fontSize: `${Math.max(4, Math.min(faceSize * 0.13, 7))}px`,
+                          fontWeight: 700,
+                          color: isLight(baseColor) ? '#374151' : '#f9fafb',
+                          textAlign: 'center',
+                          lineHeight: '1.1',
+                          maxWidth: '100%',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          whiteSpace: 'nowrap',
+                          textShadow: isLight(baseColor)
+                            ? '0 0 2px rgba(255,255,255,0.8)'
+                            : '0 0 2px rgba(0,0,0,0.5)',
+                          padding: '0 1px',
+                        }}>
+                          {truncateText(item.product.nameEs, 20)}
+                        </div>
+                      )}
+                      {/* Weight */}
+                      {faceSize > 28 && (
+                        <div style={{
+                          fontSize: `${Math.max(3, Math.min(faceSize * 0.09, 5.5))}px`,
+                          color: isLight(baseColor) ? '#6b7280' : 'rgba(255,255,255,0.75)',
+                          textAlign: 'center',
+                          lineHeight: '1.1',
+                          textShadow: isLight(baseColor)
+                            ? '0 0 2px rgba(255,255,255,0.8)'
+                            : '0 0 2px rgba(0,0,0,0.5)',
+                        }}>
+                          {item.product.weight} lb · ${item.product.price.toFixed(2)}
+                        </div>
+                      )}
+                    </div>
+                  </foreignObject>
+                )}
+
+                {/* Fallback: just emoji for very small items */}
+                {!showLabel && (
+                  <text
+                    x={(p[0].sx + p[6].sx) / 2}
+                    y={(p[0].sy + p[6].sy) / 2}
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                    fontSize={Math.max(5, faceSize * 0.3)}
+                    className="pointer-events-none select-none"
+                  >
+                    {item.product.emoji}
+                  </text>
+                )}
+              </motion.g>
+            );
+          })}
         </AnimatePresence>
 
         {/* Dimension labels */}
@@ -244,303 +410,13 @@ export default function Box3DView() {
   );
 }
 
-// ─────────────────────────────────────────────────────────────────────────────────
-// PACKAGING-SPECIFIC PRODUCT RENDERERS
-// Each renders the 3 visible faces (top, front, right) with packaging style
-// ─────────────────────────────────────────────────────────────────────────────────
-
-function makeTopPoly(p: { sx: number; sy: number }[]) {
-  return `${p[3].sx},${p[3].sy} ${p[2].sx},${p[2].sy} ${p[6].sx},${p[6].sy} ${p[7].sx},${p[7].sy}`;
-}
-
-function makeFrontPoly(p: { sx: number; sy: number }[]) {
-  return `${p[0].sx},${p[0].sy} ${p[1].sx},${p[1].sy} ${p[2].sx},${p[2].sy} ${p[3].sx},${p[3].sy}`;
-}
-
-function makeRightPoly(p: { sx: number; sy: number }[]) {
-  return `${p[1].sx},${p[1].sy} ${p[5].sx},${p[5].sy} ${p[6].sx},${p[6].sy} ${p[2].sx},${p[2].sy}`;
-}
-
-interface RenderProps {
-  p: { sx: number; sy: number }[];
-  baseColor: string;
-  item: { product: { emoji: string; nameEs: string; color: string } };
-  iw: number;
-  ih: number;
-  id_: number;
-}
-
-// ─── CAN: cylindrical effect with rounded top, metallic gradient ───
-function CanProduct({ p, baseColor, item, iw, ih, id_ }: RenderProps) {
-  const topColor = lighten(baseColor, 35);
-  const frontColor = baseColor;
-  const sideColor = darken(baseColor, 25);
-  const rimColor = darken(baseColor, 40);
-  const labelColor = lighten(baseColor, 55);
-  const textColor = isLight(baseColor) ? '#333' : '#fff';
-
-  return (
-    <g>
-      {/* Top face (slightly rounded look for cylinder) */}
-      <polygon points={makeTopPoly(p)} fill={topColor} stroke={rimColor} strokeWidth="0.5" opacity="0.95" />
-      {/* Front face */}
-      <polygon points={makeFrontPoly(p)} fill={frontColor} stroke={rimColor} strokeWidth="0.5" opacity="0.95" />
-      {/* Right face (darker) */}
-      <polygon points={makeRightPoly(p)} fill={sideColor} stroke={rimColor} strokeWidth="0.5" opacity="0.95" />
-      {/* Can rim lines at top */}
-      <line x1={p[3].sx} y1={p[3].sy} x2={p[2].sx} y2={p[2].sy} stroke={rimColor} strokeWidth="0.6" opacity="0.7" />
-      <line x1={p[0].sx} y1={p[0].sy} x2={p[1].sx} y2={p[1].sy} stroke={rimColor} strokeWidth="0.4" opacity="0.5" />
-      {/* Label band on front face */}
-      {(ih > 12) && (
-        <polygon
-          points={`${p[0].sx},${p[0].sy * 0.7 + p[3].sy * 0.3} ${p[1].sx},${p[1].sy * 0.7 + p[2].sy * 0.3} ${p[1].sx},${p[1].sy * 0.4 + p[2].sy * 0.6} ${p[0].sx},${p[0].sy * 0.4 + p[3].sy * 0.6}`}
-          fill={labelColor}
-          opacity="0.4"
-        />
-      )}
-      {/* Emoji on top face */}
-      {renderEmoji(p, item, iw, ih, id_)}
-    </g>
-  );
-}
-
-// ─── BOTTLE: tall shape with neck and cap suggestion ───
-function BottleProduct({ p, baseColor, item, iw, ih, id_ }: RenderProps) {
-  const topColor = lighten(baseColor, 30);
-  const frontColor = baseColor;
-  const sideColor = darken(baseColor, 20);
-  const capColor = darken(baseColor, 50);
-
-  return (
-    <g>
-      {/* Top face */}
-      <polygon points={makeTopPoly(p)} fill={topColor} stroke={darken(baseColor, 30)} strokeWidth="0.4" opacity="0.95" />
-      {/* Front face */}
-      <polygon points={makeFrontPoly(p)} fill={frontColor} stroke={darken(baseColor, 30)} strokeWidth="0.4" opacity="0.95" />
-      {/* Right face */}
-      <polygon points={makeRightPoly(p)} fill={sideColor} stroke={darken(baseColor, 30)} strokeWidth="0.4" opacity="0.95" />
-      {/* Cap suggestion (small rectangle at top center) */}
-      {(ih > 20 && iw > 15) && (
-        <rect
-          x={(p[3].sx + p[7].sx) / 2 - 3}
-          y={p[3].sy - 2}
-          width={6}
-          height={3}
-          fill={capColor}
-          rx="1"
-          opacity="0.8"
-        />
-      )}
-      {/* Glass/plastic shine line */}
-      <line
-        x1={p[0].sx + (p[3].sx - p[0].sx) * 0.15}
-        y1={p[0].sy + (p[3].sy - p[0].sy) * 0.15}
-        x2={p[1].sx + (p[2].sy - p[1].sy) * 0.15}
-        y2={p[1].sy + (p[2].sy - p[1].sy) * 0.15}
-        stroke="rgba(255,255,255,0.3)"
-        strokeWidth="1"
-      />
-      {renderEmoji(p, item, iw, ih, id_)}
-    </g>
-  );
-}
-
-// ─── BAG: rounded corners, puffy gradient ───
-function BagProduct({ p, baseColor, item, iw, ih, id_ }: RenderProps) {
-  const topColor = lighten(baseColor, 30);
-  const frontColor = baseColor;
-  const sideColor = darken(baseColor, 20);
-
-  // Calculate "rounded" polygon with slight inflation
-  const inflate = 0.02;
-  const f = inflate;
-
-  return (
-    <g>
-      <polygon points={makeTopPoly(p)} fill={topColor} stroke={darken(baseColor, 25)} strokeWidth="0.4" opacity="0.95" />
-      <polygon points={makeFrontPoly(p)} fill={frontColor} stroke={darken(baseColor, 25)} strokeWidth="0.4" opacity="0.95" />
-      <polygon points={makeRightPoly(p)} fill={sideColor} stroke={darken(baseColor, 25)} strokeWidth="0.4" opacity="0.95" />
-      {/* Crease/fold lines on front face for bag look */}
-      {(ih > 20 && iw > 20) && (
-        <g opacity="0.15" stroke={darken(baseColor, 40)} strokeWidth="0.3">
-          <line x1={p[0].sx} y1={p[0].sy} x2={p[3].sx} y2={p[3].sy} />
-          <line x1={p[1].sx} y1={p[1].sy} x2={p[2].sx} y2={p[2].sy} />
-        </g>
-      )}
-      {renderEmoji(p, item, iw, ih, id_)}
-    </g>
-  );
-}
-
-// ─── JAR: wider shape with lid band and label ───
-function JarProduct({ p, baseColor, item, iw, ih, id_ }: RenderProps) {
-  const topColor = lighten(baseColor, 25);
-  const frontColor = baseColor;
-  const sideColor = darken(baseColor, 18);
-  const lidColor = darken(baseColor, 35);
-
-  return (
-    <g>
-      <polygon points={makeTopPoly(p)} fill={topColor} stroke={darken(baseColor, 28)} strokeWidth="0.4" opacity="0.95" />
-      <polygon points={makeFrontPoly(p)} fill={frontColor} stroke={darken(baseColor, 28)} strokeWidth="0.4" opacity="0.95" />
-      <polygon points={makeRightPoly(p)} fill={sideColor} stroke={darken(baseColor, 28)} strokeWidth="0.4" opacity="0.95" />
-      {/* Lid band on front face */}
-      <line
-        x1={p[0].sx} y1={p[0].sy + (p[3].sy - p[0].sy) * 0.15}
-        x2={p[1].sx} y2={p[1].sy + (p[2].sy - p[1].sy) * 0.15}
-        stroke={lidColor}
-        strokeWidth="1.2"
-        opacity="0.6"
-      />
-      {/* Label area on front (subtle) */}
-      {(ih > 15 && iw > 15) && (
-        <rect
-          x={(p[0].sx + p[3].sx) / 2 + 2}
-          y={(p[0].sy + p[3].sy) / 2 + 2}
-          width={Math.max(4, (iw - 4))}
-          height={Math.max(3, (ih - 8))}
-          fill="rgba(255,255,255,0.15)"
-          rx="1"
-        />
-      )}
-      {renderEmoji(p, item, iw, ih, id_)}
-    </g>
-  );
-}
-
-// ─── BAR: flat with segment lines ───
-function BarProduct({ p, baseColor, item, iw, ih, id_ }: RenderProps) {
-  const topColor = lighten(baseColor, 25);
-  const frontColor = baseColor;
-  const sideColor = darken(baseColor, 15);
-
-  return (
-    <g>
-      <polygon points={makeTopPoly(p)} fill={topColor} stroke={darken(baseColor, 20)} strokeWidth="0.3" opacity="0.95" />
-      <polygon points={makeFrontPoly(p)} fill={frontColor} stroke={darken(baseColor, 20)} strokeWidth="0.3" opacity="0.95" />
-      <polygon points={makeRightPoly(p)} fill={sideColor} stroke={darken(baseColor, 20)} strokeWidth="0.3" opacity="0.95" />
-      {/* Horizontal segment/wrapper lines */}
-      {ih > 8 && (
-        <g opacity="0.2" stroke={darken(baseColor, 30)} strokeWidth="0.3">
-          {Array.from({ length: Math.min(4, Math.floor(ih / 8)) }, (_, i) => {
-            const frac = (i + 1) / (Math.floor(ih / 8) + 1);
-            const y1 = p[0].sy + (p[3].sy - p[0].sy) * frac;
-            const y2 = p[1].sy + (p[2].sy - p[1].sy) * frac;
-            return <line key={i} x1={p[0].sx} y1={y1} x2={p[1].sx} y2={y2} />;
-          })}
-        </g>
-      )}
-      {renderEmoji(p, item, iw, ih, id_)}
-    </g>
-  );
-}
-
-// ─── POUCH: flat with zip-lock top ───
-function PouchProduct({ p, baseColor, item, iw, ih, id_ }: RenderProps) {
-  const topColor = lighten(baseColor, 28);
-  const frontColor = baseColor;
-  const sideColor = darken(baseColor, 18);
-  const zipColor = darken(baseColor, 35);
-
-  return (
-    <g>
-      <polygon points={makeTopPoly(p)} fill={topColor} stroke={darken(baseColor, 22)} strokeWidth="0.4" opacity="0.95" />
-      <polygon points={makeFrontPoly(p)} fill={frontColor} stroke={darken(baseColor, 22)} strokeWidth="0.4" opacity="0.95" />
-      <polygon points={makeRightPoly(p)} fill={sideColor} stroke={darken(baseColor, 22)} strokeWidth="0.4" opacity="0.95" />
-      {/* Zip-lock line at top of front face */}
-      <line
-        x1={p[0].sx} y1={p[0].sy + (p[3].sy - p[0].sy) * 0.08}
-        x2={p[1].sx} y2={p[1].sy + (p[2].sy - p[1].sy) * 0.08}
-        stroke={zipColor}
-        strokeWidth="0.8"
-        strokeDasharray="1,0.5"
-        opacity="0.5"
-      />
-      {renderEmoji(p, item, iw, ih, id_)}
-    </g>
-  );
-}
-
-// ─── BOX: clean rectangular with cardboard texture ───
-function BoxProduct({ p, baseColor, item, iw, ih, id_ }: RenderProps) {
-  const topColor = lighten(baseColor, 32);
-  const frontColor = baseColor;
-  const sideColor = darken(baseColor, 22);
-
-  return (
-    <g>
-      <polygon points={makeTopPoly(p)} fill={topColor} stroke={darken(baseColor, 25)} strokeWidth="0.4" opacity="0.95" />
-      <polygon points={makeFrontPoly(p)} fill={frontColor} stroke={darken(baseColor, 25)} strokeWidth="0.4" opacity="0.95" />
-      <polygon points={makeRightPoly(p)} fill={sideColor} stroke={darken(baseColor, 25)} strokeWidth="0.4" opacity="0.95" />
-      {/* Cardboard fold lines */}
-      {(ih > 20 && iw > 20) && (
-        <g opacity="0.1" stroke={darken(baseColor, 30)} strokeWidth="0.3">
-          <line x1={(p[0].sx + p[1].sx) / 2} y1={p[0].sy} x2={(p[3].sx + p[2].sx) / 2} y2={p[3].sy} />
-          <line x1={(p[0].sx + p[3].sx) / 2} y1={(p[0].sy + p[3].sy) / 2} x2={(p[1].sx + p[2].sx) / 2} y2={(p[1].sy + p[2].sy) / 2} />
-        </g>
-      )}
-      {renderEmoji(p, item, iw, ih, id_)}
-    </g>
-  );
-}
-
-// ─── Shared emoji + label renderer on TOP face ───
-function renderEmoji(
-  p: { sx: number; sy: number }[],
-  item: { product: { emoji: string; nameEs: string; color: string } },
-  iw: number,
-  ih: number,
-  id_: number,
-) {
-  const faceSize = Math.min(iw, ih, id_);
-  if (faceSize < 6) return null;
-
-  const tcx = (p[3].sx + p[6].sx) / 2;
-  const tcy = (p[3].sy + p[6].sy) / 2;
-
-  const fontSize = Math.max(5, Math.min(faceSize * 0.28, 14));
-  const labelFontSize = Math.max(0, fontSize - 4);
-
-  return (
-    <g>
-      <text
-        x={tcx}
-        y={tcy - (labelFontSize > 0 ? 2 : 0)}
-        textAnchor="middle"
-        dominantBaseline="middle"
-        fontSize={fontSize}
-        className="pointer-events-none select-none"
-      >
-        {item.product.emoji}
-      </text>
-      {/* Product name abbreviation on top face if large enough */}
-      {faceSize > 25 && (
-        <text
-          x={tcx}
-          y={tcy + fontSize * 0.7}
-          textAnchor="middle"
-          dominantBaseline="middle"
-          fontSize={Math.min(labelFontSize, 6)}
-          fill={isLight(item.product.color) ? '#555' : 'rgba(255,255,255,0.85)'}
-          className="pointer-events-none select-none"
-          fontWeight="500"
-        >
-          truncateText(item.product.nameEs, 18)
-        </text>
-      )}
-    </g>
-  );
-}
-
 function truncateText(text: string, maxLen: number): string {
   if (text.length <= maxLen) return text;
-  // Try to cut at a word boundary
   const cut = text.substring(0, maxLen - 1);
   const lastSpace = cut.lastIndexOf(' ');
   return lastSpace > 0 ? cut.substring(0, lastSpace) : cut;
 }
 
-// ─── Color utilities ───
 function darken(hex: string, amount: number): string {
   return shiftColor(hex, -amount);
 }

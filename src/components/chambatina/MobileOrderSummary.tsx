@@ -141,7 +141,7 @@ export default function MobileOrderSummary() {
       { label: 'Tokenizando datos de tarjeta...', status: 'pending' },
       { label: 'Verificando con el banco...', status: 'pending' },
       { label: 'Autorizando cargo...', status: 'pending' },
-      { label: 'Generando recibo...', status: 'pending' },
+      { label: 'Enviando factura por correo...', status: 'pending' },
     ];
 
     setProcessingSteps([...steps]);
@@ -785,6 +785,7 @@ export default function MobileOrderSummary() {
           </div>
           <p className="font-black text-xl" style={{ color: '#16a34a' }}>Compra Exitosa</p>
           <p className="text-xs text-gray-500 mt-1">Tu pedido ha sido confirmado y pagado</p>
+          <p className="text-[10px] text-blue-600 font-medium mt-0.5">Recibirás la factura en tu correo electrónico</p>
         </div>
 
         {/* ── RECEIPT ── */}
@@ -916,6 +917,41 @@ export default function MobileOrderSummary() {
               <p className="font-semibold text-blue-700">Tu pedido viaja por mar hasta Nicaragua</p>
               <p className="mt-0.5">Peso total: {weight.toFixed(1)} lbs · Volumen: {volume.toFixed(0)} in³</p>
               <p className="mt-0.5 text-blue-600">Tiempo estimado de entrega: 15-25 días hábiles</p>
+            </div>
+
+            {/* QuickBooks Email Invoice Notification */}
+            <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-lg p-3 text-center">
+              <div className="flex items-center justify-center gap-2 mb-1">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="12" r="10" fill="#2CA01C"/>
+                  <text x="6" y="16" fill="white" fontSize="11" fontWeight="bold">QB</text>
+                </svg>
+                <span className="text-xs font-bold text-green-800">Factura QuickBooks</span>
+              </div>
+              {data.invoice?.sent ? (
+                <>
+                  <p className="text-[11px] font-semibold text-green-700">
+                    Factura enviada a {customerInfo.email}
+                  </p>
+                  <p className="text-[9px] text-green-600 mt-0.5">
+                    Revisa tu bandeja de entrada y carpeta de spam
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="text-[11px] font-semibold text-green-700">
+                    La factura será enviada a {customerInfo.email}
+                  </p>
+                  <p className="text-[9px] text-green-600 mt-0.5">
+                    QuickBooks enviará la factura automáticamente al correo registrado
+                  </p>
+                </>
+              )}
+              {data.invoice?.qbInvoiceRef && (
+                <p className="text-[9px] text-green-500 mt-1 font-mono">
+                  Ref: {data.invoice.qbInvoiceRef}
+                </p>
+              )}
             </div>
           </div>
 

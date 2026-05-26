@@ -207,27 +207,34 @@ export async function POST(request: NextRequest) {
     // ─── Generate QuickBooks invoice reference ───
     const qbInvoiceRef = `INV-${dateStr}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
 
-    // ─── Persist order to database ───
-    await db.walmartOrder.create({
-      data: {
-        orderId,
-        customerName: customerName.trim(),
-        customerEmail: customerEmail.trim().toLowerCase(),
-        customerPhone: customerPhone.trim(),
-        boxSize: boxSize || 'N/A',
-        items: JSON.stringify(items),
-        productCost: Math.round(productCost * 100) / 100,
-        walmartTax: Math.round(walmartTax * 100) / 100,
-        shippingCost,
-        managementFee,
-        totalAmount: Math.round(amount * 100) / 100,
-        currency: 'USD',
-        status: 'confirmed',
-        paymentToken: chargeResult.id,
-        qbTransactionId: chargeResult.id,
-        qbPaymentId: `PAY-${Math.random().toString(36).substring(2, 10).toUpperCase()}`,
-      },
-    });
+    // ─── Persist order to database (non-blocking) ───
+    let dbSaved = false;
+    try {
+      await db.walmartOrder.create({
+        data: {
+          orderId,
+          customerName: customerName.trim(),
+          customerEmail: customerEmail.trim().toLowerCase(),
+          customerPhone: customerPhone.trim(),
+          boxSize: boxSize || 'N/A',
+          items: JSON.stringify(items),
+          productCost: Math.round(productCost * 100) / 100,
+          walmartTax: Math.round(walmartTax * 100) / 100,
+          shippingCost,
+          managementFee,
+          totalAmount: Math.round(amount * 100) / 100,
+          currency: 'USD',
+          status: 'confirmed',
+          paymentToken: chargeResult.id,
+          qbTransactionId: chargeResult.id,
+          qbPaymentId: `PAY-${Math.random().toString(36).substring(2, 10).toUpperCase()}`,
+        },
+      });
+      dbSaved = true;
+    } catch (dbErr) {
+      console.error('[DB] Could not save order to database (non-fatal):', dbErr);
+      // Payment is still valid, order just won't be persisted
+    }
 
     // ─── Send Invoice Email (like QuickBooks native) ───
     // QuickBooks automatically emails a receipt to the customer after payment.
@@ -334,7 +341,15 @@ export async function POST(request: NextRequest) {
       invoice: {
         sent: emailSent,
         to: customerEmail.trim().toLowerCase(),
+        qbInvoiceRef,
         error: emailError || undefined,
+      },
+      emailInvoice: {
+        sent: emailSent,
+        to: customerEmail.trim().toLowerCase(),
+        message: emailSent
+          ? `Factura ${qbInvoiceRef} enviada por correo via QuickBooks`
+          : `La factura ${qbInvoiceRef} sera enviada por correo electronico`,
       },
     });
   } catch (error) {

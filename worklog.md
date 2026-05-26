@@ -73,3 +73,41 @@ Stage Summary:
 - User can always see WHY a product cannot be added
 - Products that fit will be found and placed correctly
 - Lint passes cleanly, server returns 200 OK
+
+---
+Task ID: 4
+Agent: Main Agent
+Task: Remove perishable products, expand catalog, improve bin-packing, revamp 3D view
+
+Work Log:
+- Removed 5 perishable products that cannot survive 30 days in a ship without refrigeration:
+  - Butter (gv-butter-1lb) - requires refrigeration
+  - Margarine (gv-margarine-3lb) - requires refrigeration
+  - Shredded Cheddar Cheese (gv-shredded-cheese-8oz) - requires refrigeration
+  - Cream Cheese (gv-cream-cheese-8oz) - requires refrigeration
+  - Mozzarella (gv-mozzarella-8oz) - requires refrigeration
+- Kept shelf-stable dairy: condensed milk (canned), evaporated milk (canned), dry milk powder, parmesan (aged)
+- Expanded product catalog from ~85 to 135 products:
+  - NEW category: Chocolates y Dulces (12 products: Hershey bars, M&Ms, Snickers, Reese, Kit Kat, chocolate chips, Twizzlers, candy corn, Jolly Rancher)
+  - More Granos: wheat flour, jasmine rice, red beans, white beans, split peas, barley, rotini, fettuccine, egg noodles, lasagna, shell pasta, baking powder, baking soda
+  - More Semillas: walnuts, pecans, cashews, dried cranberries
+  - More Lacteos Estables: La Lechera condensed milk 2pk, GV condensed milk 2pk
+  - Small items for gap-filling: bouillon cubes, Knorr chicken bouillon, gelatin 4pk, pudding 4pk, chicken noodle soup, tomato soup, vanilla extract, chili powder, paprika, cinnamon, chili beans, pinto beans in sauce, mushrooms
+- Added packagingType field to all products (bag, can, box, bottle, jar, bar, pouch)
+- Improved bin-packing algorithm with 2-phase approach:
+  - Phase 1: 7 upper corners per item + level-based projections (fast, ~100-300 candidates)
+  - Phase 2: Coarse 0.5" grid scan at occupied z-levels (fallback for small gaps)
+  - Uses isPointInsideAnyItem() for performance guard in grid scanning
+- Completely revamped Box3DView with packaging-specific rendering:
+  - 7 product types: Can (cylindrical rim, metallic), Bottle (with cap, glass shine), Bag (crease lines), Jar (lid band, label area), Bar (segment lines), Pouch (zip-lock line), Box (cardboard fold lines)
+  - 3-face realistic shading: top (lightest), front (base), right (darkest)
+  - Product emoji + name abbreviation on top face
+  - Painter's algorithm sorting (back-to-front)
+  - Performance-optimized SVG rendering
+
+Stage Summary:
+- 135 total products across 12 categories
+- No perishable products remain in catalog
+- Bin-packing now fills boxes much more completely with 2-phase approach
+- 3D visualization shows realistic packaging types at real scale proportions
+- Build passes cleanly

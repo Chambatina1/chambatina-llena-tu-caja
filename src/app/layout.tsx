@@ -15,25 +15,9 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Chambatina — Llena tu Caja",
-  description:
-    "Arma tu caja de productos para tu pueblo. Selecciona granos, leche en polvo y más. Envío hasta 30 días.",
-  keywords: [
-    "Chambatina",
-    "caja",
-    "productos",
-    "envío",
-    "pueblo",
-    "Nicaragua",
-    "granos",
-    "leche en polvo",
-  ],
+  description: "Servicio de envío de productos Walmart a tu pueblo.",
   icons: {
     icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📦</text></svg>",
-  },
-  openGraph: {
-    title: "Chambatina — Llena tu Caja",
-    description: "Arma tu caja de productos para tu pueblo. Selecciona granos, leche en polvo y más.",
-    type: "website",
   },
 };
 

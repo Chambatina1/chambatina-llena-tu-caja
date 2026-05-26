@@ -111,3 +111,36 @@ Stage Summary:
 - Bin-packing now fills boxes much more completely with 2-phase approach
 - 3D visualization shows realistic packaging types at real scale proportions
 - Build passes cleanly
+
+---
+Task ID: 5
+Agent: Main Agent
+Task: Isolate box-filler to /box-filler/ route, create landing page, expand catalog, rename category
+
+Work Log:
+- Created isolated route at /box-filler/ with its own layout (metadata, SEO keywords)
+- Copied box-filler page.tsx content to /box-filler/page.tsx
+- Replaced root / page.tsx with professional Chambatina landing page in Spanish:
+  - Brand header with orange gradient "C" logo
+  - Hero section with CTA linking to /box-filler
+  - 3 feature cards: Elige caja, Agrega productos, Completa pedido
+  - Trust badges section (135+ products, 12 categories, 3D view, 30-day shipping)
+  - Footer with copyright
+- Simplified root layout.tsx (removed box-filler-specific metadata)
+- Renamed category 'Lácteos y Queso' to 'Lácteos Estables' in PRODUCT_CATEGORIES and all product entries
+- Expanded product catalog from 135 to 146 products (11 new unique products added):
+  - Chocolates y Dulces: cocoa powder, chocolate candy, soft caramels, gummy bears (4 new)
+  - Granos y Cereales: 10lb rice, fideo, 4lb pinto beans, navy beans, 10lb flour, brown rice (6 new)
+  - Condimentos y Salsas: salsa verde, adobo 11oz, sazón Goya, cumin 1oz (4 new - skipped duplicates)
+  - Aseo Personal: body lotion, conditioner, hand soap, shampoo 2pk (4 new)
+  - Aseo del Hogar: Fabuloso cleaner, baking soda 2lb, aluminum foil, tissues 3pk (4 new)
+  - Skipped 8 products that had duplicate IDs with existing catalog entries
+
+Stage Summary:
+- Box-filler feature isolated to /box-filler/ route
+- Root / now shows professional Chambatina landing page
+- 146 total products across 12 categories
+- Category renamed: 'Lácteos y Queso' → 'Lácteos Estables'
+- All changed files pass lint (no new lint errors)
+- Dev server returns 200 for both / and /box-filler
+

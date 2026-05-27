@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useCallback } from 'react';
 import Link from 'next/link';
-import { STORE_CATEGORIES, STORE_PRODUCTS } from '@/lib/products';
+import { PRODUCT_CATEGORIES as STORE_CATEGORIES, PRODUCTS as STORE_PRODUCTS } from '@/lib/products';
 import type { Product } from '@/lib/products';
 
 export default function TiendaPage() {

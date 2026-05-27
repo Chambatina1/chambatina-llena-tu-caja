@@ -83,3 +83,34 @@ Stage Summary:
 - No se modificó el box-filler (chambatina-llena-tu-caja)
 - QuickBooks y producción no fueron afectados
 - Nota: No se encontraron productos HUMSIENK ni TVs ni Bicicletas en el archivo fuente del box-filler
+---
+Task ID: 1
+Agent: Main Agent
+Task: Add HUMSIENK batteries from humsienk.com to Plataforma Chambatina store
+
+Work Log:
+- Cloned Plataforma Chambatina repo to /home/z/my-project/plataformachambatina
+- Explored product structure: TiendaProduct model in PostgreSQL via Prisma
+- Examined existing products: 79 default products + import-equipment route (46 products)
+- Visited humsienk.com and extracted full product catalog: 26 products
+  - 12V LiFePO4: 8 batteries ($169.99-$949.99)
+  - 24V LiFePO4: 3 batteries ($369.99-$999.99)
+  - 48V Golf Cart: 3 batteries ($699.99)
+  - Home Energy Storage: 5 batteries ($899.99-$2599.99)
+  - Server Rack: 1 battery ($759.99)
+  - Chargers: 3 chargers ($69.99-$199.99)
+  - Accessories: 3 cables ($29.99-$99.99)
+- Created /api/tienda/humsienk-import/route.ts with all 26 products
+- Applied 13.5% margin (×1.135) to all humsienk.com prices
+- Added weight (Peso: X lb) to all descriptions for shipping calculator
+- Updated CATEGORY_CONFIG in tienda.tsx: added ecolow-energia, colchones, piscinas, muebles, freezers-refrigeradores, baterias-humsienk
+- Updated CATEGORIAS and CATEGORIA_COLORS in tienda-admin.tsx
+- Committed and pushed to GitHub
+- Triggered Render deploy
+
+Stage Summary:
+- 26 HUMSIENK products ready for import via GET /api/tienda/humsienk-import
+- Route is idempotent (checks existing by nombre, skips duplicates)
+- All new categories configured in frontend and admin
+- No Walmart branding on any HUMSIENK product
+- QuickBooks integration maintained (existing checkout flow unchanged)

@@ -114,3 +114,28 @@ Stage Summary:
 - All new categories configured in frontend and admin
 - No Walmart branding on any HUMSIENK product
 - QuickBooks integration maintained (existing checkout flow unchanged)
+
+---
+Task ID: 1
+Agent: Main Agent
+Task: Reorganizar categorías de tienda Plataforma Chambatina y hacer visibles productos HUMSIENK
+
+Work Log:
+- Clonado y examinado repo en /home/z/my-project/plataformachambatina
+- Identificados problemas: 79+ productos en "general", HUMSIENK no existía en DB, "tv" sin config
+- Corregidas categorías en DEFAULT_PRODUCTS (16 electrodomésticos, 2 TVs, 23 empaques)
+- Agregada categoría "tv" a CATEGORY_CONFIG en tienda.tsx
+- Creada ruta /api/tienda/fix-categories para migrar DB existente
+- Descubierto servicio Render correcto: srv-d7p5ghvavr4c73c7o64g (NO el Walmart)
+- Desplegado en plataformachambatina.onrender.com
+- Ejecutada migración: 22 productos re-categorizados + 26 HUMSIENK insertadas
+- Segunda migración: 11 productos más (Olla, PowMr WiFi, TVs movidas)
+- Estado final: 366 productos en 14 categorías limpias
+
+Stage Summary:
+- HUMSIENK ahora visible con 26 productos (baterías 12V/24V/48V, cargadores, cables)
+- "general" ahora solo tiene 11 vehículos (motos + triciclos)
+- Nueva categoría "tv" con 5 TVs
+- "electrodomesticos" con 76 productos sin TVs
+- Servicio Render correcto identificado: srv-d7p5ghvavr4c73c7o64g
+- Commits: b9ab508, 69fa264

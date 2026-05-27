@@ -1,6 +1,6 @@
 'use client';
 
-import { PRODUCT_CATEGORIES, PRODUCTS } from '@/lib/products';
+import { PRODUCT_CATEGORIES, WALMART_BOX_PRODUCTS } from '@/lib/products';
 import { useBoxFillerStore } from '@/store/box-filler-store';
 import { useState, useMemo, useCallback } from 'react';
 
@@ -31,7 +31,7 @@ export default function ProductCatalog() {
   );
 
   const getImageSrc = useCallback(
-    (product: (typeof PRODUCTS)[number]) => {
+    (product: (typeof WALMART_BOX_PRODUCTS)[number]) => {
       if (failedImages.has(product.id)) return getCategoryImage(product.category);
       if (product.imageUrl) return product.imageUrl;
       return `/api/walmart-image?url=${encodeURIComponent(product.walmartUrl)}`;
@@ -40,7 +40,7 @@ export default function ProductCatalog() {
   );
 
   const filteredProducts = useMemo(() => {
-    return PRODUCTS.filter((p) => {
+    return WALMART_BOX_PRODUCTS.filter((p) => {
       const matchCategory = categoryFilter === 'Todos' || p.category === categoryFilter;
       const matchSearch =
         search === '' ||
@@ -68,7 +68,7 @@ export default function ProductCatalog() {
         <div className="flex-1">
           <p className="text-xs font-semibold text-foreground">Productos Walmart</p>
           <p className="text-[10px] text-muted-foreground">
-            Precios actuales · {PRODUCTS.length} productos
+            Precios actuales · {WALMART_BOX_PRODUCTS.length} productos
           </p>
         </div>
       </div>

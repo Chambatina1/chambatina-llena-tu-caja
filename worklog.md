@@ -37,3 +37,25 @@ Stage Summary:
 - El mecanismo externalUrl ya existía (usado por Flota de Autos -> cargocuba.onrender.com)
 - Repo: https://github.com/Chambatina1/Plataformachambatina.git
 - Commit: 96243bf
+
+---
+Task ID: 2
+Agent: Main Agent
+Task: Separate Walmart (Box Filler) products from Tienda (Store) products
+
+Work Log:
+- Read existing files: products.ts, page.tsx, ProductCatalog.tsx
+- Added WALMART_BOX_CATEGORY_SET, WALMART_BOX_PRODUCTS, and STORE_PRODUCTS to products.ts (end of file, after PRODUCTS array)
+- Updated page.tsx: Two hero CTA buttons (Walmart a tu Familia → orange → /box-filler, Tienda Chambatina → indigo → /tienda), updated trust badges
+- Updated ProductCatalog.tsx: Changed all PRODUCTS references to WALMART_BOX_PRODUCTS (import, filter, count, type)
+- Created src/app/tienda/layout.tsx with SEO metadata
+- Created src/app/tienda/page.tsx: Full store catalog page with blue/indigo theme, search, category filters (STORE_CATEGORIES), product grid (2-4 cols responsive), product cards with image/emoji, name, price, description, "Ver Producto" button linking to walmartUrl
+- Verified: zero TypeScript errors in changed/created files; pre-existing TS errors in products.ts (missing imageUrl/packagingType on some products) and lint errors (static component warnings) are unrelated
+
+Stage Summary:
+- WALMART_BOX_PRODUCTS (157 products) filters to non-perishable food categories only
+- STORE_PRODUCTS (79 products) filters to electronics, equipment, furniture, batteries
+- ProductCatalog (box-filler) now only shows food products, not equipment
+- Landing page shows two clear entry points with distinct color themes (orange vs indigo)
+- Tienda page at /tienda is a standalone catalog with search, category filtering, responsive grid
+- No existing product data, store code, or box-filler layout was modified

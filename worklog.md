@@ -122,3 +122,24 @@ Stage Summary:
 - 26 URLs indexables en Google (antes solo 2)
 - GA4 + Clarity tracking integrados
 - Deploy en Render: dep-d8c4caml51nc73dk68hg (commit e808430)
+---
+Task ID: 1
+Agent: Main Agent
+Task: Corregir error al subir imagen desde admin carrusel en Apariencia
+
+Work Log:
+- Explorado el proyecto Plataformachambatina para encontrar archivos relacionados al carrusel y carga de imágenes
+- Encontrado que apariencia-panel.tsx llama a POST /api/upload en líneas 187 y 672
+- Descubierto que el endpoint POST /api/upload NO EXISTÍA - era la causa raíz del error
+- El GET /api/uploads/[filename] sí existía para servir imágenes, pero faltaba el POST para recibirlas
+- Creado /home/z/my-project/Plataformachambatina/src/app/api/upload/route.ts
+- El nuevo endpoint: acepta FormData, valida tipo/tamaño, guarda en DB (UploadedFile) y filesystem (data/uploads/), retorna URL
+- Verificado que data/uploads/ existe y está en .gitignore
+- La ruta usa los mismos imports que el existente uploads/[filename]/route.ts
+
+Stage Summary:
+- Causa raíz: POST /api/upload no existía como endpoint Next.js
+- Solución: Creado src/app/api/upload/route.ts con validación, almacenamiento dual (DB + filesystem)
+- Archivos afectados: src/app/api/upload/route.ts (NUEVO)
+- Requiere despliegue a producción para que el fix tome efecto
+

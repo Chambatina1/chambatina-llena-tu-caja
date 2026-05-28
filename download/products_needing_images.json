@@ -1,0 +1,590 @@
+[
+  {
+    "id": "gv-rice-5lb",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-long-grain-white-rice-5-lb/10314157"
+  },
+  {
+    "id": "gv-pinto-beans-2lb",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-dried-pinto-beans-2-lb/155982624"
+  },
+  {
+    "id": "gv-black-beans-15oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-black-beans-15-5-oz-cans-4-count/456294568"
+  },
+  {
+    "id": "gv-flour-5lb",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-all-purpose-flour-5-lb/10450619"
+  },
+  {
+    "id": "gv-cornmeal-2lb",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-yellow-cornmeal-2-lb/10450613"
+  },
+  {
+    "id": "gv-spaghetti-16oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-spaghetti-16-oz/10450637"
+  },
+  {
+    "id": "gv-mac-cheese-5pk",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-mac-and-cheese-7-25-oz-5-count/470844108"
+  },
+  {
+    "id": "gv-oatmeal-42oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-old-fashioned-oats-42-oz/10450641"
+  },
+  {
+    "id": "gv-lentils-1lb",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-dried-lentils-16-oz/456920738"
+  },
+  {
+    "id": "gv-garbanzos-1lb",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-dried-chickpeas-16-oz/456920736"
+  },
+  {
+    "id": "gv-milk-powder-25oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-non-fat-dry-milk-25-6-oz/10450602"
+  },
+  {
+    "id": "gv-nido-12oz",
+    "walmartUrl": "https://www.walmart.com/ip/nestle-nido-kinder-1-12-6-oz/10312650"
+  },
+  {
+    "id": "gv-vegetable-oil-48oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-100-pure-vegetable-oil-48-fl-oz/10450596"
+  },
+  {
+    "id": "gv-peanut-butter-40oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-creamy-peanut-butter-40-oz/10450610"
+  },
+  {
+    "id": "gv-sugar-4lb",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-granulated-sugar-4-lb/10450607"
+  },
+  {
+    "id": "gv-honey-12oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-clover-honey-12-oz/10450609"
+  },
+  {
+    "id": "gv-syrup-24oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-original-syrup-24-oz/10450611"
+  },
+  {
+    "id": "gv-tuna-6pk",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-chunk-light-tuna-in-water-5-oz-cans-6-count/10450590"
+  },
+  {
+    "id": "gv-chicken-broth-4pk",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-chicken-broth-14-5-oz-cans-4-count/10450593"
+  },
+  {
+    "id": "gv-tomato-sauce-3pk",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-tomato-sauce-15-oz-cans-3-count/10450595"
+  },
+  {
+    "id": "gv-corn-3pk",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-whole-kernel-sweet-corn-15-25-oz-cans-3-count/10450589"
+  },
+  {
+    "id": "gv-tomato-paste-4pk",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-tomato-paste-6-oz-cans-4-count/10450586"
+  },
+  {
+    "id": "gv-refried-beans-3pk",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-refried-beans-16-oz-cans-3-count/10450585"
+  },
+  {
+    "id": "gv-jalapenos-2pk",
+    "walmartUrl": "https://www.walmart.com/ip/la-costena-sliced-jalapenos-12-oz-jar-2-count/20814033"
+  },
+  {
+    "id": "gv-coffee-packet-7oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-ground-coffee-classic-roast-7-oz/10450603"
+  },
+  {
+    "id": "gv-coffee-packet-30oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-ground-coffee-classic-roast-30-5-oz/10450603"
+  },
+  {
+    "id": "gv-instant-coffee-sachet-3pk",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-instant-coffee-7-oz/10450604"
+  },
+  {
+    "id": "fv-coffee-cream-15oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-creamer-french-vanilla-15-oz/10450605"
+  },
+  {
+    "id": "gv-cappuccino-6pk",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-french-vanilla-cappuccino/10450607"
+  },
+  {
+    "id": "gv-cocoa-10oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-rich-chocolate-cocoa-10-oz/10450606"
+  },
+  {
+    "id": "gv-corn-flakes-13oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-corn-flakes-cereal-13-oz/10450618"
+  },
+  {
+    "id": "gv-pancake-mix-32oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-buttermilk-pancake-complete-mix-32-oz/10450615"
+  },
+  {
+    "id": "gv-granola-20oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-granola-honey-oats-20-oz/470848029"
+  },
+  {
+    "id": "gv-crackers-1lb",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-original-saltine-crackers-16-oz/10450619"
+  },
+  {
+    "id": "gv-soap-3pk",
+    "walmartUrl": "https://www.walmart.com/ip/dial-gold-antibacterial-deodorant-bar-soap-4-oz-3-count/10313825"
+  },
+  {
+    "id": "gv-toothpaste-1",
+    "walmartUrl": "https://www.walmart.com/ip/colgate-cavity-protection-fluoride-toothpaste-6-0-oz/10312168"
+  },
+  {
+    "id": "gv-shampoo-12oz",
+    "walmartUrl": "https://www.walmart.com/ip/suave-professionals-keratin-infusion-smooth-shampoo-12-oz/456154215"
+  },
+  {
+    "id": "gv-deodorant-1",
+    "walmartUrl": "https://www.walmart.com/ip/secret-invisible-solid-deodorant-powder-fresh-2-6-oz/10311780"
+  },
+  {
+    "id": "gv-body-wash-18oz",
+    "walmartUrl": "https://www.walmart.com/ip/dove-body-wash-deep-moisture-18-oz/10312758"
+  },
+  {
+    "id": "gv-detergent-52oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-liquid-laundry-detergent-original-scent-52-oz/10450597"
+  },
+  {
+    "id": "gv-dish-soap-14oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-lemon-scent-dish-soap-14-oz/10450599"
+  },
+  {
+    "id": "gv-tp-4pk",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-ultra-strong-toilet-paper-4-mega-rolls/456292873"
+  },
+  {
+    "id": "gv-bleach-1gal",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-disinfecting-bleach-121-fl-oz/10450601"
+  },
+  {
+    "id": "gv-salt-26oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-iodized-salt-26-oz/10450608"
+  },
+  {
+    "id": "gv-vinegar-1gal",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-distilled-white-vinegar-1-gal/10450614"
+  },
+  {
+    "id": "gv-condensed-milk-14oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-sweetened-condensed-milk-14-oz/10450623"
+  },
+  {
+    "id": "gv-evaporated-milk-12oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-evaporated-milk-12-oz-cans-6-count/10450622"
+  },
+  {
+    "id": "gv-parmesan-8oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-grated-parmesan-cheese-8-oz/10450624"
+  },
+  {
+    "id": "gv-rice-2lb",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-long-grain-white-rice-2-lb/10314158"
+  },
+  {
+    "id": "gv-elbow-pasta-16oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-elbow-macaroni-16-oz/10450638"
+  },
+  {
+    "id": "gv-pen pasta-16oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-penne-pasta-16-oz/10450636"
+  },
+  {
+    "id": "gv-cornstarch-16oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-cornstarch-16-oz/10450612"
+  },
+  {
+    "id": "gv-quinoa-12oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-tri-color-quinoa-12-oz/456920737"
+  },
+  {
+    "id": "gv-gnocchi-16oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-potato-gnocchi-16-oz/456920740"
+  },
+  {
+    "id": "gv-rice-10lb",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-long-grain-white-rice-10-lb/10314159"
+  },
+  {
+    "id": "gv-fideo-16oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-thin-spaghetti-16-oz/10450640"
+  },
+  {
+    "id": "gv-pinto-beans-4lb",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-dried-pinto-beans-4-lb/155982625"
+  },
+  {
+    "id": "gv-navy-beans-2lb",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-dried-navy-beans-2-lb/155982627"
+  },
+  {
+    "id": "gv-flour-10lb",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-all-purpose-flour-10-lb/10450620"
+  },
+  {
+    "id": "gv-brown-rice-2lb",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-long-grain-brown-rice-2-lb/10314160"
+  },
+  {
+    "id": "gv-green-beans-3pk",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-cut-green-beans-14-5-oz-cans-3-count/10450588"
+  },
+  {
+    "id": "gv-peas-3pk",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-sweet-peas-15-oz-cans-3-count/10450592"
+  },
+  {
+    "id": "gv-mixed-veg-3pk",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-mixed-vegetables-15-25-oz-cans-3-count/10450594"
+  },
+  {
+    "id": "gv-chili-3pk",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-chili-with-beans-15-oz-cans-3-count/10450591"
+  },
+  {
+    "id": "gv-tuna-oil-3pk",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-chunk-light-tuna-in-oil-5-oz-cans-3-count/10450589"
+  },
+  {
+    "id": "gv-potatoes-3pk",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-whole-white-potatoes-15-25-oz-cans-3-count/456294567"
+  },
+  {
+    "id": "gv-chicken-5oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-canned-chicken-breast-5-oz-cans-3-count/456294569"
+  },
+  {
+    "id": "gv-sunflower-seeds-8oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-roasted-sunflower-seeds-8-75-oz/456920742"
+  },
+  {
+    "id": "gv-peanuts-16oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-dry-roasted-peanuts-16-oz/456920744"
+  },
+  {
+    "id": "gv-mixed-nuts-10oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-mixed-nuts-10-oz/456920746"
+  },
+  {
+    "id": "gv-raisins-15oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-raisins-15-oz/10450625"
+  },
+  {
+    "id": "gv-almonds-6oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-sliced-almonds-6-oz/456920748"
+  },
+  {
+    "id": "gv-pumpkin-seeds-5oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-roasted-pumpkin-seeds-5-oz/456920750"
+  },
+  {
+    "id": "gv-ketchup-20oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-tomato-ketchup-20-oz/10450626"
+  },
+  {
+    "id": "gv-mayo-30oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-real-mayonnaise-30-oz/10450627"
+  },
+  {
+    "id": "gv-mustard-12oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-yellow-mustard-12-oz/10450628"
+  },
+  {
+    "id": "gv-hot-sauce-5oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-hot-sauce-5-oz/10450629"
+  },
+  {
+    "id": "gv-soy-sauce-10oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-soy-sauce-10-oz/10450630"
+  },
+  {
+    "id": "gv-sazon-4pk",
+    "walmartUrl": "https://www.walmart.com/ip/goya-sazon-con-azafran-1-41-oz-4-count/10314275"
+  },
+  {
+    "id": "gv-adobo-4pk",
+    "walmartUrl": "https://www.walmart.com/ip/goya-adobo-all-purpose-seasoning-8-5-oz-2-count/10314277"
+  },
+  {
+    "id": "gv-garlic-powder-2oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-garlic-powder-2-75-oz/10450631"
+  },
+  {
+    "id": "gv-onion-powder-2oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-onion-powder-2-75-oz/10450632"
+  },
+  {
+    "id": "gv-black-pepper-1oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-black-pepper-1-5-oz/10450633"
+  },
+  {
+    "id": "gv-oregano-1oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-oregano-leaves-0-7-oz/10450634"
+  },
+  {
+    "id": "gv-comino-1oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-ground-cumin-1-75-oz/10450635"
+  },
+  {
+    "id": "gv-salsa-verde-7oz",
+    "walmartUrl": "https://www.walmart.com/ip/la-costena-salsa-verde-7-oz-jar-3-count/20814035"
+  },
+  {
+    "id": "gv-adobo-11oz",
+    "walmartUrl": "https://www.walmart.com/ip/goya-adobo-all-purpose-seasoning-11-oz/10314161"
+  },
+  {
+    "id": "gv-sazon-11oz",
+    "walmartUrl": "https://www.walmart.com/ip/goya-sazon-with-coriander-and-annatto-10-5-oz/10314162"
+  },
+  {
+    "id": "gv-cumin-1oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-ground-cumin-1-75-oz/10450633"
+  },
+  {
+    "id": "gv-nesquik-21oz",
+    "walmartUrl": "https://www.walmart.com/ip/nesquik-chocolate-powder-21-8-oz/10313810"
+  },
+  {
+    "id": "gv-tea-bags-100",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-black-tea-bags-100-count/10450639"
+  },
+  {
+    "id": "gv-lemonade-7pk",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-lemonade-drink-mix-7-count/456294571"
+  },
+  {
+    "id": "hv-choco-6pk",
+    "walmartUrl": "https://www.walmart.com/ip/hershey-milk-chocolate-candy-bars-6-count/10450546"
+  },
+  {
+    "id": "gv-choco-chips-12oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-semi-sweet-chocolate-chips-12-oz/10450643"
+  },
+  {
+    "id": "gv-white-choco-chips",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-white-chocolate-chips-10-oz/456294581"
+  },
+  {
+    "id": "gv-butterscotch-chips",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-butterscotch-chips-11-oz/456294583"
+  },
+  {
+    "id": "mm-milk-choco-10oz",
+    "walmartUrl": "https://www.walmart.com/ip/m-ms-milk-chocolate-candy-10-7-oz/10315350"
+  },
+  {
+    "id": "snickers-6pk",
+    "walmartUrl": "https://www.walmart.com/ip/snickers-candy-bars-1-86-oz-6-count/10315355"
+  },
+  {
+    "id": "reese-cups-6pk",
+    "walmartUrl": "https://www.walmart.com/ip/reese-peanut-butter-cups-1-5-oz-6-count/10315358"
+  },
+  {
+    "id": "kit-kat-6pk",
+    "walmartUrl": "https://www.walmart.com/ip/kit-kat-candy-bars-1-5-oz-6-count/10315362"
+  },
+  {
+    "id": "gv-candy-corn-15oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-candy-corn-15-oz/10450644"
+  },
+  {
+    "id": "jolly-rancher-13oz",
+    "walmartUrl": "https://www.walmart.com/ip/jolly-rancher-hard-candy-13-oz/10315370"
+  },
+  {
+    "id": "twizzlers-16oz",
+    "walmartUrl": "https://www.walmart.com/ip/twizzlers-strawberry-twists-16-oz/10315375"
+  },
+  {
+    "id": "gv-cocoa-powder-8oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-unsweetened-cocoa-powder-8-oz/10450606"
+  },
+  {
+    "id": "gv-chocolate-candy-10oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-chocolate-candy-10-5-oz/456294571"
+  },
+  {
+    "id": "gv-caramel-11oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-soft-caramels-11-oz/456294575"
+  },
+  {
+    "id": "gv-gummy-bears-4oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-gummy-bears-4-oz/456294577"
+  },
+  {
+    "id": "gv-wheat-flour-5lb",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-whole-wheat-flour-5-lb/10450641"
+  },
+  {
+    "id": "gv-jasmine-rice-5lb",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-jasmine-rice-5-lb/456294585"
+  },
+  {
+    "id": "gv-red-beans-2lb",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-dried-red-beans-2-lb/456294587"
+  },
+  {
+    "id": "gv-white-beans-2lb",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-dried-navy-beans-2-lb/456294589"
+  },
+  {
+    "id": "gv-split-peas-16oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-split-peas-16-oz/456294591"
+  },
+  {
+    "id": "gv-barley-16oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-pearl-barley-16-oz/456294593"
+  },
+  {
+    "id": "gv-rotini-16oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-rotini-pasta-16-oz/10450635"
+  },
+  {
+    "id": "gv-fettuccine-16oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-fettuccine-16-oz/10450637"
+  },
+  {
+    "id": "gv-egg-noodles-12oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-egg-noodles-12-oz/456294595"
+  },
+  {
+    "id": "gv-lasagna-16oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-lasagna-16-oz/10450639"
+  },
+  {
+    "id": "gv-shell-pasta-16oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-medium-shell-pasta-16-oz/10450633"
+  },
+  {
+    "id": "gv-walnuts-8oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-chopped-walnuts-8-oz/456294597"
+  },
+  {
+    "id": "gv-pecans-5oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-pecan-halves-5-oz/456294599"
+  },
+  {
+    "id": "gv-cashews-8oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-roasted-cashews-8-5-oz/456294601"
+  },
+  {
+    "id": "gv-cranberries-6oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-dried-cranberries-6-oz/456294603"
+  },
+  {
+    "id": "lc-condensed-14oz-2pk",
+    "walmartUrl": "https://www.walmart.com/ip/nestle-la-lechera-sweetened-condensed-milk-14-oz-2-count/10312655"
+  },
+  {
+    "id": "gv-condensed-14oz-2pk",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-sweetened-condensed-milk-14-oz-2-count/456294605"
+  },
+  {
+    "id": "gv-bouillon-36ct",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-beef-bouillon-cubes-36-count/10450645"
+  },
+  {
+    "id": "knorr-chicken-bouillon",
+    "walmartUrl": "https://www.walmart.com/ip/knorr-chicken-bouillon-8-count/10314280"
+  },
+  {
+    "id": "gv-gelatin-6oz-4pk",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-gelatin-6-oz-4-count/456294607"
+  },
+  {
+    "id": "gv-instant-pudding-4pk",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-instant-pudding-5-1-oz-4-count/456294609"
+  },
+  {
+    "id": "gv-chicken-noodle-soup-4pk",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-chicken-noodle-soup-10-5-oz-4-count/456294611"
+  },
+  {
+    "id": "gv-tomato-soup-4pk",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-tomato-soup-10-75-oz-4-count/456294613"
+  },
+  {
+    "id": "gv-baking-powder-8oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-baking-powder-8-1-oz/456294615"
+  },
+  {
+    "id": "gv-baking-soda-16oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-baking-soda-16-oz/456294617"
+  },
+  {
+    "id": "gv-vanilla-2oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-pure-vanilla-extract-2-oz/456294619"
+  },
+  {
+    "id": "gv-chili-powder-2oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-chili-powder-2-25-oz/456294621"
+  },
+  {
+    "id": "gv-paprika-2oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-paprika-2-5-oz/456294623"
+  },
+  {
+    "id": "gv-cinnamon-3oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-ground-cinnamon-3-oz/456294625"
+  },
+  {
+    "id": "gv-chili-beans-3pk",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-chili-beans-in-mild-sauce-15-5-oz-3-count/456294627"
+  },
+  {
+    "id": "gv-pinto-beans-15oz-3pk",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-pinto-beans-in-sauce-15-5-oz-3-count/456294629"
+  },
+  {
+    "id": "gv-mushrooms-3pk",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-sliced-mushrooms-4-oz-3-count/456294631"
+  },
+  {
+    "id": "gv-body-lotion-16oz",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-daily-body-lotion-original-16-oz/456294580"
+  },
+  {
+    "id": "gv-conditioner-12oz",
+    "walmartUrl": "https://www.walmart.com/ip/suave-professionals-keratin-infusion-conditioner-12-oz/456154216"
+  },
+  {
+    "id": "gv-hand-soap-7oz",
+    "walmartUrl": "https://www.walmart.com/ip/dial-complete-antibacterial-hand-soap-7-5-oz/10313826"
+  },
+  {
+    "id": "gv-shampoo-2pk",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-shampoo-2-count/456294582"
+  },
+  {
+    "id": "gv-fabuloso-56oz",
+    "walmartUrl": "https://www.walmart.com/ip/fabuloso-multi-purpose-cleaner-lavender-56-oz/10313827"
+  },
+  {
+    "id": "gv-baking-soda-2lb",
+    "walmartUrl": "https://www.walmart.com/ip/arm-hammer-baking-sodium-2-lb/10313828"
+  },
+  {
+    "id": "gv-aluminum-foil",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-aluminum-foil-75-sq-ft/10450650"
+  },
+  {
+    "id": "gv-tissues-3pk",
+    "walmartUrl": "https://www.walmart.com/ip/great-value-facial-tissue-3-count/456294584"
+  }
+]

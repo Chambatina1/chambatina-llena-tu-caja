@@ -95,12 +95,6 @@ export default function LandingPage() {
               Admin
             </Link>
             <Link
-              href="/tienda"
-              className="text-sm font-semibold px-5 py-2.5 rounded-lg bg-gradient-to-r from-indigo-500 to-blue-500 text-white shadow-md hover:shadow-lg hover:from-indigo-600 hover:to-blue-600 transition-all"
-            >
-              Tienda
-            </Link>
-            <Link
               href="/box-filler"
               className="text-sm font-semibold px-5 py-2.5 rounded-lg bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-md hover:shadow-lg hover:from-orange-600 hover:to-amber-600 transition-all"
             >
@@ -115,69 +109,28 @@ export default function LandingPage() {
         <section className="max-w-5xl mx-auto px-4 pt-16 pb-12 text-center">
           <div className="inline-flex items-center gap-2 bg-orange-100 dark:bg-orange-950/30 text-orange-700 dark:text-orange-300 text-xs font-medium px-3 py-1.5 rounded-full mb-6">
             <span>📦</span>
-            <span>Chambatina</span>
+            <span>Walmart a tu Familia</span>
           </div>
           <h2 className="text-4xl sm:text-5xl font-extrabold text-foreground leading-tight mb-4">
             <span className="bg-gradient-to-r from-orange-500 to-amber-500 bg-clip-text text-transparent">
-              Chambatina
+              Walmart a tu Familia
             </span>
-            {' '}— Alimentos y equipos para tu familia
+            {' '}— Productos reales, envío seguro
           </h2>
-          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
-            Dos formas de enviar a tu familia: cajas con alimentos no perecederos de Walmart
-            o equipos, electrónicos y muebles desde nuestra tienda.
+          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed">
+            Chambatina — Walmart a tu Familia. Selecciona de más de 157 productos reales de Walmart. Visualiza en 3D cómo se acomodan en tu caja.
+            Envío hasta 30 días por mar. Precios con tax incluido.
           </p>
-
-          {/* Two main CTA buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
-            <Link
-              href="/box-filler"
-              className="group flex flex-col items-center gap-2 w-64 sm:w-72 p-6 rounded-2xl bg-gradient-to-br from-orange-50 to-amber-50 dark:from-orange-950/20 dark:to-amber-950/20 border-2 border-orange-200 dark:border-orange-800 hover:border-orange-400 dark:hover:border-orange-600 hover:shadow-xl transition-all"
-            >
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-400 to-amber-500 flex items-center justify-center text-3xl shadow-md group-hover:scale-105 transition-transform">
-                📦
-              </div>
-              <div>
-                <h3 className="text-lg font-extrabold text-orange-700 dark:text-orange-300">
-                  Walmart a tu Familia
-                </h3>
-                <p className="text-xs text-muted-foreground mt-1">
-                  Alimentos no perecederos para tu caja
-                </p>
-              </div>
-              <div className="w-full py-2.5 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 text-white text-sm font-bold shadow-md group-hover:shadow-lg group-hover:from-orange-600 group-hover:to-amber-600 transition-all flex items-center justify-center gap-2">
-                Llenar Caja
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M5 12h14" />
-                  <path d="m12 5 7 7-7 7" />
-                </svg>
-              </div>
-            </Link>
-
-            <Link
-              href="/tienda"
-              className="group flex flex-col items-center gap-2 w-64 sm:w-72 p-6 rounded-2xl bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-indigo-950/20 dark:to-blue-950/20 border-2 border-indigo-200 dark:border-indigo-800 hover:border-indigo-400 dark:hover:border-indigo-600 hover:shadow-xl transition-all"
-            >
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-400 to-blue-500 flex items-center justify-center text-3xl shadow-md group-hover:scale-105 transition-transform">
-                🛒
-              </div>
-              <div>
-                <h3 className="text-lg font-extrabold text-indigo-700 dark:text-indigo-300">
-                  Tienda Chambatina
-                </h3>
-                <p className="text-xs text-muted-foreground mt-1">
-                  Equipos, electrónicos, muebles y más
-                </p>
-              </div>
-              <div className="w-full py-2.5 rounded-xl bg-gradient-to-r from-indigo-500 to-blue-500 text-white text-sm font-bold shadow-md group-hover:shadow-lg group-hover:from-indigo-600 group-hover:to-blue-600 transition-all flex items-center justify-center gap-2">
-                Ver Tienda
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M5 12h14" />
-                  <path d="m12 5 7 7-7 7" />
-                </svg>
-              </div>
-            </Link>
-          </div>
+          <Link
+            href="/box-filler"
+            className="inline-flex items-center gap-2 text-lg font-bold px-8 py-4 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-lg hover:shadow-xl hover:from-orange-600 hover:to-amber-600 transition-all"
+          >
+            <span>Walmart a tu Familia</span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M5 12h14" />
+              <path d="m12 5 7 7-7 7" />
+            </svg>
+          </Link>
         </section>
 
         {/* ── Carousel Section ── */}
@@ -303,19 +256,19 @@ export default function LandingPage() {
 
         {/* Trust badges */}
         <section className="max-w-5xl mx-auto px-4 pb-16">
-          <div className="bg-gradient-to-r from-orange-50 via-indigo-50/50 to-amber-50 dark:from-orange-950/20 dark:via-indigo-950/10 dark:to-amber-950/20 border border-orange-200 dark:border-orange-800 rounded-2xl p-6 sm:p-8">
+          <div className="bg-gradient-to-r from-orange-50 to-amber-50 dark:from-orange-950/20 dark:to-amber-950/20 border border-orange-200 dark:border-orange-800 rounded-2xl p-6 sm:p-8">
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
               <div>
                 <p className="text-2xl font-extrabold text-orange-600 dark:text-orange-400">157+</p>
-                <p className="text-xs text-muted-foreground mt-1">Productos Walmart</p>
+                <p className="text-xs text-muted-foreground mt-1">Productos disponibles</p>
               </div>
               <div>
-                <p className="text-2xl font-extrabold text-indigo-600 dark:text-indigo-400">79+</p>
-                <p className="text-xs text-muted-foreground mt-1">Equipos en Tienda</p>
+                <p className="text-2xl font-extrabold text-orange-600 dark:text-orange-400">12</p>
+                <p className="text-xs text-muted-foreground mt-1">Categorías</p>
               </div>
               <div>
                 <p className="text-2xl font-extrabold text-orange-600 dark:text-orange-400">3D</p>
-                <p className="text-xs text-muted-foreground mt-1">Visualización</p>
+                <p className="text-xs text-muted-foreground mt-1">Visualización en vivo</p>
               </div>
               <div>
                 <p className="text-2xl font-extrabold text-orange-600 dark:text-orange-400">30 días</p>

@@ -1,0 +1,6 @@
+Total products: 147
+Already fetched: 0
+Remaining: 147
+
+--- Batch 1/49 ---
+  Fetching gv-rice-5lb... 

@@ -1,6 +1,6 @@
 'use client';
 
-import { PRODUCT_CATEGORIES, PRODUCTS } from '@/lib/products';
+import { PRODUCT_CATEGORIES, WALMART_BOX_PRODUCTS } from '@/lib/products';
 import { useBoxFillerStore } from '@/store/box-filler-store';
 import { useState, useMemo, useCallback } from 'react';
 
@@ -19,16 +19,28 @@ export default function ProductCatalog() {
     setFailedImages((prev) => new Set(prev).add(productId));
   }, []);
 
+  const getCategoryImage = useCallback(
+    (category: string) => {
+      const slug = category
+        .toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+        .replace(/ñ/g, 'n')
+        .replace(/\s+/g, '-');
+      return `/products/categories/${slug}.png`;
+    }, []
+  );
+
   const getImageSrc = useCallback(
-    (product: (typeof PRODUCTS)[number]) => {
-      if (failedImages.has(product.id)) return null;
+    (product: (typeof WALMART_BOX_PRODUCTS)[number]) => {
+      if (failedImages.has(product.id)) return getCategoryImage(product.category);
+      if (product.imageUrl) return product.imageUrl;
       return `/api/walmart-image?url=${encodeURIComponent(product.walmartUrl)}`;
     },
-    [failedImages]
+    [failedImages, getCategoryImage]
   );
 
   const filteredProducts = useMemo(() => {
-    return PRODUCTS.filter((p) => {
+    return WALMART_BOX_PRODUCTS.filter((p) => {
       const matchCategory = categoryFilter === 'Todos' || p.category === categoryFilter;
       const matchSearch =
         search === '' ||
@@ -56,7 +68,7 @@ export default function ProductCatalog() {
         <div className="flex-1">
           <p className="text-xs font-semibold text-foreground">Productos Walmart</p>
           <p className="text-[10px] text-muted-foreground">
-            Precios actuales · {PRODUCTS.length} productos
+            Precios actuales · {WALMART_BOX_PRODUCTS.length} productos
           </p>
         </div>
       </div>
@@ -125,26 +137,18 @@ export default function ProductCatalog() {
                 <div className="flex flex-col items-center text-center gap-1">
                   {(() => {
                     const imgSrc = getImageSrc(product);
-                    return imgSrc ? (
+                    return (
                       <div
                         className="w-14 h-14 rounded-lg overflow-hidden bg-gray-50 dark:bg-gray-700 flex items-center justify-center shrink-0"
-                        style={{ backgroundColor: product.color + '22' }}
                       >
                         <img
                           src={imgSrc}
                           alt={product.nameEs}
-                          className="w-full h-full object-contain"
+                          className="w-full h-full object-cover"
                           loading="lazy"
                           onError={() => handleImageError(product.id)}
                           draggable={false}
                         />
-                      </div>
-                    ) : (
-                      <div
-                        className="w-14 h-14 rounded-lg flex items-center justify-center shrink-0"
-                        style={{ backgroundColor: product.color + '33' }}
-                      >
-                        <span className="text-2xl leading-none">{product.emoji}</span>
                       </div>
                     );
                   })()}

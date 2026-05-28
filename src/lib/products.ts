@@ -26,7 +26,10 @@ export interface ProductInBox {
   position: { x: number; y: number; z: number };
 }
 
-export const PRODUCT_CATEGORIES = [
+// ═══════════════════════════════════════════════════════════════════════════════
+// CATEGORÍAS WALMART — Solo productos no perecederos para cajas (envío marítimo 30+ días)
+// ═══════════════════════════════════════════════════════════════════════════════
+export const WALMART_BOX_CATEGORIES = [
   'Todos',
   'Granos y Cereales',
   'Lácteos Estables',
@@ -40,13 +43,26 @@ export const PRODUCT_CATEGORIES = [
   'Condimentos y Salsas',
   'Aseo Personal',
   'Aseo del Hogar',
-  'EcoFlow (18% descuento)',
+] as const;
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// CATEGORÍAS TIENDA — Equipos, electrónicos, muebles, baterías (NO van en cajas)
+// ═══════════════════════════════════════════════════════════════════════════════
+export const STORE_CATEGORIES = [
+  'Todos',
+  'Equipos EcoFlow',
   'Electrodomésticos',
+  'TVs',
   'Colchones',
   'Piscinas',
   'Muebles',
   'Freezers y Refrigeradores',
+  'Bicicletas',
+  'Baterías Humsienk',
 ] as const;
+
+// Mantener compatibilidad con componentes existentes
+export const PRODUCT_CATEGORIES = WALMART_BOX_CATEGORIES;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // PRODUCTS FROM WALMART.COM — Great Value & name brands
@@ -653,9 +669,9 @@ export const PRODUCTS: Product[] = [
     color: '#1B5E20',
     emoji: '☕',
     shelfLife: '18 meses',
-    walmartUrl: 'https://www.walmart.com/ip/cafe-la-llave-dark-roast-espresso-coffee-10-oz/10454135',
+    walmartUrl: 'https://www.walmart.com/ip/cafe-la-llave-dark-roast-espresso-coffee-10-oz/10533647',
     description: 'Cafe La Llave espresso tueste oscuro, presentacion ladrillo de 10 oz. El sabor autentico cubano.',
-    imageUrl: '',
+    imageUrl: 'https://i5.walmartimages.com/asr/d39e94ef-954e-4d17-ad94-18ce5b491de2.9b08ceb907df050b707ab0dc3db3ad83.jpeg?odnHeight=450&odnWidth=450&odnBg=FFFFFF',
     packagingType: 'bag',
   },
   {
@@ -672,28 +688,28 @@ export const PRODUCTS: Product[] = [
     color: '#2E7D32',
     emoji: '☕',
     shelfLife: '24 meses',
-    walmartUrl: 'https://www.walmart.com/ip/cafe-la-llave-cuban-style-espresso-10-oz/15800728',
+    walmartUrl: 'https://www.walmart.com/ip/cafe-la-llave-dark-roast-espresso-coffee-10-oz-can/43177576',
     description: 'Cafe La Llave estilo cubano en lata metalica de 10 oz. Sabor intenso y cremoso.',
-    imageUrl: '',
+    imageUrl: 'https://i5.walmartimages.com/asr/07ced98f-0b98-46a9-9757-008a86e20726.911cd0751fff529c567793df367f41ae.jpeg?odnHeight=450&odnWidth=450&odnBg=FFFFFF',
     packagingType: 'can',
   },
   {
     id: 'la-llave-can-36oz',
-    name: 'Cafe La Llave Espresso, Dark Roast, 36 oz Can',
-    nameEs: 'Cafe La Llave Espresso Tueste Oscuro 36 oz Lata',
+    name: 'Cafe La Llave Espresso, Dark Roast, 10 oz Can (Triple Pack)',
+    nameEs: 'Cafe La Llave Espresso Tueste Oscuro ×3 latas 10 oz',
     category: 'Bebidas y Café',
-    weight: 2.25,
-    price: 12.98,
-    width: 5.5,
-    height: 8,
-    depth: 5.5,
-    volume: 242,
+    weight: 1.89,
+    price: 13.48,
+    width: 9,
+    height: 6,
+    depth: 4.5,
+    volume: 243,
     color: '#1B5E20',
     emoji: '☕',
     shelfLife: '24 meses',
-    walmartUrl: 'https://www.walmart.com/ip/cafe-la-llave-dark-roast-espresso-coffee-36-oz/456114537',
-    description: 'Cafe La Llave espresso lata grande de 36 oz. Ideal para familias que aman el cafe cubano.',
-    imageUrl: '',
+    walmartUrl: 'https://www.walmart.com/ip/cafe-la-llave-dark-roast-espresso-coffee-10-oz-can/43177576',
+    description: 'Pack de 3 latas de Cafe La Llave espresso tueste oscuro. Ideal para familias que aman el cafe cubano.',
+    imageUrl: 'https://i5.walmartimages.com/asr/07ced98f-0b98-46a9-9757-008a86e20726.911cd0751fff529c567793df367f41ae.jpeg?odnHeight=450&odnWidth=450&odnBg=FFFFFF',
     packagingType: 'can',
   },
   // ── Café Bustelo ──
@@ -711,9 +727,9 @@ export const PRODUCTS: Product[] = [
     color: '#F9A825',
     emoji: '☕',
     shelfLife: '18 meses',
-    walmartUrl: 'https://www.walmart.com/ip/cafe-bustelo-cafe-espresso-style-dark-roast-ground-coffee-10-oz/10454167',
+    walmartUrl: 'https://www.walmart.com/ip/cafe-bustelo-espresso-style-dark-roast-ground-coffee-10-oz-brick/10543909',
     description: 'Cafe Bustelo estilo espresso tueste oscuro, ladrillo de 10 oz. Cafe latino autentico.',
-    imageUrl: '',
+    imageUrl: 'https://i5.walmartimages.com/asr/fdd10c55-c489-460d-b3fc-59245607ae16.7f6d4cf0ffcbaa385959af66a807be64.jpeg?odnHeight=450&odnWidth=450&odnBg=FFFFFF',
     packagingType: 'bag',
   },
   {
@@ -730,9 +746,9 @@ export const PRODUCTS: Product[] = [
     color: '#FBC02D',
     emoji: '☕',
     shelfLife: '24 meses',
-    walmartUrl: 'https://www.walmart.com/ip/cafe-bustelo-cafe-espresso-style-dark-roast-ground-coffee-10-oz-can/15800745',
+    walmartUrl: 'https://www.walmart.com/ip/cafe-bustelo-espresso-style-dark-roast-ground-coffee-10-oz-can/10543894',
     description: 'Cafe Bustelo estilo espresso en lata metalica de 10 oz. Sabor fuerte y aromatico.',
-    imageUrl: '',
+    imageUrl: 'https://i5.walmartimages.com/asr/cf4a6cd3-2df8-4448-8c8b-7956deea40fc.799d9a5c27d95232e765e13477884949.jpeg?odnHeight=450&odnWidth=450&odnBg=FFFFFF',
     packagingType: 'can',
   },
   {
@@ -749,29 +765,29 @@ export const PRODUCTS: Product[] = [
     color: '#F9A825',
     emoji: '☕',
     shelfLife: '24 meses',
-    walmartUrl: 'https://www.walmart.com/ip/cafe-bustelo-cafe-espresso-style-dark-roast-ground-coffee-12-oz/456114526',
+    walmartUrl: 'https://www.walmart.com/ip/cafe-bustelo-espresso-style-dark-roast-ground-coffee-10-oz-can/10543894',
     description: 'Cafe Bustelo estilo espresso lata de 12 oz. El clasico cafe latinoamericano.',
-    imageUrl: '',
+    imageUrl: 'https://i5.walmartimages.com/asr/cf4a6cd3-2df8-4448-8c8b-7956deea40fc.799d9a5c27d95232e765e13477884949.jpeg?odnHeight=450&odnWidth=450&odnBg=FFFFFF',
     packagingType: 'can',
   },
   {
     id: 'bustelo-brick-24oz',
-    name: 'Cafe Bustelo Espresso Style Dark Roast, 24 oz Brick',
-    nameEs: 'Cafe Bustelo Estilo Espresso 24 oz Ladrillo',
+    name: 'Cafe Bustelo Espresso Ground Coffee, Dark Roast, 36 oz Canister',
+    nameEs: 'Cafe Bustelo Espresso Tueste Oscuro 36 oz Lata Grande',
     category: 'Bebidas y Café',
-    weight: 1.5,
-    price: 7.98,
+    weight: 2.25,
+    price: 9.98,
     width: 6,
-    height: 9,
-    depth: 2.5,
-    volume: 135,
+    height: 9.5,
+    depth: 6,
+    volume: 342,
     color: '#FBC02D',
     emoji: '☕',
-    shelfLife: '18 meses',
-    walmartUrl: 'https://www.walmart.com/ip/cafe-bustelo-cafe-espresso-style-dark-roast-ground-coffee-24-oz/456114530',
-    description: 'Cafe Bustelo espresso ladrillo grande de 24 oz. Para los que no pueden vivir sin su cafe.',
-    imageUrl: '',
-    packagingType: 'bag',
+    shelfLife: '24 meses',
+    walmartUrl: 'https://www.walmart.com/ip/cafe-bustelo-espresso-ground-coffee-dark-roast-36-oz-canister/10543895',
+    description: 'Cafe Bustelo espresso lata grande de 36 oz. Para los que no pueden vivir sin su cafe.',
+    imageUrl: 'https://i5.walmartimages.com/asr/93ef434e-8a66-4f2b-b096-a10b31cb0e63.e0f9fc710ae1dd90e5e9478a1f35e9a8.jpeg?odnHeight=450&odnWidth=450&odnBg=FFFFFF',
+    packagingType: 'can',
   },
 
   // ═══════════ SNACKS Y DESAYUNO ═══════════
@@ -4132,3 +4148,29 @@ export const PRODUCTS: Product[] = [
     packagingType: 'unit',
   },
 ];
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// SEPARATED PRODUCT ARRAYS — Walmart Caja vs Tienda
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// Categories that belong in Walmart boxes (non-perishable food)
+const WALMART_BOX_CATEGORY_SET = new Set<string>([
+  'Granos y Cereales',
+  'Lácteos Estables',
+  'Aceites y Grasas',
+  'Azucares y Endulzantes',
+  'Enlatados',
+  'Bebidas y Café',
+  'Snacks y Desayuno',
+  'Chocolates y Dulces',
+  'Semillas y Frutos Secos',
+  'Condimentos y Salsas',
+  'Aseo Personal',
+  'Aseo del Hogar',
+]);
+
+// Only food/non-perishable products for Walmart boxes
+export const WALMART_BOX_PRODUCTS: Product[] = PRODUCTS.filter(p => WALMART_BOX_CATEGORY_SET.has(p.category));
+
+// Equipment, electronics, furniture, batteries — for Tienda (NOT for boxes)
+export const STORE_PRODUCTS: Product[] = PRODUCTS.filter(p => !WALMART_BOX_CATEGORY_SET.has(p.category));

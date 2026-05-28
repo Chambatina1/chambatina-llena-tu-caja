@@ -143,3 +143,26 @@ Stage Summary:
 - Archivos afectados: src/app/api/upload/route.ts (NUEVO)
 - Requiere despliegue a producción para que el fix tome efecto
 
+---
+Task ID: 2
+Agent: Main Agent
+Task: Verificar y corregir subida de imagenes en Marketplace
+
+Work Log:
+- Verificado servicios.tsx (marketplace) - usa POST /api/upload con FormData (linea 223)
+- Verificado tienda-admin.tsx - usa FormData primero, fallback a base64 JSON (lineas 184, 196)
+- Actualizado POST /api/upload para soportar DOS metodos:
+  1. multipart/form-data (FormData) - usado por apariencia-panel y servicios/marketplace
+  2. application/json con base64 - usado como fallback por tienda-admin
+- Aumentado limite de 15MB a 20MB (tienda-admin permite hasta 20MB)
+- Corregido GET /api/uploads/[filename] para permitir .svg y .ico
+  - Antes solo permitia .jpg, .jpeg, .png, .gif, .webp
+  - Ahora tambien permite .svg (logos) y .ico (favicons)
+
+Stage Summary:
+- 3 archivos afectados:
+  - src/app/api/upload/route.ts (NUEVO - POST endpoint)
+  - src/app/api/uploads/[filename]/route.ts (MODIFICADO - soporte SVG/ICO)
+- Todos los modulos que suben imagenes ahora funcionaran: Apariencia (carrusel/logos/favicon), Marketplace (servicios), Tienda Admin (productos)
+- Requiere despliegue a produccion
+

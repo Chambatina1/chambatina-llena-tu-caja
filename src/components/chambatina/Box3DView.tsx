@@ -14,15 +14,6 @@ const PRODUCT_IMAGES: Record<string, string> = {
   pouch: '/products/pouch.png',
 };
 
-function getCategoryImage(category: string): string {
-  const slug = category
-    .toLowerCase()
-    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-    .replace(/ñ/g, 'n')
-    .replace(/\s+/g, '-');
-  return `/products/categories/${slug}.png`;
-}
-
 export default function Box3DView() {
   const { items, selectedBox, weightPercentage, volumePercentage, boxFull, boxFullReason } = useBoxFillerStore();
   const [failedImages, setFailedImages] = useState<Set<string>>(new Set());
@@ -179,17 +170,11 @@ export default function Box3DView() {
             const iz = item.z * itemScale;
 
             const fallbackSrc = PRODUCT_IMAGES[item.product.packagingType] || PRODUCT_IMAGES.box;
-            const categoryImg = getCategoryImage(item.product.category);
             const itemKey = item.id;
             const useRealImage = !failedImages.has(itemKey);
-            let imgSrc: string;
-            if (!useRealImage) {
-              imgSrc = categoryImg;
-            } else if (item.product.imageUrl) {
-              imgSrc = item.product.imageUrl;
-            } else {
-              imgSrc = `/api/walmart-image?url=${encodeURIComponent(item.product.walmartUrl)}`;
-            }
+            const imgSrc = useRealImage
+              ? `/api/walmart-image?url=${encodeURIComponent(item.product.walmartUrl)}`
+              : fallbackSrc;
             const baseColor = item.product.color;
             const isCylinder = item.product.packagingType === 'can' || item.product.packagingType === 'jar' || item.product.packagingType === 'bottle';
             const faceSize = Math.min(item.w, item.h, item.d);

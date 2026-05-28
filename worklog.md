@@ -166,3 +166,21 @@ Stage Summary:
 - Todos los modulos que suben imagenes ahora funcionaran: Apariencia (carrusel/logos/favicon), Marketplace (servicios), Tienda Admin (productos)
 - Requiere despliegue a produccion
 
+---
+Task ID: 3
+Agent: Main Agent
+Task: Desplegar cambios a Render produccion
+
+Work Log:
+- Detectado que Render autoDeploy esta desactivado (autoDeploy: no)
+- Commiteado en repo Plataformachambatina: a07c701
+- Pusheado a GitHub Chambatina1/Plataformachambatina.git
+- Primer deploy manual usaba commit viejo (e808430) - sin el fix
+- Segundo deploy manual con commit correcto (a07c701f) - con el fix
+- Deploy dep-d8c50f58nd3s7396548g paso a status: live
+
+Stage Summary:
+- Produccion actualizada con el fix de subida de imagenes
+- POST /api/upload ahora responde 400 (espera archivo - correcto)
+- Todos los modulos de subida de imagenes deben funcionar ahora
+

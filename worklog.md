@@ -96,3 +96,29 @@ Stage Summary:
 - FAQPage schema para rich snippets en Google
 - WebSite SearchAction para sitelinks en búsqueda
 - GA4 placeholder listo para configurar con Measurement ID real
+---
+Task ID: 1
+Agent: Main
+Task: SEO integral - Todas las actividades de Chambatina (no solo envíos)
+
+Work Log:
+- Actualizado layout.tsx: dominio www.chambatina.com, GA4 G-GQYM6L8J79 + Clarity wxwx75g03q
+- Schema LocalBusiness con 19 serviceType cubriendo: envíos, web, automatizaciones, trámites, permisos
+- 5 schemas: LocalBusiness, WebSite, BreadcrumbList, Organization, AggregateRating
+- areaServed: Cuba, Haití, Bolivia, Rep. Dominicana, Colombia, Florida USA
+- Creada página SEO /envios-internacionales (2000+ palabras, FAQPage, Service schema)
+- Creada página SEO /tramites-permisos (2000+ palabras, FAQPage, Service schema)
+- Creada página SEO /servicios-web-automatizaciones (2000+ palabras, FAQPage, Service schema)
+- 7 nuevos artículos blog: permisos Florida, servicios web, automatizaciones, envios Cuba/Haiti, aduanas
+- Blog index actualizado a 16 artículos
+- Sitemap 26 URLs con dominio www.chambatina.com
+- Middleware 301 redirects (Render URL → www, non-www → www)
+- Robots.txt con sitemap reference
+- Merge con remote (analytics panel, landing pages existentes)
+- Push y deploy a Render exitoso
+
+Stage Summary:
+- SEO ahora cubre TODOS los servicios: envíos, web, automatizaciones, trámites, permisos
+- 26 URLs indexables en Google (antes solo 2)
+- GA4 + Clarity tracking integrados
+- Deploy en Render: dep-d8c4caml51nc73dk68hg (commit e808430)

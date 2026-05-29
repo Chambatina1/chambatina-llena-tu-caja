@@ -184,3 +184,24 @@ Stage Summary:
 - POST /api/upload ahora responde 400 (espera archivo - correcto)
 - Todos los modulos de subida de imagenes deben funcionar ahora
 
+
+---
+Task ID: 1
+Agent: Main Agent
+Task: Agregar 10 mejores kits solares de Amazon a la tienda Chambatina
+
+Work Log:
+- Explorado el codebase para entender la estructura de productos (modelo TiendaProduct, API admin, componente Tienda)
+- Búsqueda web de los 10 mejores kits solares en Amazon con ASINs reales
+- Agregada categoría "kit-solar" a CATEGORY_CONFIG en tienda.tsx (icono Sun, color naranja)
+- Agregada categoría "kit-solar" a CATEGORIAS y CATEGORIA_COLORS en tienda-admin.tsx
+- Push del código a GitHub (commit b1347fe)
+- Creados 10 productos via POST /api/tienda/admin con enlaces afiliados Amazon (tag: chambatina0e-20)
+- Deploy automático en Render triggered por git push
+
+Stage Summary:
+- 10 productos solares creados exitosamente (IDs 432-441) en categoría "kit-solar"
+- Productos con precios desde $159.99 hasta $1,739.99
+- Todos con imagen de Amazon y enlace afiliado funcional
+- Categoría "Kit Solar" visible como nueva pestaña en la tienda
+- Marcas: Renogy, ECO-WORTHY, Anker, Jackery, EcoFlow, BLUETTI, ExpertPower

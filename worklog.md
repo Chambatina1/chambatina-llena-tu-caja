@@ -1,18 +1,31 @@
 ---
 Task ID: 1
 Agent: Main Agent
-Task: TikTok Shop Affiliate Integration for Chambatina
+Task: Fix TikTok Shop OAuth connection - critical bug fix
 
 Work Log:
-- Created /api/tiktok/route.ts with OAuth 2.0 flow, product search via affiliate_creator/202405 endpoint, HMAC-SHA256 signing
-- Created /api/tiktok/callback/route.ts for OAuth callback handling
-- Added TikTokTienda component to tienda.tsx with search UI, connection status, quick searches
-- Added TikTok tab between eBay and AliExpress in tienda tabs
-- Committed and pushed to GitHub (Render will auto-deploy)
+- Diagnosed the root cause: the `code` parameter from TikTok OAuth was NEVER sent to the token exchange endpoint
+- Created shared token storage module (`/lib/tiktok-token.ts`) to replace unreliable external HTTP POST
+- Rewrote `/api/tiktok/route.ts` with fixes:
+  - Added `code` parameter to token exchange query params (CRITICAL FIX)
+  - Changed auth URL from `/oauth/authorize/seller` to `/oauth/authorize/creator`
+  - Added better error logging and debug info
+  - Added disconnect action
+- Rewrote `/api/tiktok/callback/route.ts` with fixes:
+  - Added `code` parameter to token exchange (CRITICAL FIX)
+  - Direct token storage via shared module (no external HTTP call)
+  - Detailed error messages returned to user
+- Updated `tienda.tsx` TikTokTienda component:
+  - Removed fallback mode (opens TikTok in new tab)
+  - Only API commission mode
+  - Search disabled when not connected
+  - Shows commission amount per product
+  - Prominent connect button when not connected
+- Pushed to GitHub (Plataformachambatina repo: 731a124)
 
 Stage Summary:
-- 3 files changed: 2 new API routes + 1 modified component
-- TikTok integration uses OAuth 2.0 → token stored in-memory → auto-refresh
-- User needs to add TIKTOK_APP_KEY and TIKTOK_APP_SECRET to Render env vars
-- User needs to configure redirect_uri in TikTok partner center: https://plataformachambatina.onrender.com/api/tiktok/callback
-- IMPORTANT: If user's credentials are from developers.tiktok.com (NOT partner.tiktokshop.com), the OAuth flow may fail. In that case, user needs to register at partner.tiktokshop.com
+- Critical OAuth bug fixed: code parameter now properly sent to token exchange
+- Fallback mode removed per user request
+- Deployment to Render should auto-deploy from GitHub push
+- User MUST verify: env vars TIKTOK_APP_KEY, TIKTOK_APP_SECRET in Render
+- User MUST configure redirect_uri in partner.tiktokshop.com

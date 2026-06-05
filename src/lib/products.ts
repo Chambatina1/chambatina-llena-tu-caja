@@ -3240,3 +3240,7 @@ export const PRODUCTS: Product[] = [
     packagingType: 'box',
   },
 ];
+
+// Aliases for store page compatibility
+export const STORE_CATEGORIES: readonly string[] = PRODUCT_CATEGORIES;
+export const STORE_PRODUCTS: Product[] = PRODUCTS;

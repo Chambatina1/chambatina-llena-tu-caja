@@ -47,3 +47,36 @@ Stage Summary:
 - ttc_state parameter added to authorization URL and token exchange
 - Deployment should auto-trigger on Render
 - User should test again by clicking "Conectar TikTok Shop"
+
+---
+Task ID: 3
+Agent: Main Agent
+Task: Remove ProductFlyerGenerator, fix image CORS, add proxy-image API
+
+Work Log:
+- Removed `ProductFlyerGenerator` component (~420 lines) from `tienda.tsx`:
+  - Removed `FlyerProps` interface and entire function body (canvas-based flyer generator)
+  - Removed 2 JSX usages: one in "Novedades" tab (was at ~line 1324), one in category tabs (was at ~line 1456)
+  - Removed unused imports: `Download`, `Paintbrush`, `X`, `Wand2` from lucide-react
+  - Verified `useRef`, `useCallback`, `DollarSign`, `ImageIcon`, `Sparkle` are still used elsewhere and kept them
+- Created `/api/proxy-image/route.ts`:
+  - Accepts `url` query param, fetches external image server-side
+  - Whitelisted domains: `envios.panavana.com`, `m.media-amazon.com`, `downloader.disk.yandex.com`
+  - Returns image with CORS headers (`Access-Control-Allow-Origin: *`) and 7-day cache
+  - Error handling for missing url, invalid URL, forbidden domain, fetch failures
+- Updated `crear-web/page.tsx` image sources:
+  - Custom product images (line ~621): proxy for external URLs + `crossOrigin="anonymous"`
+  - Chambatina product grid images (line ~704): proxy for external URLs + `crossOrigin="anonymous"`
+- Updated `microsite-storefront.tsx` image sources:
+  - Microsite logo (line ~137): proxy for external URLs + `crossOrigin="anonymous"`
+  - StoreCard product image (line ~165): proxy + `crossOrigin="anonymous"`
+  - ServiceCard product image (line ~194): proxy + `crossOrigin="anonymous"`
+  - GalleryItem product image (line ~217): proxy + `crossOrigin="anonymous"`
+  - Restaurant menu item image (line ~315): proxy + `crossOrigin="anonymous"`
+  - All use pattern: `src={url.startsWith('http') ? '/api/proxy-image?url=' + encodeURIComponent(url) : url}`
+
+Stage Summary:
+- ProductFlyerGenerator completely removed from tienda.tsx (no references remain)
+- Image proxy API route created to bypass CORS/hotlinking restrictions
+- All external product images in crear-web and microsite-storefront now routed through proxy
+- crossOrigin="anonymous" added to all img tags for fallback CORS support

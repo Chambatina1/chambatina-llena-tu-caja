@@ -80,3 +80,30 @@ Stage Summary:
 - Image proxy API route created to bypass CORS/hotlinking restrictions
 - All external product images in crear-web and microsite-storefront now routed through proxy
 - crossOrigin="anonymous" added to all img tags for fallback CORS support
+
+---
+Task ID: 1
+Agent: Main Agent
+Task: Implementar Players Personalizados para productos de la tienda Chambatina
+
+Work Log:
+- Analizado el proyecto Plataformachambatina completo (schema, API routes, componentes, middleware)
+- Diseñado modelo de datos PlayerPersonalizado con campos: codigo, productId, nombreNegocio, logoNegocio, whatsappNegocio, precioPersonal, moneda, colorPrimario, mensajeBoton, vistas
+- Agregado modelo PlayerPersonalizado al schema de Prisma
+- Creada API route /api/players (GET list, POST create) con auto-migration SQL
+- Creada API route /api/players/[codigo] (GET, PUT, DELETE) con auto-migration
+- Creada API route /api/embed/[codigo] que genera HTML auto-contenido para iframe embedding
+- Creada pagina publica /p/[codigo] (server + client component) con player visual, compartir link, embed code, WhatsApp share
+- Creada pagina /crear-player con wizard de 2 pasos: seleccionar producto + personalizar (logo, precio, color, WhatsApp)
+- Agregado banner promocional en crear-web (step 4) enlazando a crear-player
+- Actualizado middleware para permitir /p/* y /crear-player sin redirect
+- Compilado exitosamente con next build
+- Commited y pushed a GitHub (commit 8299289)
+- Deploy en Render exitoso - status: live
+
+Stage Summary:
+- Feature completo de Players Personalizados implementado
+- URLs: /crear-player (creador), /p/[codigo] (visor), /api/embed/[codigo] (iframe widget)
+- Codigos unicos tipo PLY-ABC123
+- Auto-migration SQL incluido para la nueva tabla
+- Deploy activo en https://plataformachambatina.onrender.com

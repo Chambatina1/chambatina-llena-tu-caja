@@ -107,3 +107,25 @@ Stage Summary:
 - Codigos unicos tipo PLY-ABC123
 - Auto-migration SQL incluido para la nueva tabla
 - Deploy activo en https://plataformachambatina.onrender.com
+
+---
+Task ID: 1
+Agent: main
+Task: Simplificar Players Personalizados - boton "Personaliza tu Flayr" debajo de cada producto
+
+Work Log:
+- Analizado el codigo actual de tienda.tsx y microsite-storefront.tsx
+- Creado componente reutilizable `PersonalizarFlayrDialog` en src/components/chambatina/personalizar-flayr-dialog.tsx
+- Agregado boton "Personaliza tu Flayr" violeta debajo de cada producto en tienda principal (Novedades + categorias)
+- Agregado boton "Flayr" en cards de micrositios (ProductCard compartido por tienda/general)
+- Dialog permite: nombre negocio, logo upload/URL, WhatsApp, precio personalizado, moneda, color, texto boton
+- Al crear, muestra opciones de compartir: copiar link, WhatsApp share, embed code, ver player
+- API /api/players ya tenia auto-migration, verificado que funciona correctamente
+- Deploy exitoso a Render, API responde 200, player page responde 200
+
+Stage Summary:
+- PersonalizarFlayrDialog: componente reutilizable con dialog modal
+- Boton integrado en 2 contextos: tienda principal y micrositios
+- Test de API exitoso: POST /api/players crea player con codigo PLY-XXXXXX
+- Pagina player /p/[codigo] funciona (200 OK)
+- Commit: 38cedfa "feat: Personaliza tu Flayr - boton directo debajo de cada producto"

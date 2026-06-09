@@ -129,3 +129,50 @@ Stage Summary:
 - Test de API exitoso: POST /api/players crea player con codigo PLY-XXXXXX
 - Pagina player /p/[codigo] funciona (200 OK)
 - Commit: 38cedfa "feat: Personaliza tu Flayr - boton directo debajo de cada producto"
+
+---
+Task ID: 2
+Agent: Main Agent
+Task: Restaurar boton "Personaliza tu Flayr" y consolidar tabs Solar
+
+Work Log:
+- Verificado que las reorganizaciones de Tienda ya estaban implementadas:
+  - Novedades: productos deduplicados por ID (no repite 4x)
+  - Solar: todas las sub-categorías (ecoflow, kit-solar, kit-powmr, baterias-humsienk, wattcycle, inversores, cargadores, accesorios) consolidadas en una sola tab "Solar"
+  - FOSSiBOT: tab unico dentro de Tienda
+  - "general" eliminado como tab separado
+- Verificado commit 86be141 ya había aplicado estos cambios y fue pusheado
+- Restaurado boton "Personaliza tu Flayr" que fue removido por error en commit 86be141:
+  - Agregado de vuelta en tab Novedades (debajo de ShareButtons)
+  - Agregado de vuelta en tabs de categorías (debajo de ShareButtons)
+- Commited y pusheado: 269fb51
+
+Stage Summary:
+- Boton "Personaliza tu Flayr" restaurado en Novedades y categorías
+- Todas las reorganizaciones de Tienda (solar consolidado, FOSSiBOT único, deduplicación) ya estaban activas
+- Deploy automático via Render desde GitHub push
+---
+Task ID: 1
+Agent: Main Agent
+Task: Add Hilton Hotels affiliate store tab to Chambatina Tienda
+
+Work Log:
+- Read existing tienda.tsx structure to understand tabs system
+- Scraped Hilton affiliate page to understand the link structure (CJ Affiliate / Impact)
+- Researched Hilton hotel brands (27 brands), destinations, and commission structure (4% per booking)
+- Created HiltonTienda component with 2 views: Destinations (12 cities) and Brands (12 brands)
+- Added Hilton tab to tabConfigs array with Hotel icon and purple theme
+- Added TabsContent for Hilton
+- Updated filter arrays to include "hilton" as special tab
+- All booking links go through affiliate URL: https://hilton.ijrn.net/c/7382638/624936/4823
+- Fixed duplicate Star import
+- Build successful, pushed to GitHub (commit 0aea3d7)
+- Render deploy: dep-d8jc17n40ujc73e2a9sg - status: live
+
+Stage Summary:
+- Hilton Hotels tab added to Tienda with purple/indigo theme
+- 12 destinations with Unsplash images: Orlando, Las Vegas, NYC, Cancun, London, Dubai, LA, Miami, Tokyo, San Francisco, Atlanta, Costa Rica
+- 12 brands with gradient cards: Waldorf Astoria, Conrad, LXR, Hilton, DoubleTree, Hampton, Embassy Suites, Homewood, Garden Inn, Canopy, Curio Collection, Graduate
+- 4% commission on all bookings, 7-day cookie window
+- Hilton Honors Points info banner included
+- Deployed and live on Render

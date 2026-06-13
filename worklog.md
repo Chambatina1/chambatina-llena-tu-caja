@@ -176,3 +176,36 @@ Stage Summary:
 - 4% commission on all bookings, 7-day cookie window
 - Hilton Honors Points info banner included
 - Deployed and live on Render
+
+---
+Task ID: 1
+Agent: Main Agent
+Task: Completely redesign SitePreview component with professional quality images, modern design, and visual depth
+
+Work Log:
+- Read current SitePreview (lines 107-325) - identified it used only colored blocks with no images
+- Read microsite-storefront.tsx for reference on real rendering patterns
+- Created HERO_IMAGES map with 3-4 Unsplash photos per business type (restaurante, tienda, servicios, profesional, general)
+- Created PRODUCT_IMAGES map with 4-8 Unsplash photos per business type for product cards
+- Added getHeroImage() function with deterministic hash-based selection
+- Added getProductImage() function for fallback product images
+- Completely rewrote SitePreview component with:
+  - Sticky navbar with logo upload button (click to upload)
+  - Hero section with full-bleed Unsplash image + multi-layer gradients + blur circles + glassmorphism badges
+  - About section with split layout (image + text) and floating accent card
+  - Services section with image header cards + gradient overlays + hover zoom
+  - Testimonials with real Unsplash face photos, decorative quotes, star ratings
+  - Product grid with real Unsplash images, floating price badges, hover WhatsApp CTA
+  - Gallery section with masonry-like layout (first item spans 2 cols)
+  - CTA banner with background image + color overlay
+  - Dark footer with social icons
+- Verified Unsplash already in next.config.ts remotePatterns
+- Build succeeded
+- Pushed to GitHub, deploying to Render
+
+Stage Summary:
+- File modified: /src/app/crear-pagina/page.tsx
+- Added ~283 lines of new preview code replacing ~150 lines of basic preview
+- Key design features: Unsplash stock photos, glassmorphism, backdrop blur, floating cards, hover animations, masonry gallery, logo upload
+- Build: SUCCESS
+- Deployed: push to main (Render auto-deploy)

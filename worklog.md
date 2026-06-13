@@ -79,3 +79,22 @@ Stage Summary:
 - Si las imagenes Unsplash cargan: se ven por encima de los gradientes
 - Si fallan: los gradientes del color del negocio dan un look rico y moderno
 - Ya no hay `onError → display:none` que dejara espacios vacios
+---
+Task ID: 1
+Agent: main
+Task: Fix El Tati (writing, calculations, voice) + replace generic website images
+
+Work Log:
+- Analyzed el-tati.tsx: found 3 critical bugs
+- Bug 1: Profile login blocked all access → removed entire login system, component goes directly to agenda
+- Bug 2: formatNum missing `return`, wrong between-text extraction, sequential calc instead of operator precedence → fixed all 3, now uses Function() eval for proper precedence (350+30*1.99+25=434.70)
+- Bug 3: Mic button only visible when no text → moved mic INSIDE the floating input bar, always visible on the left
+- Generated 26 AI images for microsite/page builder (storefront, servicios, profesional, portafolio, team categories)
+- Updated microsite-storefront.tsx, crear-pagina/page.tsx, web-builder/route.ts with local image paths
+- Build succeeded, pushed to GitHub
+
+Stage Summary:
+- el-tati.tsx completely rewritten: no login, fixed math, mic always in input bar
+- 26 images generated in /public/images/storefront/
+- 3 source files updated with local image references
+- Build clean, deployed

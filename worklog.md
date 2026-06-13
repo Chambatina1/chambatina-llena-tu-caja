@@ -209,3 +209,32 @@ Stage Summary:
 - Key design features: Unsplash stock photos, glassmorphism, backdrop blur, floating cards, hover animations, masonry gallery, logo upload
 - Build: SUCCESS
 - Deployed: push to main (Render auto-deploy)
+
+---
+Task ID: 2
+Agent: Main Agent
+Task: Make generated sites PRO quality - guaranteed images, richer content, AI prompt upgrade
+
+Work Log:
+- Identified root cause: z-ai image-search CLI fails on Render → all imagenUrl stay empty
+- Added UNSPLASH_HERO and UNSPLASH_PRODUCTS maps to route.ts with 5-10 images per business type
+- Changed image strategy: FIRST fill with Unsplash fallbacks (guaranteed), THEN try AI search as upgrade
+- Filled gallery sections with 6 Unsplash images automatically
+- Upgraded AI prompt: "diseñador web premiado", conversion-focused, requires 6-10 products, 4-5 testimonials, rich about text, active gallery
+- Rewrote buildFallback() completely: now generates 4-6 products with real Unsplash images, 4 testimonials, 6 gallery photos, rich about text
+- Added STOREFRONT_UNSPLASH fallbacks to microsite-storefront.tsx
+- Replaced ALL placeholder icons (Package, Camera, Wrench, UtensilsCrossed) with real Unsplash fallback images in:
+  - ProductCard (tienda, general, catalogo)
+  - ServiceCard (servicios)
+  - GalleryItem (portafolio)
+  - Restaurant menu items
+  - Catalogo price list items
+  - AI-generated gallery section items
+- Build: SUCCESS
+- Deployed: push to main
+
+Stage Summary:
+- Files modified: route.ts (generation), microsite-storefront.tsx (display), page.tsx (preview)
+- Every generated site now has GUARANTEED real images regardless of AI search success
+- Both preview AND published pages show real photos
+- AI prompt now generates richer, more persuasive content
